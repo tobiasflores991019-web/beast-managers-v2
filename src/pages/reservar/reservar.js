@@ -1,0 +1,934 @@
+import reservarHTML from "./reservar.html?raw";
+
+export function iniciarReserva() {
+
+    document.getElementById("app").innerHTML = reservarHTML;
+
+    iniciarSistema();
+
+}
+
+/*==================================================
+                BEAST MANAGERS
+            SOLICITAR TURNO
+==================================================*/
+
+/*=========================================
+            CONFIGURACIÓN
+=========================================*/
+
+const TOTAL_PASOS = 9;
+
+let pasoActual = 1;
+
+/*=========================================
+            DATOS DEL TURNO
+=========================================*/
+
+const turno = {
+
+    sucursal: "",
+
+    servicio: "",
+
+    precio: 0,
+
+    fecha: "",
+
+    horario: "",
+
+    barbero: "",
+
+    pago: "",
+
+    cliente: {
+
+        nombre: "",
+
+        apellido: "",
+
+        telefono: "",
+
+        correo: ""
+
+    },
+
+    observaciones: ""
+
+};
+
+/*=========================================
+            BARBEROS
+=========================================*/
+
+const barberos = {
+
+    ori:{
+
+        nombre:"Ori",
+
+        foto:"../../assets/img/barberos/ori.jpg",
+
+        rating:"4.9",
+
+        estrellas:"★★★★★",
+
+        experiencia:"7 años",
+
+        descripcion:"Especialista en Fade, Taper y Barba.",
+
+        especialidades:[
+
+            "Fade",
+
+            "Taper",
+
+            "Barba",
+
+            "Cortes Clásicos"
+
+        ]
+
+    },
+
+    benja:{
+
+        nombre:"Benja",
+
+        foto:"../../assets/img/barberos/benja.jpg",
+
+        rating:"4.8",
+
+        estrellas:"★★★★★",
+
+        experiencia:"5 años",
+
+        descripcion:"Especialista en cortes modernos.",
+
+        especialidades:[
+
+            "Fade",
+
+            "Barba",
+
+            "Mullet"
+
+        ]
+
+    },
+
+    dylan:{
+
+        nombre:"Dylan",
+
+        foto:"../../assets/img/barberos/dylan.jpg",
+
+        rating:"4.9",
+
+        estrellas:"★★★★★",
+
+        experiencia:"6 años",
+
+        descripcion:"Especialista en color y diseños.",
+
+        especialidades:[
+
+            "Color",
+
+            "Diseños",
+
+            "Fade"
+
+        ]
+
+    },
+
+    tobi:{
+
+        nombre:"Tobi",
+
+        foto:"../../assets/img/barberos/tobi.jpg",
+
+        rating:"5.0",
+
+        estrellas:"★★★★★",
+
+        experiencia:"10 años",
+
+        descripcion:"Fundador de The Beast Barbershop.",
+
+        especialidades:[
+
+            "Fade",
+
+            "Color",
+
+            "Asesoramiento"
+
+        ]
+
+    }
+
+};
+
+/*=========================================
+            INICIO
+=========================================*/
+
+document.addEventListener(
+
+    "DOMContentLoaded",
+
+    iniciarSistema
+
+);
+
+/*=========================================
+        INICIAR SISTEMA
+=========================================*/
+
+function iniciarSistema(){
+
+    iniciarPaso1();
+
+    iniciarPaso2();
+
+    iniciarPaso3();
+
+    iniciarPaso4();
+
+    iniciarPaso5();
+
+    iniciarPaso6();
+
+    iniciarPaso7();
+
+    iniciarPaso8();
+
+    actualizarResumen();
+
+    actualizarProgreso();
+
+}
+
+/*=========================================
+        UTILIDADES
+=========================================*/
+
+function seleccionar(selector, elemento){
+
+    document.querySelectorAll(selector)
+
+    .forEach(item=>{
+
+        item.classList.remove("selected");
+
+    });
+
+    elemento.classList.add("selected");
+
+}
+
+function actualizarCampo(id,valor){
+
+    const campo = document.getElementById(id);
+
+    if(campo){
+
+        campo.textContent = valor || "-";
+
+    }
+
+}
+
+/*=========================================
+        PASO 1
+        SUCURSAL
+=========================================*/
+
+function iniciarPaso1(){
+
+    const sucursales = document.querySelectorAll(".option-card");
+
+    sucursales.forEach(card=>{
+
+        card.addEventListener("click",()=>{
+
+            seleccionar(".option-card",card);
+
+            turno.sucursal = card.dataset.value;
+
+            actualizarResumen();
+
+            mostrarPaso(2);
+
+        });
+
+    });
+
+}
+
+/*=========================================
+        PASO 2
+        SERVICIO
+=========================================*/
+
+function iniciarPaso2(){
+
+    const servicios = document.querySelectorAll(".service-card");
+
+    servicios.forEach(card=>{
+
+        card.addEventListener("click",()=>{
+
+            seleccionar(".service-card",card);
+
+            turno.servicio = card.dataset.service;
+
+            turno.precio = Number(card.dataset.price);
+
+            actualizarResumen();
+
+            mostrarPaso(3);
+
+        });
+
+    });
+
+}
+
+/*=========================================
+        PASO 3
+        FECHA
+=========================================*/
+
+function iniciarPaso3(){
+
+    const dias = document.querySelectorAll(".day-card");
+
+    dias.forEach(card=>{
+
+        card.addEventListener("click",()=>{
+
+            if(card.classList.contains("calendar")){
+
+                return;
+
+            }
+
+            seleccionar(".day-card",card);
+
+            turno.fecha = card.dataset.date;
+
+            actualizarResumen();
+
+            mostrarPaso(4);
+
+        });
+
+    });
+
+}
+
+/*=========================================
+        PASO 4
+        HORARIO
+=========================================*/
+
+function iniciarPaso4(){
+
+    const horarios = document.querySelectorAll(".hours button");
+
+    horarios.forEach(btn=>{
+
+        btn.addEventListener("click",()=>{
+
+            seleccionar(".hours button",btn);
+
+            turno.horario = btn.dataset.hour;
+
+            actualizarResumen();
+
+            mostrarPaso(5);
+
+        });
+
+    });
+
+}
+
+/*=========================================
+        PASO 5
+        BARBEROS
+=========================================*/
+
+function iniciarPaso5(){
+
+    const tarjetas = document.querySelectorAll(".barber-card");
+
+    const modal = document.getElementById("barberModal");
+
+    const cerrar = document.querySelector(".close-modal");
+
+    tarjetas.forEach(card=>{
+
+        const foto = card.querySelector("img");
+
+        foto.addEventListener("click",(e)=>{
+
+            e.stopPropagation();
+
+            abrirModalBarbero(card.dataset.barber);
+
+        });
+
+    });
+
+    cerrar.addEventListener("click",()=>{
+
+        modal.classList.add("hidden");
+
+    });
+
+    modal.addEventListener("click",(e)=>{
+
+        if(e.target===modal){
+
+            modal.classList.add("hidden");
+
+        }
+
+    });
+
+}
+
+/*=========================================
+        ABRIR MODAL
+=========================================*/
+
+function abrirModalBarbero(id){
+
+    const b = barberos[id];
+
+    document.getElementById("modalPhoto").src = b.foto;
+
+    document.getElementById("modalName").textContent = b.nombre;
+
+    document.querySelector(".modal-stars").textContent = b.estrellas;
+
+    document.getElementById("modalRating").textContent =
+
+    "⭐ " + b.rating;
+
+    document.getElementById("modalExperience").textContent =
+
+    b.experiencia;
+
+    document.getElementById("modalDescription").textContent =
+
+    b.descripcion;
+
+    const lista = document.getElementById("modalSkills");
+
+    lista.innerHTML = "";
+
+    b.especialidades.forEach(item=>{
+
+        const li = document.createElement("li");
+
+        li.textContent = item;
+
+        lista.appendChild(li);
+
+    });
+
+    document.getElementById("barberModal")
+
+    .classList.remove("hidden");
+
+    document.getElementById("chooseBarber").onclick = ()=>{
+
+        elegirBarbero(id);
+
+    };
+
+}
+
+/*=========================================
+        ELEGIR BARBERO
+=========================================*/
+
+function elegirBarbero(id){
+
+    document.querySelectorAll(".barber-card")
+
+    .forEach(card=>{
+
+        card.classList.remove("selected");
+
+    });
+
+    const tarjeta = document.querySelector(
+
+        `.barber-card[data-barber="${id}"]`
+
+    );
+
+    if(tarjeta){
+
+        tarjeta.classList.add("selected");
+
+    }
+
+    turno.barbero = barberos[id].nombre;
+
+    actualizarResumen();
+
+    document.getElementById("barberModal")
+
+    .classList.add("hidden");
+
+    mostrarPaso(6);
+
+}
+
+/*=========================================
+        PASO 6
+        MEDIO DE PAGO
+=========================================*/
+
+function iniciarPaso6(){
+
+    const pagos = document.querySelectorAll(".payment-card");
+
+    pagos.forEach(card=>{
+
+        card.addEventListener("click",()=>{
+
+            seleccionar(".payment-card",card);
+
+            turno.pago = card.dataset.payment;
+
+            actualizarResumen();
+
+            mostrarPaso(7);
+
+        });
+
+    });
+
+}
+
+/*=========================================
+        PASO 7
+        DATOS DEL CLIENTE
+=========================================*/
+
+function iniciarPaso7(){
+
+    const nombre = document.getElementById("nombre");
+    const apellido = document.getElementById("apellido");
+    const telefono = document.getElementById("telefono");
+    const correo = document.getElementById("correo");
+
+    const campos = [
+
+        nombre,
+
+        apellido,
+
+        telefono,
+
+        correo
+
+    ];
+
+    campos.forEach(campo=>{
+
+        campo.addEventListener("input",()=>{
+
+            turno.cliente.nombre = nombre.value.trim();
+
+            turno.cliente.apellido = apellido.value.trim();
+
+            turno.cliente.telefono = telefono.value.trim();
+
+            turno.cliente.correo = correo.value.trim();
+
+            actualizarResumen();
+
+           const botonPaso7 = document.getElementById("nextStep7");
+
+if(
+
+    turno.cliente.nombre !== "" &&
+    turno.cliente.apellido !== "" &&
+    turno.cliente.telefono !== "" &&
+    turno.cliente.correo !== ""
+
+){
+
+    botonPaso7.disabled = false;
+
+}else{
+
+    botonPaso7.disabled = true;
+
+}
+
+        });
+
+    });
+
+}
+
+const nextStep7 = document.getElementById("nextStep7");
+
+if (nextStep7) {
+
+    nextStep7.addEventListener("click", () => {
+
+        mostrarPaso(8);
+
+    });
+
+}
+
+/*=========================================
+        PASO 8
+        OBSERVACIONES
+=========================================*/
+
+function iniciarPaso8(){
+
+    const observaciones =
+
+    document.getElementById("observaciones");
+
+    observaciones.addEventListener("input",()=>{
+
+        turno.observaciones = observaciones.value;
+
+    });
+
+    document.getElementById("nextStep8").addEventListener("click",()=>{
+
+    turno.observaciones = observaciones.value;
+
+    actualizarResumen();
+
+    mostrarPaso(9);
+
+});
+
+}
+
+/*=========================================
+        MOSTRAR PASOS
+=========================================*/
+
+function mostrarPaso(numero){
+
+    pasoActual = numero;
+
+    document.querySelectorAll(".step")
+
+    .forEach(step=>{
+
+        step.classList.add("hidden");
+
+    });
+
+    const paso = document.getElementById(
+
+        "step"+numero
+
+    );
+
+    if(paso){
+
+        paso.classList.remove("hidden");
+
+    }
+
+    actualizarProgreso();
+
+}
+
+/*=========================================
+        BARRA DE PROGRESO
+=========================================*/
+
+function actualizarProgreso(){
+
+    const porcentaje =
+
+    (pasoActual / TOTAL_PASOS) * 100;
+
+    document.getElementById(
+
+        "progressFill"
+
+    ).style.width = porcentaje+"%";
+
+    document.getElementById(
+
+        "stepNumber"
+
+    ).textContent = pasoActual;
+
+}
+
+/*=========================================
+        RESUMEN
+=========================================*/
+
+function actualizarResumen(){
+
+    actualizarCampo(
+
+        "rSucursal",
+
+        turno.sucursal
+
+    );
+
+    actualizarCampo(
+
+        "rServicio",
+
+        turno.servicio
+
+    );
+
+    actualizarCampo(
+
+        "rFecha",
+
+        turno.fecha
+
+    );
+
+    actualizarCampo(
+
+        "rHorario",
+
+        turno.horario
+
+    );
+
+    actualizarCampo(
+
+        "rBarbero",
+
+        turno.barbero
+
+    );
+
+    actualizarCampo(
+
+        "rPago",
+
+        turno.pago
+
+    );
+
+    actualizarCampo(
+
+        "rCliente",
+
+        turno.cliente.nombre +
+
+        " " +
+
+        turno.cliente.apellido
+
+    );
+
+    actualizarCampo(
+
+    "rObservaciones",
+
+    turno.observaciones
+
+);
+
+    actualizarCampo(
+
+        "rTotal",
+
+        "$"+
+
+        turno.precio.toLocaleString(
+
+            "es-AR"
+
+        )
+
+    );
+
+}
+
+/*=========================================
+        GENERAR RESERVA
+=========================================*/
+
+function generarCodigoReserva(){
+
+    const ahora = new Date();
+
+    const año = String(ahora.getFullYear()).slice(-2);
+
+    const mes = String(
+        ahora.getMonth()+1
+    ).padStart(2,"0");
+
+    const dia = String(
+        ahora.getDate()
+    ).padStart(2,"0");
+
+    const numero = Math.floor(
+        Math.random()*9000
+    )+1000;
+
+    return `BM-${año}${mes}${dia}-${numero}`;
+
+}
+
+/*=========================================
+        CONFIRMAR TURNO
+=========================================*/
+
+const confirmar = document.getElementById("confirmTurn");
+
+if(confirmar){
+
+    confirmar.addEventListener("click",()=>{
+
+        actualizarResumen();
+
+        const codigo = generarCodigoReserva();
+
+        document.getElementById("reservationCode").textContent = codigo;
+
+        document.getElementById("successSucursal").textContent =
+        turno.sucursal;
+
+        document.getElementById("successFecha").textContent =
+        turno.fecha;
+
+        document.getElementById("successHorario").textContent =
+        turno.horario;
+
+        document.getElementById("successBarbero").textContent =
+        turno.barbero;
+
+        document
+            .getElementById("successModal")
+            .classList.remove("hidden");
+
+    });
+
+}
+
+/*=========================================
+        CERRAR MODAL
+=========================================*/
+
+const cerrarModal = document.getElementById("closeSuccess");
+
+if(cerrarModal){
+
+    cerrarModal.addEventListener("click",()=>{
+
+        document
+            .getElementById("successModal")
+            .classList.add("hidden");
+
+        reiniciarFormulario();
+
+    });
+
+}
+
+/*=========================================
+        REINICIAR FORMULARIO
+=========================================*/
+
+function reiniciarFormulario(){
+
+    /*-------------------------
+        Reiniciar datos
+    --------------------------*/
+
+    pasoActual = 1;
+
+    turno.sucursal = "";
+    turno.servicio = "";
+    turno.precio = 0;
+    turno.fecha = "";
+    turno.horario = "";
+    turno.barbero = "";
+    turno.pago = "";
+    turno.observaciones = "";
+
+    turno.cliente.nombre = "";
+    turno.cliente.apellido = "";
+    turno.cliente.telefono = "";
+    turno.cliente.correo = "";
+
+    /*-------------------------
+        Limpiar inputs
+    --------------------------*/
+
+    document.getElementById("nombre").value = "";
+    document.getElementById("apellido").value = "";
+    document.getElementById("telefono").value = "";
+    document.getElementById("correo").value = "";
+    document.getElementById("observaciones").value = "";
+
+    /*-------------------------
+        Desmarcar tarjetas
+    --------------------------*/
+
+    document.querySelectorAll(
+
+        ".selected"
+
+    ).forEach(item=>{
+
+        item.classList.remove("selected");
+
+    });
+
+    /*-------------------------
+        Deshabilitar botón paso 7
+    --------------------------*/
+
+    document.getElementById(
+
+        "nextStep7"
+
+    ).disabled = true;
+
+  
+
+    /*-------------------------
+        Actualizar resumen
+    --------------------------*/
+
+    actualizarResumen();
+
+    /*-------------------------
+        Volver al paso 1
+    --------------------------*/
+
+    mostrarPaso(1);
+
+}
+
+/*=========================================
+        DEBUG
+=========================================*/
+
+window.turno = turno;

@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Beast Managers</title>
+
+    <!-- Google Fonts -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- CSS -->
+
+    <link rel="stylesheet"
+          href="dashboard.css">
+
+</head>
+
+<body>
+
+    <!--======================================
+                FONDO
+    =======================================-->
+
+    <div class="background"></div>
+
+    <!--======================================
+            CONTENEDOR PRINCIPAL
+    =======================================-->
+
+    <main class="dashboard">
+
+        <!--======================================
+                TARJETA
+        =======================================-->
+
+        <section class="dashboard-card">
+
+            <!--======================================
+                    HEADER PARTE 1
+            =======================================-->
+
+            <header class="top-header">
+
+                <!-- Logo -->
+
+                <div class="brand">
+
+                    <img src="../../../assets/img/logos/logo.jpg (2).png"
+                         alt="Beast Managers">
+
+                    <div class="brand-text">
+
+                        <h2>Beast Managers</h2>
+
+                        <p>Tu sistema de gestión</p>
+
+                    </div>
+
+                </div>
+
+                <!-- Acciones -->
+
+                <div class="header-actions">
+
+                    <button class="icon-btn">
+
+                        <i class="fa-regular fa-bell"></i>
+
+                    </button>
+
+                    <button class="icon-btn">
+
+                        <i class="fa-regular fa-user"></i>
+
+                    </button>
+
+                </div>
+
+            </header>
+
+            <!--======================================
+                    SALUDO
+            =======================================-->
+
+            <section class="welcome">
+
+                <h1>
+
+                    Hola,
+
+                    <span id="nombreCliente">
+
+                        Tobias
+
+                    </span>
+
+                    👋
+
+                </h1>
+
+                <h3>
+
+                    Bienvenido nuevamente a
+
+                </h3>
+
+                    <p id="empresaCliente">
+
+                           The Beast Barbershop
+
+                     </p>
+
+                <div class="welcome-info">
+
+                     <span>
+
+                       <i class="fa-solid fa-location-dot"></i>
+
+                       <span id="ciudadCliente">
+
+                         Remedios de Escalada
+
+                        </span>
+
+                     </span>
+
+                  <span>
+                 <i class="fa-solid fa-sun"></i>
+                       <span id="saludoCliente">Buenos días</span>
+                  </span>
+
+                </div>
+
+            </section>
+
+        <!--======================================
+        PRÓXIMO TURNO PARTE 2
+=======================================-->
+
+<section class="next-appointment">
+
+    <div class="card-title">
+
+        <div>
+
+            <h2>Próximo Turno</h2>
+
+            <p>No olvides llegar 5 minutos antes.</p>
+
+        </div>
+
+         <span
+             class="status active"
+               id="estadoTurno">
+
+                  Confirmado
+
+        </span>
+
+    </div>
+
+    <div class="appointment-content">
+
+        <!-- Información -->
+
+        <div class="appointment-info">
+
+            <div class="item">
+
+                <i class="fa-regular fa-calendar"></i>
+
+                <div>
+
+                    <h4>Fecha</h4>
+
+                   <p id="turnoFecha">
+
+                      Martes 05 Agosto
+
+                   </p>
+
+                </div>
+
+            </div>
+
+            <div class="item">
+
+                <i class="fa-regular fa-clock"></i>
+
+                <div>
+
+                    <h4>Hora</h4>
+
+                    <p id="turnoHora">
+
+                        18:30 hs
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="item">
+
+                <i class="fa-solid fa-user-tie"></i>
+
+                <div>
+
+                    <h4>Barbero</h4>
+                    
+                 <p id="turnoBarbero">
+
+                    Dylan
+
+                </p>
+
+                </div>
+
+            </div>
+
+            <div class="item">
+
+                <i class="fa-solid fa-scissors"></i>
+
+                <div>
+
+                    <h4>Servicio</h4>
+
+                    <p id="turnoServicio">
+
+                       Corte + Barba
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="item">
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                <div>
+
+                    <h4>Sucursal</h4>
+
+                    <p id="turnoSucursal">
+
+                         Marco Avellaneda 1012
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- QR -->
+
+        <div class="appointment-qr">
+
+            <div class="qr-box">
+
+                <i class="fa-solid fa-qrcode"></i>
+
+            </div>
+
+            <p>
+
+                Presentá este código al llegar.
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="appointment-buttons">
+
+        <button class="btn-gold">
+
+            <i class="fa-solid fa-eye"></i>
+
+            Ver Detalles
+
+        </button>
+
+        <button class="btn-dark">
+
+            <i class="fa-solid fa-calendar-plus"></i>
+
+            Reprogramar
+
+        </button>
+
+    </div>
+
+</section>
+
+<!-- ========================================================= -->
+<!--                    PARTE 3 - ACCESOS RÁPIDOS              -->
+<!-- ========================================================= -->
+
+<section class="quick-actions">
+
+    <div class="section-title">
+
+        <h2>
+
+            Accesos rápidos
+
+        </h2>
+
+        <p>
+
+            Todo lo que necesitás en un solo lugar.
+
+        </p>
+
+    </div>
+
+    <div class="actions-grid">
+
+        <!-- Reservar -->
+
+        <a href="../solicitar-turno/solicitar-turno.html"
+
+            class="action-card">
+
+            <div class="action-icon">
+
+                <i class="fa-regular fa-calendar-plus"></i>
+
+            </div>
+
+            <h3>
+
+                Reservar Turno
+
+            </h3>
+
+            <p>
+
+                Elegí sucursal, barbero y horario.
+
+            </p>
+
+        </a>
+
+        <!-- Mis Turnos -->
+
+        <a href="#"
+
+            class="action-card">
+
+            <div class="action-icon">
+
+                <i class="fa-solid fa-clock-rotate-left"></i>
+
+            </div>
+
+            <h3>
+
+                Mis Turnos
+
+            </h3>
+
+            <p>
+
+                Consultá tus próximos turnos.
+
+            </p>
+
+        </a>
+
+        <!-- Beneficios -->
+
+        <a href="#"
+
+            class="action-card">
+
+            <div class="action-icon">
+
+                <i class="fa-solid fa-gift"></i>
+
+            </div>
+
+            <h3>
+
+                Beneficios
+
+            </h3>
+
+            <p>
+
+                Descubrí descuentos exclusivos.
+
+            </p>
+
+        </a>
+
+        <!-- Productos -->
+
+        <a href="#"
+
+            class="action-card">
+
+            <div class="action-icon">
+
+                <i class="fa-solid fa-bag-shopping"></i>
+
+            </div>
+
+            <h3>
+
+                Productos
+
+            </h3>
+
+            <p>
+
+                Comprá productos oficiales.
+
+            </p>
+
+        </a>
+
+    </div>
+
+</section>
+
+<!-- ========================================================= -->
+<!--           PARTE 4 - PROMOCIONES DESTACADAS                -->
+<!-- ========================================================= -->
+
+<section class="promotions">
+
+    <div class="section-title">
+
+        <h2>
+
+            Promociones para vos
+
+        </h2>
+
+        <p>
+
+            Aprovechá los beneficios disponibles.
+
+        </p>
+
+    </div>
+
+    <div class="promo-slider">
+
+        <!-- PROMO 1 -->
+
+        <div class="promo-card gold">
+
+            <div class="promo-content">
+
+                <span class="promo-badge">
+
+                    ⭐ Destacada
+
+                </span>
+
+                <h3>
+
+                    Corte + Barba
+
+                </h3>
+
+                <p>
+
+                    Solo por esta semana
+
+                </p>
+
+                <h1>
+
+                    $16.000
+
+                </h1>
+
+                <button class="promo-btn">
+
+                    Reservar ahora
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- PROMO 2 -->
+
+        <div class="promo-card dark">
+
+            <div class="promo-content">
+
+                <span class="promo-badge">
+
+                    🔥 Lunes
+
+                </span>
+
+                <h3>
+
+                    Corte
+
+                </h3>
+
+                <p>
+
+                    Todos los lunes
+
+                </p>
+
+                <h1>
+
+                    $12.000
+
+                </h1>
+
+                <button class="promo-btn">
+
+                    Ver promoción
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- PROMO 3 -->
+
+        <div class="promo-card dark">
+
+            <div class="promo-content">
+
+                <span class="promo-badge">
+
+                    👨‍👦 Miércoles
+
+                </span>
+
+                <h3>
+
+                    Padre e Hijo
+
+                </h3>
+
+                <p>
+
+                    Ambos cortes
+
+                </p>
+
+                <h1>
+
+                    $24.000
+
+                </h1>
+
+                <button class="promo-btn">
+
+                    Reservar
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ========================================================= -->
+<!--              PARTE 5 - BARBEROS FAVORITOS                 -->
+<!-- ========================================================= -->
+
+<section class="favorite-barbers">
+
+    <div class="section-title">
+
+        <h2>
+
+            Tus barberos favoritos
+
+        </h2>
+
+        <p>
+
+            Reservá con quienes más elegís.
+
+        </p>
+
+    </div>
+
+    <div class="barbers-container">
+
+        <!-- Barbero 1 -->
+
+        <div class="barber-card">
+
+            <img src="../../assets/img/barbers/dylan.jpg"
+                 alt="Dylan">
+
+            <div class="barber-info">
+
+                <h3>Dylan</h3>
+
+                <p>Especialista en Fade</p>
+
+                <div class="stars">
+
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+
+                </div>
+
+            </div>
+
+            <button class="mini-btn">
+
+                Reservar
+
+            </button>
+
+        </div>
+
+        <!-- Barbero 2 -->
+
+        <div class="barber-card">
+
+            <img src="../../assets/img/barbers/ori.jpg"
+                 alt="Ori">
+
+            <div class="barber-info">
+
+                <h3>Ori</h3>
+
+                <p>Cortes clásicos</p>
+
+                <div class="stars">
+
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+
+                </div>
+
+            </div>
+
+            <button class="mini-btn">
+
+                Reservar
+
+            </button>
+
+        </div>
+
+        <!-- Barbero 3 -->
+
+        <div class="barber-card">
+
+            <img src="../../assets/img/barbers/benja.jpg"
+                 alt="Benja">
+
+            <div class="barber-info">
+
+                <h3>Benja</h3>
+
+                <p>Barba y Perfilado</p>
+
+                <div class="stars">
+
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star-half-stroke"></i>
+
+                </div>
+
+            </div>
+
+            <button class="mini-btn">
+
+                Reservar
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ========================================================= -->
+<!--                 PARTE 6 - HISTORIAL                       -->
+<!-- ========================================================= -->
+
+<section class="history">
+
+    <div class="section-title">
+
+        <h2>
+
+            Últimos servicios
+
+        </h2>
+
+        <p>
+
+            Tu historial en The Beast.
+
+        </p>
+
+    </div>
+
+    <div class="history-card">
+
+        <div class="history-left">
+
+            <i class="fa-solid fa-scissors"></i>
+
+            <div>
+
+                <h3>
+
+                    Corte + Barba
+
+                </h3>
+
+                <p>
+
+                    Dylan · 10 Julio
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <span>
+
+            $16.000
+
+        </span>
+
+    </div>
+
+    <div class="history-card">
+
+        <div class="history-left">
+
+            <i class="fa-solid fa-scissors"></i>
+
+            <div>
+
+                <h3>
+
+                    Corte
+
+                </h3>
+
+                <p>
+
+                    Ori · 18 Junio
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <span>
+
+            $14.000
+
+        </span>
+
+    </div>
+
+</section>
+
+<!-- ========================================================= -->
+<!--           PARTE 7 - BENEFICIOS Y MEMBRESÍA                -->
+<!-- ========================================================= -->
+
+<section class="membership">
+
+    <div class="section-title">
+
+        <h2>
+
+            Tu Membresía
+
+        </h2>
+
+        <p>
+
+            Sumá cortes y desbloqueá beneficios exclusivos.
+
+        </p>
+
+    </div>
+
+    <!-- Tarjeta Membresía -->
+
+    <div class="membership-card">
+
+        <div class="membership-header">
+
+            <div>
+
+                <span class="level">
+
+                    💎 Nivel Gold
+
+                </span>
+
+                <h3>
+
+                    Programa Beast
+
+                </h3>
+
+            </div>
+
+            <i class="fa-solid fa-crown"></i>
+
+        </div>
+
+        <div class="progress-info">
+
+            <span>
+
+                8 de 10 cortes
+
+            </span>
+
+            <span>
+
+                80%
+
+            </span>
+
+        </div>
+
+        <div class="progress-bar">
+
+            <div class="progress-fill"></div>
+
+        </div>
+
+        <p class="membership-message">
+
+            🎉 Te faltan solo <strong>2 cortes</strong> para obtener un
+            <strong>CORTE GRATIS</strong>.
+
+        </p>
+
+    </div>
+
+    <!-- Beneficios -->
+
+    <div class="benefits-grid">
+
+        <div class="benefit-card">
+
+            <div class="benefit-icon">
+
+                🎂
+
+            </div>
+
+            <div>
+
+                <h3>
+
+                    Cumpleaños
+
+                </h3>
+
+                <p>
+
+                    20% OFF durante todo tu mes.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="benefit-card">
+
+            <div class="benefit-icon">
+
+                👥
+
+            </div>
+
+            <div>
+
+                <h3>
+
+                    Referidos
+
+                </h3>
+
+                <p>
+
+                    Invitá amigos y obtené crédito.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="benefit-card">
+
+            <div class="benefit-icon">
+
+                💈
+
+            </div>
+
+            <div>
+
+                <h3>
+
+                    Cliente Frecuente
+
+                </h3>
+
+                <p>
+
+                    Accedé antes a promociones exclusivas.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="benefit-card">
+
+            <div class="benefit-icon">
+
+                🎁
+
+            </div>
+
+            <div>
+
+                <h3>
+
+                    Sorpresas
+
+                </h3>
+
+                <p>
+
+                    Beneficios especiales durante el año.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ========================================================= -->
+<!--             PARTE 8 - PRODUCTOS DESTACADOS                -->
+<!-- ========================================================= -->
+
+<section class="products">
+
+    <div class="section-title products-header">
+
+        <div>
+
+            <h2>
+
+                Productos destacados
+
+            </h2>
+
+            <p>
+
+                Productos recomendados para vos.
+
+            </p>
+
+        </div>
+
+        <a href="#"
+           class="see-all">
+
+            Ver tienda
+
+            <i class="fa-solid fa-chevron-right"></i>
+
+        </a>
+
+    </div>
+
+    <div class="products-grid">
+
+        
+
+    </div>
+
+</section>
+
+<!-- ========================================================= -->
+<!--                PARTE 9 - SUCURSALES                       -->
+<!-- ========================================================= -->
+<section class="branches">
+
+    <div class="section-title">
+
+        <h2>
+
+            Nuestras sucursales
+
+        </h2>
+
+        <p>
+
+            Elegí la sucursal que prefieras.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================= -->
+<!--                 PARTE 10 - CONTACTANOS                    -->
+<!-- ========================================================= -->
+
+<section class="contact-section">
+
+    <div class="section-title">
+
+        <h2>
+
+            Contactanos
+
+        </h2>
+
+        <p>
+
+            Estamos para ayudarte cuando lo necesites.
+
+        </p>
+
+    </div>
+
+    <div class="contact-grid">
+
+        <!-- WhatsApp -->
+
+        <a href="#"
+           class="contact-card">
+
+            <div class="contact-left">
+
+                <div class="contact-icon">
+
+                    <i class="fa-brands fa-whatsapp"></i>
+
+                </div>
+
+                <span>
+
+                    WhatsApp
+
+                </span>
+
+            </div>
+
+            <i class="fa-solid fa-chevron-right"></i>
+
+        </a>
+
+        <!-- Instagram -->
+
+        <a href="#"
+           class="contact-card">
+
+            <div class="contact-left">
+
+                <div class="contact-icon">
+
+                    <i class="fa-brands fa-instagram"></i>
+
+                </div>
+
+                <span>
+
+                    Instagram
+
+                </span>
+
+            </div>
+
+            <i class="fa-solid fa-chevron-right"></i>
+
+        </a>
+
+        <!-- Llamar -->
+
+        <a href="tel:+541165495730"
+           class="contact-card">
+
+            <div class="contact-left">
+
+                <div class="contact-icon">
+
+                    <i class="fa-solid fa-phone"></i>
+
+                </div>
+
+                <span>
+
+                    Llamar
+
+                </span>
+
+            </div>
+
+            <i class="fa-solid fa-chevron-right"></i>
+
+        </a>
+
+    </div>
+
+</section>
+
+<!-- ========================================================= -->
+<!--              PARTE 11 - MENÚ INFERIOR                     -->
+<!-- ========================================================= -->
+
+<nav class="bottom-navigation">
+
+    <!-- Inicio -->
+
+    <a href="dashboard.html"
+       class="nav-item active">
+
+        <i class="fa-solid fa-house"></i>
+
+        <span>
+
+            Inicio
+
+        </span>
+
+    </a>
+
+    <!-- Turnos -->
+
+    <a href="../mis-turnos/mis-turnos.html"
+       class="nav-item">
+
+        <i class="fa-regular fa-calendar"></i>
+
+        <span>
+
+            Turnos
+
+        </span>
+
+    </a>
+
+    <!-- Botón Principal -->
+
+    <a href="../solicitar-turno/solicitar-turno.html"
+       class="nav-item reserve-button">
+
+        <div class="reserve-circle">
+
+            <i class="fa-solid fa-plus"></i>
+
+        </div>
+
+        <span>
+
+            Reservar
+
+        </span>
+
+    </a>
+
+    <!-- Beneficios -->
+
+    <a href="../beneficios/beneficios.html"
+       class="nav-item">
+
+        <i class="fa-solid fa-gift"></i>
+
+        <span>
+
+            Beneficios
+
+        </span>
+
+    </a>
+
+    <!-- Perfil -->
+
+    <a href="../perfil/perfil.html"
+       class="nav-item">
+
+        <i class="fa-regular fa-user"></i>
+
+        <span>
+
+            Perfil
+
+        </span>
+
+    </a>
+
+</nav>
+
+        </section>
+
+    </main>
+
+    <!--======================================================
+                    LOADER
+=======================================================-->
+
+<div id="loader">
+
+    <div class="loader-content">
+
+        <img
+            src="../../assets/img/logos/beast-manager.png"
+            alt="Beast Managers">
+
+        <div class="loader-ring"></div>
+
+        <h2>Beast Managers</h2>
+
+        <p>Cargando Dashboard...</p>
+
+    </div>
+
+</div>
+
+    <script src="dashboard.js"></script>
+
+</body>
+
+</html>

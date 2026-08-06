@@ -1,0 +1,3002 @@
+/* Fondo
+#090909
+
+Cards
+#161616
+
+Bordes
+#2A2A2A
+
+Dorado principal
+#D4AF37
+
+Dorado claro
+#F4D878
+
+Texto blanco
+#FFFFFF
+
+Texto gris
+#9B9B9B
+
+border-radius:24px;
+
+box-shadow:
+
+0 15px 45px rgba(0,0,0,.45);
+
+*/
+
+
+/*======================================================
+                PARTE 1 - BASE GENERAL
+======================================================*/
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+body{
+
+    font-family:'Poppins',sans-serif;
+
+    background:#090909;
+
+    color:#FFFFFF;
+
+    overflow-x:hidden;
+
+}
+
+/*======================================================
+                PARTE 1 - FONDO
+======================================================*/
+
+.background{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+    linear-gradient(
+    rgba(9,9,9,.92),
+    rgba(9,9,9,.96)),
+    url("../../assets/img/backgrounds/barberia.jpg");
+
+    background-size:cover;
+
+    background-position:center;
+
+    background-repeat:no-repeat;
+
+    z-index:-2;
+
+}
+
+.background::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:650px;
+
+    height:650px;
+
+    top:-280px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    background:
+
+    radial-gradient(
+
+    rgba(212,175,55,.12),
+
+    transparent 70%
+
+    );
+
+}
+
+/*======================================================
+            PARTE 1 - CONTENEDOR
+======================================================*/
+
+.dashboard{
+
+    width:100%;
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:flex-start;
+
+    padding:35px;
+
+}
+
+/*======================================================
+            PARTE 1 - TARJETA PRINCIPAL
+======================================================*/
+
+.dashboard-card{
+
+    width:100%;
+
+    max-width:620px;
+
+    background:#161616;
+
+    border:1px solid #2A2A2A;
+
+    border-radius:24px;
+
+    padding:28px;
+
+    box-shadow:
+
+    0 15px 45px rgba(0,0,0,.45);
+
+}
+
+/*======================================================
+            PARTE 1 - HEADER
+======================================================*/
+
+.top-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:35px;
+
+}
+
+/*======================================================
+            PARTE 1 - LOGO
+======================================================*/
+
+.brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+}
+
+.brand img{
+
+    width:85px;
+
+    height:85px;
+
+    object-fit:contain;
+
+}
+
+.brand-text{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.brand-text h2{
+
+    font-size:24px;
+
+    font-weight:700;
+
+    color:#FFFFFF;
+
+    line-height:1;
+
+}
+
+.brand-text p{
+
+    margin-top:6px;
+
+    font-size:13px;
+
+    color:#D4AF37;
+
+    letter-spacing:1px;
+
+}
+
+/*======================================================
+        PARTE 1 - ICONOS HEADER
+======================================================*/
+
+.header-actions{
+
+    display:flex;
+
+    gap:12px;
+
+}
+
+.icon-btn{
+
+    width:48px;
+
+    height:48px;
+
+    border:none;
+
+    outline:none;
+
+    cursor:pointer;
+
+    border-radius:14px;
+
+    background:#202020;
+
+    color:#FFFFFF;
+
+    border:1px solid #2A2A2A;
+
+    transition:.30s;
+
+}
+
+.icon-btn i{
+
+    font-size:18px;
+
+}
+
+.icon-btn:hover{
+
+    background:#D4AF37;
+
+    color:#111111;
+
+    transform:translateY(-3px);
+
+}
+
+/*======================================================
+            PARTE 1 - BIENVENIDA
+======================================================*/
+
+.welcome{
+
+    margin-bottom:35px;
+
+}
+
+.welcome h1{
+
+    font-size:36px;
+
+    font-weight:700;
+
+    color:#FFFFFF;
+
+}
+
+.welcome span{
+
+    color:#D4AF37;
+
+}
+
+.welcome h3{
+
+    margin-top:10px;
+
+    font-size:18px;
+
+    font-weight:500;
+
+    color:#FFFFFF;
+
+}
+
+.welcome p{
+
+    margin-top:8px;
+
+    font-size:17px;
+
+    color:#D4AF37;
+
+    font-weight:600;
+
+}
+
+.welcome-info{
+
+    display:flex;
+
+    gap:20px;
+
+    flex-wrap:wrap;
+
+    margin-top:20px;
+
+}
+
+.welcome-info span{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    font-size:14px;
+
+    color:#9B9B9B;
+
+}
+
+.welcome-info i{
+
+    color:#D4AF37;
+
+}
+
+/*======================================================
+            PARTE 2 - PRÓXIMO TURNO
+======================================================*/
+
+.next-appointment{
+
+    margin-bottom:35px;
+
+    background:linear-gradient(
+        145deg,
+        #1B1B1B,
+        #141414
+    );
+
+    border:1px solid #2A2A2A;
+
+    border-radius:24px;
+
+    padding:25px;
+
+    box-shadow:
+    0 15px 45px rgba(0,0,0,.35);
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+/* Brillo dorado */
+
+.next-appointment::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:-120px;
+
+    right:-120px;
+
+    width:260px;
+
+    height:260px;
+
+    border-radius:50%;
+
+    background:radial-gradient(
+        rgba(212,175,55,.10),
+        transparent 70%
+    );
+
+}
+
+/*=========================
+TÍTULO
+=========================*/
+
+.card-title{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    margin-bottom:28px;
+
+}
+
+.card-title h2{
+
+    font-size:24px;
+
+    font-weight:700;
+
+    color:#FFFFFF;
+
+}
+
+.card-title p{
+
+    margin-top:6px;
+
+    color:#9B9B9B;
+
+    font-size:14px;
+
+}
+
+/*=========================
+ESTADO
+=========================*/
+
+.status{
+
+    padding:8px 18px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.status.active{
+
+    background:#0F2C18;
+
+    color:#41D36B;
+
+    border:1px solid #2C8C4A;
+
+}
+
+/*=========================
+CONTENIDO
+=========================*/
+
+.appointment-content{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:30px;
+
+    margin-bottom:30px;
+
+    align-items:center;
+
+}
+
+/*=========================
+INFORMACIÓN
+=========================*/
+
+.appointment-info{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.item{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:16px;
+
+}
+
+.item i{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:12px;
+
+    background:#202020;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:#D4AF37;
+
+    font-size:18px;
+
+    flex-shrink:0;
+
+}
+
+.item h4{
+
+    font-size:13px;
+
+    color:#9B9B9B;
+
+    font-weight:500;
+
+}
+
+.item p{
+
+    margin-top:2px;
+
+    color:#FFFFFF;
+
+    font-size:16px;
+
+    font-weight:600;
+
+}
+
+/*=========================
+QR
+=========================*/
+
+.appointment-qr{
+
+    width:150px;
+
+    text-align:center;
+
+}
+
+.qr-box{
+
+    width:130px;
+
+    height:130px;
+
+    margin:auto;
+
+    border-radius:18px;
+
+    background:#FFFFFF;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    box-shadow:
+
+    0 10px 25px rgba(0,0,0,.30);
+
+}
+
+.qr-box i{
+
+    font-size:75px;
+
+    color:#111111;
+
+}
+
+.appointment-qr p{
+
+    margin-top:12px;
+
+    color:#9B9B9B;
+
+    font-size:13px;
+
+    line-height:20px;
+
+}
+
+/*=========================
+BOTONES
+=========================*/
+
+.appointment-buttons{
+
+    display:flex;
+
+    gap:15px;
+
+}
+
+/*=========================
+BOTÓN DORADO
+=========================*/
+
+.btn-gold{
+
+    flex:1;
+
+    height:54px;
+
+    border:none;
+
+    border-radius:16px;
+
+    cursor:pointer;
+
+    background:#D4AF37;
+
+    color:#111111;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    transition:.30s;
+
+}
+
+.btn-gold:hover{
+
+    transform:translateY(-3px);
+
+    background:#F4D878;
+
+}
+
+/*=========================
+BOTÓN OSCURO
+=========================*/
+
+.btn-dark{
+
+    flex:1;
+
+    height:54px;
+
+    border-radius:16px;
+
+    cursor:pointer;
+
+    background:#202020;
+
+    color:#FFFFFF;
+
+    border:1px solid #333333;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:.30s;
+
+}
+
+.btn-dark:hover{
+
+    background:#2A2A2A;
+
+    border-color:#D4AF37;
+
+    transform:translateY(-3px);
+
+}
+
+/*=========================
+RESPONSIVE
+=========================*/
+
+@media(max-width:768px){
+
+    .appointment-content{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .appointment-qr{
+
+        width:100%;
+
+    }
+
+    .appointment-buttons{
+
+        flex-direction:column;
+
+    }
+
+}
+
+/*======================================================
+        ESTADOS DEL TURNO
+======================================================*/
+
+.status.pending{
+
+    background:#4A3A12;
+
+    color:#FFD84D;
+
+    border:1px solid #CDAA2D;
+
+}
+
+.status.progress{
+
+    background:#11334A;
+
+    color:#4CC7FF;
+
+    border:1px solid #3498DB;
+
+}
+
+.status.finished{
+
+    background:#1B3D23;
+
+    color:#6BEA8D;
+
+    border:1px solid #3EBB69;
+
+}
+
+.status.cancelled{
+
+    background:#4A1717;
+
+    color:#FF6B6B;
+
+    border:1px solid #D64545;
+
+}
+
+/*======================================================
+            PARTE 3 - ACCESOS RÁPIDOS
+======================================================*/
+
+.quick-actions{
+
+    margin-bottom:35px;
+
+}
+
+/*=========================
+TÍTULO DE SECCIÓN
+=========================*/
+
+.section-title{
+
+    margin-bottom:22px;
+
+}
+
+.section-title h2{
+
+    font-size:24px;
+
+    font-weight:700;
+
+    color:#FFFFFF;
+
+}
+
+.section-title p{
+
+    margin-top:6px;
+
+    color:#9B9B9B;
+
+    font-size:14px;
+
+}
+
+/*=========================
+GRID
+=========================*/
+
+.actions-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:18px;
+
+}
+
+/*=========================
+TARJETAS
+=========================*/
+
+.action-card{
+
+    background:#1A1A1A;
+
+    border:1px solid #2A2A2A;
+
+    border-radius:22px;
+
+    padding:24px;
+
+    text-decoration:none;
+
+    color:#FFFFFF;
+
+    transition:.35s;
+
+    position:relative;
+
+    overflow:hidden;
+
+    min-height:190px;
+
+}
+
+/* Luz dorada */
+
+.action-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:180px;
+
+    height:180px;
+
+    right:-90px;
+
+    top:-90px;
+
+    border-radius:50%;
+
+    background:radial-gradient(
+
+        rgba(212,175,55,.08),
+
+        transparent 70%
+
+    );
+
+    transition:.35s;
+
+}
+
+.action-card:hover{
+
+    transform:translateY(-8px);
+
+    border-color:#D4AF37;
+
+    box-shadow:
+
+    0 20px 35px rgba(0,0,0,.35);
+
+}
+
+.action-card:hover::before{
+
+    transform:scale(1.2);
+
+}
+
+/*=========================
+ICONO
+=========================*/
+
+.action-icon{
+
+    width:62px;
+
+    height:62px;
+
+    border-radius:18px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#232323;
+
+    border:1px solid #353535;
+
+    margin-bottom:22px;
+
+}
+
+.action-icon i{
+
+    font-size:26px;
+
+    color:#D4AF37;
+
+}
+
+/*=========================
+TEXTOS
+=========================*/
+
+.action-card h3{
+
+    font-size:19px;
+
+    font-weight:700;
+
+    margin-bottom:10px;
+
+    line-height:28px;
+
+}
+
+.action-card p{
+
+    color:#A5A5A5;
+
+    font-size:14px;
+
+    line-height:24px;
+
+}
+
+/*=========================
+RESPONSIVE
+=========================*/
+
+@media(max-width:768px){
+
+.actions-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.action-card{
+
+min-height:auto;
+
+}
+
+}
+
+/*======================================================
+            PARTE 4 - PROMOCIONES DESTACADAS
+======================================================*/
+
+.promotions{
+
+    margin-bottom:35px;
+
+}
+
+/*=========================
+SLIDER
+=========================*/
+
+.promo-slider{
+
+    display:flex;
+
+    gap:20px;
+
+    overflow-x:auto;
+
+    scroll-behavior:smooth;
+
+    padding-bottom:10px;
+
+}
+
+.promo-slider::-webkit-scrollbar{
+
+    height:8px;
+
+}
+
+.promo-slider::-webkit-scrollbar-thumb{
+
+    background:#D4AF37;
+
+    border-radius:20px;
+
+}
+
+.promo-slider::-webkit-scrollbar-track{
+
+    background:#222;
+
+    border-radius:20px;
+
+}
+
+/*=========================
+TARJETA
+=========================*/
+
+.promo-card{
+
+    min-width:330px;
+
+    border-radius:24px;
+
+    padding:28px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    flex-shrink:0;
+
+    transition:.35s;
+
+    border:1px solid transparent;
+
+}
+
+.promo-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:
+
+    0 18px 35px rgba(0,0,0,.35);
+
+}
+
+/*=========================
+PROMO DORADA
+=========================*/
+
+.promo-card.gold{
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #D4AF37,
+        #F4D878
+    );
+
+    color:#111;
+
+}
+
+.promo-card.gold h3,
+
+.promo-card.gold h1,
+
+.promo-card.gold p{
+
+    color:#111;
+
+}
+
+/*=========================
+PROMO OSCURA
+=========================*/
+
+.promo-card.dark{
+
+    background:
+
+    linear-gradient(
+        145deg,
+        #1B1B1B,
+        #131313
+    );
+
+    border:1px solid #2A2A2A;
+
+}
+
+.promo-card.dark h3{
+
+    color:#FFFFFF;
+
+}
+
+.promo-card.dark p{
+
+    color:#BBBBBB;
+
+}
+
+.promo-card.dark h1{
+
+    color:#D4AF37;
+
+}
+
+/*=========================
+CONTENIDO
+=========================*/
+
+.promo-content{
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+.promo-content h3{
+
+    font-size:28px;
+
+    margin:18px 0 8px;
+
+    font-weight:700;
+
+}
+
+.promo-content p{
+
+    font-size:15px;
+
+}
+
+.promo-content h1{
+
+    font-size:42px;
+
+    margin:25px 0;
+
+    font-weight:800;
+
+}
+
+/*=========================
+BADGE
+=========================*/
+
+.promo-badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    padding:8px 18px;
+
+    border-radius:50px;
+
+    background:rgba(255,255,255,.15);
+
+    backdrop-filter:blur(8px);
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.promo-card.dark .promo-badge{
+
+    background:#262626;
+
+    color:#D4AF37;
+
+}
+
+/*=========================
+BOTÓN
+=========================*/
+
+.promo-btn{
+
+    width:100%;
+
+    height:50px;
+
+    border:none;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    transition:.30s;
+
+}
+
+.promo-card.gold .promo-btn{
+
+    background:#111;
+
+    color:#FFFFFF;
+
+}
+
+.promo-card.gold .promo-btn:hover{
+
+    background:#222;
+
+}
+
+.promo-card.dark .promo-btn{
+
+    background:#D4AF37;
+
+    color:#111;
+
+}
+
+.promo-card.dark .promo-btn:hover{
+
+    background:#F4D878;
+
+}
+
+/*=========================
+EFECTO DE FONDO
+=========================*/
+
+.promo-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:220px;
+
+    height:220px;
+
+    border-radius:50%;
+
+    top:-80px;
+
+    right:-80px;
+
+    background:rgba(255,255,255,.08);
+
+}
+
+.promo-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:120px;
+
+    height:120px;
+
+    border-radius:50%;
+
+    bottom:-50px;
+
+    left:-50px;
+
+    background:rgba(255,255,255,.05);
+
+}
+
+/*======================================================
+            PARTE 5 - BARBEROS FAVORITOS
+======================================================*/
+
+.favorite-barbers{
+
+    margin-bottom:40px;
+
+}
+
+/*=========================
+CONTENEDOR
+=========================*/
+
+.barbers-container{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+/*=========================
+TARJETA
+=========================*/
+
+.barber-card{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    background:#1A1A1A;
+
+    border:1px solid #2A2A2A;
+
+    border-radius:22px;
+
+    padding:18px;
+
+    transition:.35s;
+
+}
+
+.barber-card:hover{
+
+    transform:translateY(-4px);
+
+    border-color:#D4AF37;
+
+    box-shadow:
+
+    0 15px 30px rgba(0,0,0,.35);
+
+}
+
+/*=========================
+FOTO
+=========================*/
+
+.barber-card img{
+
+    width:85px;
+
+    height:85px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:3px solid #D4AF37;
+
+    flex-shrink:0;
+
+}
+
+/*=========================
+INFORMACIÓN
+=========================*/
+
+.barber-info{
+
+    flex:1;
+
+}
+
+.barber-info h3{
+
+    font-size:22px;
+
+    color:#FFFFFF;
+
+    margin-bottom:6px;
+
+}
+
+.barber-info p{
+
+    color:#9B9B9B;
+
+    font-size:14px;
+
+    margin-bottom:12px;
+
+}
+
+/*=========================
+ESTRELLAS
+=========================*/
+
+.stars{
+
+    display:flex;
+
+    gap:5px;
+
+}
+
+.stars i{
+
+    color:#D4AF37;
+
+    font-size:15px;
+
+}
+
+/*=========================
+BOTÓN
+=========================*/
+
+.mini-btn{
+
+    width:120px;
+
+    height:46px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#D4AF37;
+
+    color:#111;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.30s;
+
+    flex-shrink:0;
+
+}
+
+.mini-btn:hover{
+
+    background:#F4D878;
+
+    transform:scale(1.05);
+
+}
+
+/*=========================
+RESPONSIVE
+=========================*/
+
+@media(max-width:768px){
+
+.barber-card{
+
+flex-direction:column;
+
+text-align:center;
+
+}
+
+.barber-info{
+
+width:100%;
+
+}
+
+.stars{
+
+justify-content:center;
+
+}
+
+.mini-btn{
+
+width:100%;
+
+margin-top:15px;
+
+}
+
+}
+
+/*======================================================
+            PARTE 6 - HISTORIAL
+======================================================*/
+
+.history{
+
+    margin-bottom:40px;
+
+}
+
+/*=========================
+TARJETA HISTORIAL
+=========================*/
+
+.history-card{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:#1A1A1A;
+
+    border:1px solid #2A2A2A;
+
+    border-radius:20px;
+
+    padding:18px 22px;
+
+    margin-bottom:16px;
+
+    transition:.30s;
+
+}
+
+.history-card:hover{
+
+    border-color:#D4AF37;
+
+    transform:translateY(-3px);
+
+    box-shadow:
+
+    0 12px 25px rgba(0,0,0,.30);
+
+}
+
+/*=========================
+LADO IZQUIERDO
+=========================*/
+
+.history-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+/*=========================
+ICONO
+=========================*/
+
+.history-left i{
+
+    width:52px;
+
+    height:52px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:16px;
+
+    background:#202020;
+
+    border:1px solid #333333;
+
+    color:#D4AF37;
+
+    font-size:22px;
+
+}
+
+/*=========================
+TEXTOS
+=========================*/
+
+.history-left h3{
+
+    font-size:18px;
+
+    color:#FFFFFF;
+
+    margin-bottom:4px;
+
+    font-weight:700;
+
+}
+
+.history-left p{
+
+    color:#9B9B9B;
+
+    font-size:14px;
+
+}
+
+/*=========================
+PRECIO
+=========================*/
+
+.history-card span{
+
+    color:#D4AF37;
+
+    font-size:20px;
+
+    font-weight:700;
+
+}
+
+/*=========================
+RESPONSIVE
+=========================*/
+
+@media(max-width:768px){
+
+.history-card{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:18px;
+
+}
+
+.history-card span{
+
+margin-left:70px;
+
+font-size:18px;
+
+}
+
+}
+
+/*======================================================
+            PARTE 7 - BENEFICIOS Y MEMBRESÍA
+======================================================*/
+
+.membership{
+
+    margin-bottom:40px;
+
+}
+
+/*=========================
+TARJETA MEMBRESÍA
+=========================*/
+
+.membership-card{
+
+    background:linear-gradient(
+        145deg,
+        #1C1C1C,
+        #141414
+    );
+
+    border:1px solid #2A2A2A;
+
+    border-radius:24px;
+
+    padding:28px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    margin-bottom:22px;
+
+    box-shadow:
+
+    0 15px 35px rgba(0,0,0,.35);
+
+}
+
+.membership-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:260px;
+
+    height:260px;
+
+    border-radius:50%;
+
+    top:-120px;
+
+    right:-120px;
+
+    background:
+
+    radial-gradient(
+
+        rgba(212,175,55,.10),
+
+        transparent 70%
+
+    );
+
+}
+
+/*=========================
+ENCABEZADO
+=========================*/
+
+.membership-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+.level{
+
+    display:inline-block;
+
+    background:#D4AF37;
+
+    color:#111111;
+
+    padding:8px 16px;
+
+    border-radius:50px;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    margin-bottom:12px;
+
+}
+
+.membership-header h3{
+
+    color:#FFFFFF;
+
+    font-size:28px;
+
+    font-weight:700;
+
+}
+
+.membership-header i{
+
+    font-size:42px;
+
+    color:#D4AF37;
+
+}
+
+/*=========================
+PROGRESO
+=========================*/
+
+.progress-info{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-bottom:12px;
+
+    color:#FFFFFF;
+
+    font-size:15px;
+
+    font-weight:600;
+
+}
+
+.progress-bar{
+
+    width:100%;
+
+    height:14px;
+
+    background:#2A2A2A;
+
+    border-radius:50px;
+
+    overflow:hidden;
+
+    margin-bottom:18px;
+
+}
+
+.progress-fill{
+
+    width:80%;
+
+    height:100%;
+
+    background:linear-gradient(
+        90deg,
+        #D4AF37,
+        #F4D878
+    );
+
+    border-radius:50px;
+
+}
+
+/*=========================
+MENSAJE
+=========================*/
+
+.membership-message{
+
+    color:#DDDDDD;
+
+    font-size:15px;
+
+    line-height:28px;
+
+}
+
+.membership-message strong{
+
+    color:#D4AF37;
+
+}
+
+/*=========================
+BENEFICIOS
+=========================*/
+
+.benefits-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:18px;
+
+}
+
+/*=========================
+CARD BENEFICIO
+=========================*/
+
+.benefit-card{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:16px;
+
+    background:#1A1A1A;
+
+    border:1px solid #2A2A2A;
+
+    border-radius:20px;
+
+    padding:20px;
+
+    transition:.30s;
+
+    min-height:130px;
+
+}
+
+.benefit-card:hover{
+
+    border-color:#D4AF37;
+
+    transform:translateY(-4px);
+
+    box-shadow:
+
+    0 12px 25px rgba(0,0,0,.30);
+
+}
+
+/*=========================
+ICONO
+=========================*/
+
+.benefit-icon{
+
+    width:56px;
+
+    height:56px;
+
+    min-width:56px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:16px;
+
+    background:#232323;
+
+    font-size:26px;
+
+}
+
+/*=========================
+TEXTOS
+=========================*/
+
+.benefit-card h3{
+
+    color:#FFFFFF;
+
+    font-size:17px;
+
+    margin-bottom:8px;
+
+    line-height:22px;
+
+}
+
+.benefit-card p{
+
+    color:#9B9B9B;
+
+    font-size:14px;
+
+    line-height:22px;
+
+}
+
+/*=========================
+RESPONSIVE
+=========================*/
+
+
+.benefit-card > div:last-child{
+
+    flex:1;
+
+}
+
+
+@media(max-width:768px){
+
+.benefits-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.membership-header{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:20px;
+
+}
+
+.membership-header i{
+
+align-self:flex-end;
+
+}
+
+}
+
+/*======================================================
+            PARTE 8 - PRODUCTOS DESTACADOS
+======================================================*/
+
+.products{
+
+    margin-bottom:40px;
+
+}
+
+/*=========================
+HEADER
+=========================*/
+
+.products-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:22px;
+
+}
+
+.see-all{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    text-decoration:none;
+
+    color:#D4AF37;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.see-all:hover{
+
+    color:#F4D878;
+
+}
+
+.see-all i{
+
+    font-size:13px;
+
+}
+
+/*=========================
+GRID
+=========================*/
+
+.products-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:16px;
+
+}
+
+/*=========================
+CARD
+=========================*/
+
+.product-card{
+
+    background:#1A1A1A;
+
+    border:1px solid #2A2A2A;
+
+    border-radius:20px;
+
+    padding:16px;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    transition:.35s;
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.product-card:hover{
+
+    transform:translateY(-6px);
+
+    border-color:#D4AF37;
+
+    box-shadow:
+
+    0 15px 30px rgba(0,0,0,.35);
+
+}
+
+.product-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:140px;
+
+    height:140px;
+
+    border-radius:50%;
+
+    top:-80px;
+
+    right:-80px;
+
+    background:
+
+    radial-gradient(
+
+    rgba(212,175,55,.08),
+
+    transparent 70%
+
+    );
+
+}
+
+/*=========================
+IMAGEN
+=========================*/
+
+.product-card img{
+
+    width:90px;
+
+    height:90px;
+
+    object-fit:contain;
+
+    margin-bottom:14px;
+
+    transition:.35s;
+
+}
+
+.product-card:hover img{
+
+    transform:scale(1.08);
+
+}
+
+/*=========================
+TEXTOS
+=========================*/
+
+.product-card h3{
+
+    color:#FFFFFF;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    margin-bottom:8px;
+
+    line-height:20px;
+
+}
+
+.product-card span{
+
+    display:block;
+
+    color:#D4AF37;
+
+    font-size:18px;
+
+    font-weight:700;
+
+}
+
+/*=========================
+RESPONSIVE
+=========================*/
+
+@media(max-width:992px){
+
+.products-grid{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:600px){
+
+.products-grid{
+
+grid-template-columns:repeat(2,1fr);
+
+gap:14px;
+
+}
+
+.product-card{
+
+padding:14px;
+
+}
+
+.product-card img{
+
+width:75px;
+
+height:75px;
+
+}
+
+.product-card h3{
+
+font-size:14px;
+
+}
+
+.product-card span{
+
+font-size:16px;
+
+}
+
+.products-header{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:12px;
+
+}
+
+}
+
+/*======================================================
+                PARTE 9 - SUCURSALES
+======================================================*/
+
+.branches{
+
+    margin-bottom:40px;
+
+}
+
+/*=========================
+TARJETA
+=========================*/
+
+.branch-card{
+
+    background:#1A1A1A;
+
+    border:1px solid #2A2A2A;
+
+    border-radius:22px;
+
+    padding:22px;
+
+    margin-bottom:20px;
+
+    transition:.35s;
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.branch-card:hover{
+
+    border-color:#D4AF37;
+
+    transform:translateY(-4px);
+
+    box-shadow:
+
+    0 15px 30px rgba(0,0,0,.35);
+
+}
+
+.branch-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:220px;
+
+    height:220px;
+
+    top:-120px;
+
+    right:-120px;
+
+    border-radius:50%;
+
+    background:
+
+    radial-gradient(
+
+    rgba(212,175,55,.08),
+
+    transparent 70%
+
+    );
+
+}
+
+/*=========================
+HEADER
+=========================*/
+
+.branch-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    margin-bottom:22px;
+
+}
+
+.branch-header h3{
+
+    color:#FFFFFF;
+
+    font-size:22px;
+
+    margin-bottom:6px;
+
+}
+
+.branch-header span{
+
+    color:#9B9B9B;
+
+    font-size:14px;
+
+}
+
+/*=========================
+ESTADO
+=========================*/
+
+.branch-status{
+
+    padding:8px 18px;
+
+    border-radius:40px;
+
+    font-size:13px;
+
+    font-weight:700;
+
+}
+
+.branch-status.open{
+
+    background:#17311D;
+
+    color:#45D96F;
+
+    border:1px solid #2E8E4F;
+
+}
+
+/*=========================
+INFORMACIÓN
+=========================*/
+
+.branch-info{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+    margin-bottom:24px;
+
+}
+
+.branch-info p{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    color:#DDDDDD;
+
+    font-size:15px;
+
+}
+
+.branch-info i{
+
+    width:34px;
+
+    height:34px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#232323;
+
+    border-radius:12px;
+
+    color:#D4AF37;
+
+    font-size:15px;
+
+}
+
+/*=========================
+BOTONES
+=========================*/
+
+.branch-buttons{
+
+    display:flex;
+
+    gap:14px;
+
+}
+
+.branch-buttons .mini-btn{
+
+    flex:1;
+
+    height:50px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#232323;
+
+    color:#FFFFFF;
+
+    border:1px solid #333333;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:10px;
+
+    transition:.30s;
+
+}
+
+.branch-buttons .mini-btn:hover{
+
+    background:#D4AF37;
+
+    color:#111111;
+
+    border-color:#D4AF37;
+
+}
+
+.branch-buttons .mini-btn i{
+
+    font-size:16px;
+
+}
+
+/*=========================
+RESPONSIVE
+=========================*/
+
+@media(max-width:768px){
+
+.branch-header{
+
+flex-direction:column;
+
+gap:18px;
+
+}
+
+.branch-buttons{
+
+flex-direction:column;
+
+}
+
+}
+
+/*======================================================
+                PARTE 10 - CONTACTANOS
+======================================================*/
+
+.contact-section{
+
+    margin-bottom:120px;
+
+}
+
+/*=========================
+GRID
+=========================*/
+
+.contact-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+
+    gap:14px;
+
+}
+
+/*=========================
+CARD
+=========================*/
+
+.contact-card{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:#1A1A1A;
+
+    border:1px solid #2A2A2A;
+
+    border-radius:18px;
+
+    padding:18px 20px;
+
+    text-decoration:none;
+
+    transition:.30s;
+
+    color:#FFFFFF;
+
+}
+
+.contact-card:hover{
+
+    transform:translateY(-4px);
+
+    border-color:#D4AF37;
+
+    box-shadow:
+
+    0 12px 25px rgba(0,0,0,.30);
+
+}
+
+/*=========================
+IZQUIERDA
+=========================*/
+
+.contact-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+/*=========================
+ICONO
+=========================*/
+
+.contact-icon{
+
+    width:46px;
+
+    height:46px;
+
+    border-radius:14px;
+
+    background:#232323;
+
+    border:1px solid #333333;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    transition:.30s;
+
+}
+
+.contact-card:hover .contact-icon{
+
+    background:#D4AF37;
+
+    border-color:#D4AF37;
+
+}
+
+.contact-icon i{
+
+    color:#D4AF37;
+
+    font-size:20px;
+
+    transition:.30s;
+
+}
+
+.contact-card:hover .contact-icon i{
+
+    color:#111111;
+
+}
+
+/*=========================
+TEXTO
+=========================*/
+
+.contact-left span{
+
+    font-size:12px;
+
+    font-weight:600;
+
+    color:#FFFFFF;
+
+}
+
+/*=========================
+FLECHA
+=========================*/
+
+.contact-card>i{
+
+    color:#D4AF37;
+
+    font-size:16px;
+
+    transition:.30s;
+
+}
+
+.contact-card:hover>i{
+
+    transform:translateX(4px);
+
+}
+
+/*=========================
+RESPONSIVE
+=========================*/
+
+@media(max-width:768px){
+
+.contact-grid{
+
+grid-template-columns:1fr;
+
+gap:14px;
+
+}
+
+.contact-card{
+
+padding:18px;
+
+}
+
+.contact-left span{
+
+font-size:17px;
+
+}
+
+}
+
+/*======================================================
+            PARTE 11 - MENÚ INFERIOR
+======================================================*/
+
+.bottom-navigation{
+
+    position:fixed;
+
+    left:50%;
+
+    bottom:20px;
+
+    transform:translateX(-50%);
+
+    width:min(95%,620px);
+
+    height:82px;
+
+    background:rgba(20,20,20,.95);
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid #2A2A2A;
+
+    border-radius:24px;
+
+    display:flex;
+
+    justify-content:space-around;
+
+    align-items:center;
+
+    box-shadow:
+
+    0 15px 40px rgba(0,0,0,.50);
+
+    z-index:999;
+
+}
+
+/*=========================
+ITEM
+=========================*/
+
+.nav-item{
+
+    flex:1;
+
+    text-decoration:none;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:6px;
+
+    color:#9B9B9B;
+
+    transition:.30s;
+
+    font-size:13px;
+
+    font-weight:500;
+
+}
+
+.nav-item i{
+
+    font-size:22px;
+
+    transition:.30s;
+
+}
+
+.nav-item:hover{
+
+    color:#D4AF37;
+
+}
+
+.nav-item:hover i{
+
+    transform:translateY(-2px);
+
+}
+
+.nav-item.active{
+
+    color:#D4AF37;
+
+}
+
+/*=========================
+BOTÓN CENTRAL
+=========================*/
+
+.reserve-button{
+
+    position:relative;
+
+    margin-top:-42px;
+
+}
+
+.reserve-circle{
+
+    width:72px;
+
+    height:72px;
+
+    border-radius:50%;
+
+    background:linear-gradient(
+
+        135deg,
+
+        #F4D878,
+
+        #D4AF37
+
+    );
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    box-shadow:
+
+    0 10px 30px rgba(212,175,55,.45);
+
+    transition:.35s;
+
+}
+
+.reserve-circle i{
+
+    color:#111111;
+
+    font-size:30px;
+
+    font-weight:700;
+
+}
+
+.reserve-button span{
+
+    margin-top:8px;
+
+}
+
+.reserve-button:hover .reserve-circle{
+
+    transform:scale(1.08);
+
+    box-shadow:
+
+    0 15px 35px rgba(212,175,55,.60);
+
+}
+
+/*=========================
+RESPONSIVE
+=========================*/
+
+@media(max-width:768px){
+
+.bottom-navigation{
+
+    width:calc(100% - 20px);
+
+    left:10px;
+
+    right:10px;
+
+    transform:none;
+
+    bottom:10px;
+
+    border-radius:22px;
+
+}
+
+.reserve-circle{
+
+    width:66px;
+
+    height:66px;
+
+}
+
+.reserve-circle i{
+
+    font-size:28px;
+
+}
+
+.nav-item span{
+
+    font-size:12px;
+
+}
+
+.nav-item i{
+
+    font-size:20px;
+
+}
+
+}
+
+/*======================================================
+            MENÚ ACTIVO
+======================================================*/
+
+.nav-item{
+
+    transition:.30s;
+
+}
+
+.nav-item.active{
+
+    color:#D4AF37;
+
+}
+
+.nav-item.active i{
+
+    color:#D4AF37;
+
+}
+
+.nav-item.active span{
+
+    color:#D4AF37;
+
+}
+
+/*======================================================
+        INDICADORES SLIDER
+======================================================*/
+
+.slider-indicators{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-top:20px;
+
+}
+
+.indicator{
+
+    width:12px;
+
+    height:12px;
+
+    border-radius:50%;
+
+    background:#444;
+
+    cursor:pointer;
+
+    transition:.30s;
+
+}
+
+.indicator.active{
+
+    width:30px;
+
+    border-radius:50px;
+
+    background:#D4AF37;
+
+}
+
