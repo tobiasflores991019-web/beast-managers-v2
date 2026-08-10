@@ -1,0 +1,554 @@
+/* ======================================================
+   BEAST MANAGERS - LOGIN
+   ====================================================== */
+
+:root {
+    --bg: #070707;
+    --card: #121212;
+    --gold: #d4af37;
+    --gold2: #f4d878;
+    --text: #ffffff;
+    --muted: #bdbdbd;
+    --border: rgba(212, 175, 55, 0.18);
+
+    --shadow:
+        0 25px 70px rgba(0, 0, 0, 0.60);
+}
+
+
+/* ======================================================
+   RESET
+   ====================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+    min-height: 100vh;
+
+    font-family: "Poppins", sans-serif;
+
+    background: var(--bg);
+
+    color: var(--text);
+
+    overflow-x: hidden;
+}
+
+
+/* ======================================================
+   FONDO
+   ====================================================== */
+
+.background {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: -2;
+
+    background:
+        linear-gradient(
+            rgba(0, 0, 0, 0.84),
+            rgba(0, 0, 0, 0.94)
+        ),
+        url("/src/assets/img/backgrounds/barberia.jpg")
+        center / cover no-repeat;
+}
+
+
+.background::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: -250px;
+
+    width: 700px;
+    height: 700px;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            rgba(212, 175, 55, 0.13),
+            transparent 70%
+        );
+}
+
+
+/* ======================================================
+   CONTENEDOR
+   ====================================================== */
+
+.login-page {
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 20px;
+}
+
+
+/* ======================================================
+   TARJETA
+   ====================================================== */
+
+.login-card {
+    width: min(100%, 470px);
+
+    padding:
+        clamp(30px, 5vw, 50px);
+
+    border-radius: 30px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(30, 30, 30, 0.92),
+            rgba(10, 10, 10, 0.96)
+        );
+
+    border:
+        1px solid var(--border);
+
+    backdrop-filter: blur(20px);
+
+    box-shadow: var(--shadow);
+
+    animation:
+        entrada 0.65s ease forwards;
+}
+
+
+/* ======================================================
+   LOGO
+   ====================================================== */
+
+.login-logo {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+
+.login-logo img {
+    width: 110px;
+
+    height: auto;
+
+    display: block;
+
+    filter:
+        drop-shadow(
+            0 0 15px
+            rgba(212, 175, 55, 0.25)
+        );
+}
+
+
+/* ======================================================
+   TITULO
+   ====================================================== */
+
+.login-card h1 {
+    text-align: center;
+
+    font-size:
+        clamp(
+            1.8rem,
+            6vw,
+            2.4rem
+        );
+
+    font-weight: 700;
+
+    margin-bottom: 8px;
+}
+
+
+.subtitulo {
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size:
+        clamp(
+            0.8rem,
+            2.5vw,
+            0.95rem
+        );
+
+    margin-bottom: 30px;
+
+    line-height: 1.5;
+}
+
+
+/* ======================================================
+   FORMULARIO
+   ====================================================== */
+
+#formLogin {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+
+.input-group {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+
+.input-group label {
+    font-size: 0.82rem;
+
+    font-weight: 600;
+
+    color: #ffffff;
+}
+
+
+.input-group input {
+    width: 100%;
+
+    height: 54px;
+
+    padding:
+        0 16px;
+
+    border-radius: 13px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
+
+    outline: none;
+
+    background:
+        rgba(255, 255, 255, 0.04);
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 0.9rem;
+
+    transition:
+        border-color 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.input-group input::placeholder {
+    color: #707070;
+}
+
+
+.input-group input:focus {
+    border-color: var(--gold);
+
+    background:
+        rgba(255, 255, 255, 0.06);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(212, 175, 55, 0.08);
+}
+
+
+/* ======================================================
+   OPCIONES
+   ====================================================== */
+
+.login-options {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-top: -5px;
+}
+
+
+.remember {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: #999999;
+
+    font-size: 0.75rem;
+
+    cursor: pointer;
+}
+
+
+.remember input {
+    accent-color: var(--gold);
+
+    cursor: pointer;
+}
+
+
+.login-options a {
+    color: var(--gold);
+
+    text-decoration: none;
+
+    font-size: 0.75rem;
+
+    transition:
+        color 0.2s ease;
+}
+
+
+.login-options a:hover {
+    color: var(--gold2);
+
+    text-decoration: underline;
+}
+
+
+/* ======================================================
+   BOTON LOGIN
+   ====================================================== */
+
+#btnIniciarSesion {
+    position: relative;
+
+    overflow: hidden;
+
+    width: 100%;
+
+    min-height: 58px;
+
+    border: none;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #b88915,
+            var(--gold),
+            var(--gold2)
+        );
+
+    color: #111111;
+
+    font-family: inherit;
+
+    font-size: 0.95rem;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    box-shadow:
+        0 10px 25px
+        rgba(212, 175, 55, 0.15);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        filter 0.25s ease;
+}
+
+
+#btnIniciarSesion:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 15px 30px
+        rgba(212, 175, 55, 0.25);
+
+    filter: brightness(1.05);
+}
+
+
+#btnIniciarSesion:active {
+    transform: translateY(0);
+}
+
+
+/* ======================================================
+   LINK REGISTRO
+   ====================================================== */
+
+.registro-link {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 5px;
+
+    margin-top: 28px;
+
+    color: #888888;
+
+    font-size: 0.8rem;
+}
+
+
+.registro-link a {
+    color: var(--gold);
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+    transition:
+        color 0.2s ease;
+}
+
+
+.registro-link a:hover {
+    color: var(--gold2);
+
+    text-decoration: underline;
+}
+
+
+/* ======================================================
+   VOLVER
+   ====================================================== */
+
+.volver {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-top: 25px;
+
+    color: #666666;
+
+    text-decoration: none;
+
+    font-size: 0.75rem;
+
+    transition:
+        color 0.2s ease;
+}
+
+
+.volver:hover {
+    color: #ffffff;
+}
+
+
+.volver i {
+    color: var(--gold);
+}
+
+
+/* ======================================================
+   ANIMACION
+   ====================================================== */
+
+@keyframes entrada {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+
+}
+
+
+/* ======================================================
+   RESPONSIVE
+   ====================================================== */
+
+@media (max-width: 520px) {
+
+    .login-page {
+        padding: 15px;
+    }
+
+
+    .login-card {
+        padding:
+            30px 22px;
+
+        border-radius: 25px;
+    }
+
+
+    .login-logo img {
+        width: 95px;
+    }
+
+
+    .login-options {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 8px;
+    }
+
+
+    #btnIniciarSesion {
+        min-height: 56px;
+    }
+
+}

@@ -5,25 +5,299 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-    <title>Beast Managers</title>
+    <title>Beast Managers | Tu sistema de gestión</title>
 
-    <link rel="stylesheet"
-          href="/src/css/global.css">
+    <!-- Google Fonts -->
 
-      <link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+
+    <!-- Font Awesome -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+
+    <!-- CSS -->
+
+    <link
+        rel="stylesheet"
+        href="/src/css/index.css">
 
 </head>
 
+
 <body>
 
-    <div id="app"></div>
 
-    <script type="module"
-            src="/src/main.js"></script>
+    <!-- ==========================
+         FONDO
+    =========================== -->
+
+    <div class="background"></div>
+
+
+    <!-- ==========================
+         CONTENEDOR PRINCIPAL
+    =========================== -->
+
+    <main class="landing">
+
+
+        <!-- ==========================
+             TARJETA
+        =========================== -->
+
+        <section class="card">
+
+
+            <!-- ==========================
+                 MARCA
+            =========================== -->
+
+            <header class="top-brand">
+
+                <img
+                    src="/src/assets/img/logos/beast-manager.png"
+                    class="bm-mini"
+                    alt="Beast Managers">
+
+
+                <div class="brand-text">
+
+                    <h2>
+                        BEAST MANAGERS
+                    </h2>
+
+                    <p>
+                        Tu sistema de gestión
+                    </p>
+
+                </div>
+
+            </header>
+
+
+            <!-- ==========================
+                 BIENVENIDA
+            =========================== -->
+
+            <div class="welcome">
+
+                <span></span>
+
+                <p>
+                    BIENVENIDO A
+                </p>
+
+                <span></span>
+
+            </div>
+
+
+            <!-- ==========================
+                 THE BEAST
+            =========================== -->
+
+            <section class="company">
+
+                <img
+                    src="/src/assets/img/logos/logo.jpg (2).png"
+                    alt="The Beast Barbershop">
+
+            </section>
+
+
+            <h1 class="company-name">
+
+                THE BEAST
+
+            </h1>
+
+
+            <h2 class="company-sub">
+
+                BARBERSHOP
+
+            </h2>
+
+
+            <!-- ==========================
+                 BOTONES
+            =========================== -->
+
+            <section class="buttons">
+
+
+                <!-- ==========================
+                     SOLICITAR TURNO
+                =========================== -->
+
+                <a
+                    href="#"
+                    class="btn btn-gold"
+                    id="btnSolicitarTurno">
+
+                    <div class="left">
+
+                        <i class="fa-regular fa-calendar"></i>
+
+                    </div>
+
+
+                    <div class="center">
+
+                        SOLICITAR TURNO
+
+                    </div>
+
+
+                    <div class="right">
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                    </div>
+
+                </a>
+
+
+                <!-- ==========================
+                     SEPARADOR
+                =========================== -->
+
+                <div class="separator">
+
+                    <div class="line"></div>
+
+                    <div class="circle">
+
+                        <span>ó</span>
+
+                    </div>
+
+                    <div class="line"></div>
+
+                </div>
+
+
+                <!-- ==========================
+                     LOGIN
+                =========================== -->
+
+                <a
+                    href="/src/pages/login/login.html"
+                    class="btn btn-dark">
+
+                    <div class="left">
+
+                        <i class="fa-regular fa-user"></i>
+
+                    </div>
+
+
+                    <div class="center">
+
+                        INICIAR SESIÓN
+
+                    </div>
+
+
+                    <div class="right">
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                    </div>
+
+                </a>
+
+
+                <!-- ==========================
+                     REGISTRO
+                =========================== -->
+
+                <a
+                    href="/src/pages/registro/registro.html"
+                    class="btn btn-dark">
+
+                    <div class="left">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                    </div>
+
+
+                    <div class="center">
+
+                        CREAR USUARIO
+
+                    </div>
+
+
+                    <div class="right">
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                    </div>
+
+                </a>
+
+
+                <!-- ESPACIO -->
+
+                <div class="space"></div>
+
+
+                <!-- ==========================
+                     FOOTER
+                =========================== -->
+
+                <footer class="footer">
+
+                    <span class="footer-line"></span>
+
+                    <p>
+                        BEAST MANAGERS
+                    </p>
+
+                    <span class="footer-line"></span>
+
+                </footer>
+
+
+            </section>
+
+
+        </section>
+
+
+    </main>
+
+
+    <!-- ==========================
+         JAVASCRIPT
+    =========================== -->
+
+    <script
+        type="module"
+        src="/src/main.js">
+    </script>
+
 
 </body>
 

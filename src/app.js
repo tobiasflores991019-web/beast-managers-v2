@@ -1,7 +1,5 @@
-import { navegar } from "./router/router.js";
-
 export function iniciarApp() {
 
-    navegar("dashboard");
+    console.log("Beast Manager iniciado");
 
 }
