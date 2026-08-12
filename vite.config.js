@@ -5,7 +5,10 @@ export default defineConfig({
     build: {
         rolldownOptions: {
             input: {
-                main: resolve(__dirname, "index.html"),
+                main: resolve(
+                    __dirname,
+                    "index.html"
+                ),
 
                 login: resolve(
                     __dirname,
@@ -20,6 +23,21 @@ export default defineConfig({
                 dashboard: resolve(
                     __dirname,
                     "src/pages/cliente/dashboard/dashboard.html"
+                ),
+
+                misTurnos: resolve(
+                    __dirname,
+                    "src/pages/cliente/mis-turnos/mis-turnos.html"
+                ),
+
+                perfil: resolve(
+                    __dirname,
+                    "src/pages/cliente/perfil/perfil.html"
+                ),
+
+                reservar: resolve(
+                    __dirname,
+                    "src/pages/reservar/reservar.html"
                 )
             }
         }
