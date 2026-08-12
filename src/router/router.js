@@ -1,5 +1,4 @@
-import { iniciarDashboard } from "../pages/dashboard/dashboard.js";
-import { iniciarReserva } from "../pages/reservar/reservar.js";
+import { iniciarDashboard } from "../pages/cliente/dashboard/dashboard.js";
 
 export function navegar(pagina) {
 
@@ -13,11 +12,6 @@ export function navegar(pagina) {
 
          break;
 
-            case "reservar":
-
-            iniciarReserva();
-
-            break;
 
         case "turnos":
 

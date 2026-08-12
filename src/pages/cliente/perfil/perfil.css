@@ -1,0 +1,392 @@
+/* ======================================================
+   BEAST MANAGERS
+   PERFIL DEL CLIENTE
+====================================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family: "Poppins", sans-serif;
+
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(212, 170, 45, 0.08),
+            transparent 35%
+        ),
+        #050505;
+
+    color: #ffffff;
+}
+
+
+/* ======================================================
+   PÁGINA
+====================================================== */
+
+.perfil-page {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 30px 15px;
+
+}
+
+
+/* ======================================================
+   CARD
+====================================================== */
+
+.perfil-card {
+
+    width: 100%;
+
+    max-width: 500px;
+
+    padding: 35px 30px;
+
+    background: linear-gradient(
+        145deg,
+        #1c1c1c,
+        #111111
+    );
+
+    border: 1px solid rgba(212, 170, 45, 0.35);
+
+    border-radius: 24px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.65),
+        0 0 40px rgba(212, 170, 45, 0.05);
+
+    position: relative;
+
+}
+
+
+/* ======================================================
+   VOLVER
+====================================================== */
+
+.volver {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: #c9c9c9;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    transition: 0.25s;
+
+}
+
+.volver i {
+
+    color: #e0b52f;
+
+}
+
+.volver:hover {
+
+    color: #ffffff;
+
+    transform: translateX(-3px);
+
+}
+
+
+/* ======================================================
+   LOGO
+====================================================== */
+
+.perfil-logo {
+
+    display: flex;
+
+    justify-content: center;
+
+    margin-top: 15px;
+
+    margin-bottom: 15px;
+
+}
+
+.perfil-logo img {
+
+    width: 110px;
+
+    height: auto;
+
+    object-fit: contain;
+
+}
+
+
+/* ======================================================
+   TITULO
+====================================================== */
+
+.perfil-card h1 {
+
+    text-align: center;
+
+    font-size: 30px;
+
+    font-weight: 700;
+
+    margin-bottom: 5px;
+
+}
+
+.subtitulo {
+
+    text-align: center;
+
+    color: #999999;
+
+    font-size: 13px;
+
+    margin-bottom: 25px;
+
+}
+
+
+/* ======================================================
+   AVATAR
+====================================================== */
+
+.perfil-avatar {
+
+    width: 90px;
+
+    height: 90px;
+
+    margin: 0 auto 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            145deg,
+            #e7c34f,
+            #a97c00
+        );
+
+    box-shadow:
+        0 10px 30px rgba(212, 170, 45, 0.25);
+
+}
+
+.perfil-avatar i {
+
+    font-size: 38px;
+
+    color: #111111;
+
+}
+
+
+/* ======================================================
+   DATOS
+====================================================== */
+
+.datos-perfil {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+}
+
+
+.dato {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    padding: 16px 18px;
+
+    background: rgba(255, 255, 255, 0.035);
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
+
+    border-radius: 14px;
+
+}
+
+
+.dato span {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    color: #999999;
+
+    font-size: 12px;
+
+}
+
+
+.dato span i {
+
+    width: 18px;
+
+    color: #dcb52e;
+
+    text-align: center;
+
+}
+
+
+.dato strong {
+
+    color: #ffffff;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    text-align: right;
+
+    word-break: break-word;
+
+}
+
+
+/* ======================================================
+   BOTÓN CERRAR SESIÓN
+====================================================== */
+
+.btn-cerrar {
+
+    width: 100%;
+
+    margin-top: 25px;
+
+    padding: 15px;
+
+    border: 1px solid rgba(220, 181, 46, 0.35);
+
+    border-radius: 12px;
+
+    background: transparent;
+
+    color: #dcb52e;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.25s;
+
+}
+
+
+.btn-cerrar i {
+
+    margin-right: 8px;
+
+}
+
+
+.btn-cerrar:hover {
+
+    background: #dcb52e;
+
+    color: #111111;
+
+    box-shadow:
+        0 8px 25px rgba(220, 181, 46, 0.2);
+
+}
+
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
+@media (max-width: 520px) {
+
+    .perfil-page {
+
+        padding: 15px;
+
+        align-items: flex-start;
+
+    }
+
+
+    .perfil-card {
+
+        margin-top: 15px;
+
+        padding: 25px 20px;
+
+        border-radius: 20px;
+
+    }
+
+
+    .perfil-card h1 {
+
+        font-size: 26px;
+
+    }
+
+
+    .dato {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 6px;
+
+    }
+
+
+    .dato strong {
+
+        text-align: left;
+
+    }
+
+}

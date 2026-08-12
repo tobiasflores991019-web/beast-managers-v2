@@ -1,61 +1,156 @@
-import reservarHTML from "./reservar.html?raw";
 
-export function iniciarReserva() {
 
-    document.getElementById("app").innerHTML = reservarHTML;
+import { obtenerUsuarioActual } from "../../services/auth.service.js";
+import { obtenerPerfilUsuario } from "../../services/usuario.service.js";
+import { crearTurno } from "../../services/turnos.services.js";
 
-    iniciarSistema();
 
-}
-
-/*==================================================
-                BEAST MANAGERS
-            SOLICITAR TURNO
-==================================================*/
-
-/*=========================================
-            CONFIGURACIÓN
-=========================================*/
+let usuarioActual = null;
+let perfilUsuario = null;
 
 const TOTAL_PASOS = 9;
 
 let pasoActual = 1;
 
-/*=========================================
-            DATOS DEL TURNO
-=========================================*/
-
 const turno = {
 
+    clienteId: "",
+
     sucursal: "",
-
     servicio: "",
-
     precio: 0,
-
     fecha: "",
-
     horario: "",
-
     barbero: "",
-
     pago: "",
 
     cliente: {
-
         nombre: "",
-
         apellido: "",
-
         telefono: "",
-
         correo: ""
-
     },
 
     observaciones: ""
 
 };
+
+export async function iniciarReserva() {
+
+    console.log("🔥 iniciarReserva()");
+
+    iniciarPaso1();
+    iniciarPaso2();
+    iniciarPaso3();
+    iniciarPaso4();
+    iniciarPaso5();
+    iniciarPaso6();
+    iniciarPaso7();
+    iniciarPaso8();
+
+    console.log("✅ Todos los pasos iniciados");
+
+    cargarUsuarioReserva();
+
+}
+
+async function cargarUsuarioReserva() {
+
+    try {
+
+        usuarioActual = await obtenerUsuarioActual();
+
+        if (!usuarioActual) {
+
+            console.warn("No hay ningún usuario autenticado.");
+
+            return;
+
+        }
+
+        console.log(
+            "Usuario autenticado:",
+            usuarioActual.uid
+        );
+
+        turno.clienteId = usuarioActual.uid;
+
+        perfilUsuario =
+            await obtenerPerfilUsuario(usuarioActual.uid);
+
+        if (!perfilUsuario) {
+
+            console.warn(
+                "El usuario no tiene perfil en Firestore."
+            );
+
+            return;
+
+        }
+
+        console.log(
+            "Perfil del usuario:",
+            perfilUsuario
+        );
+
+        turno.cliente.nombre =
+            perfilUsuario.nombre || "";
+
+        turno.cliente.apellido =
+            perfilUsuario.apellido || "";
+
+        turno.cliente.telefono =
+            perfilUsuario.telefono || "";
+
+        turno.cliente.correo =
+            perfilUsuario.email ||
+            usuarioActual.email ||
+            "";
+
+        const nombre =
+            document.getElementById("nombre");
+
+        const apellido =
+            document.getElementById("apellido");
+
+        const telefono =
+            document.getElementById("telefono");
+
+        const correo =
+            document.getElementById("correo");
+
+        if (nombre) {
+            nombre.value =
+                turno.cliente.nombre;
+        }
+
+        if (apellido) {
+            apellido.value =
+                turno.cliente.apellido;
+        }
+
+        if (telefono) {
+            telefono.value =
+                turno.cliente.telefono;
+        }
+
+        if (correo) {
+            correo.value =
+                turno.cliente.correo;
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Error obteniendo usuario:",
+            error
+        );
+
+    }
+
+}
+
+
 
 /*=========================================
             BARBEROS
@@ -175,14 +270,6 @@ const barberos = {
             INICIO
 =========================================*/
 
-document.addEventListener(
-
-    "DOMContentLoaded",
-
-    iniciarSistema
-
-);
-
 /*=========================================
         INICIAR SISTEMA
 =========================================*/
@@ -248,21 +335,46 @@ function actualizarCampo(id,valor){
 
 function iniciarPaso1(){
 
-    const sucursales = document.querySelectorAll(".option-card");
+    console.log("🔥 INICIANDO PASO 1");
 
-    sucursales.forEach(card=>{
+    const opciones = document.querySelector(".options");
 
-        card.addEventListener("click",()=>{
+    if (!opciones) {
 
-            seleccionar(".option-card",card);
+        console.error("❌ No existe .options");
 
-            turno.sucursal = card.dataset.value;
+        return;
+    }
 
-            actualizarResumen();
+    console.log(
+        "🏪 Sucursales encontradas:",
+        opciones.querySelectorAll(".option-card").length
+    );
 
-            mostrarPaso(2);
+    opciones.addEventListener("click", (e) => {
 
-        });
+        const card = e.target.closest(".option-card");
+
+        if (!card) return;
+
+        console.log(
+            "✅ CLICK FÍSICO EN SUCURSAL:",
+            card.dataset.value
+        );
+
+        opciones
+            .querySelectorAll(".option-card")
+            .forEach(item => {
+                item.classList.remove("selected");
+            });
+
+        card.classList.add("selected");
+
+        turno.sucursal = card.dataset.value;
+
+        actualizarResumen();
+
+        mostrarPaso(2);
 
     });
 
@@ -361,47 +473,59 @@ function iniciarPaso4(){
         PASO 5
         BARBEROS
 =========================================*/
-
 function iniciarPaso5(){
 
-    const tarjetas = document.querySelectorAll(".barber-card");
+    const tarjetas =
+        document.querySelectorAll(".barber-card");
 
-    const modal = document.getElementById("barberModal");
+    const modal =
+        document.getElementById("barberModal");
 
-    const cerrar = document.querySelector(".close-modal");
+    const cerrar =
+        document.querySelector(".close-modal");
 
-    tarjetas.forEach(card=>{
+    tarjetas.forEach(card => {
 
-        const foto = card.querySelector("img");
+        card.addEventListener("click", () => {
 
-        foto.addEventListener("click",(e)=>{
+            const idBarbero = card.dataset.barber;
 
-            e.stopPropagation();
+            console.log(
+                "💈 BARBERO SELECCIONADO PARA VER:",
+                idBarbero
+            );
 
-            abrirModalBarbero(card.dataset.barber);
+            abrirModalBarbero(idBarbero);
 
         });
 
     });
 
-    cerrar.addEventListener("click",()=>{
+    if (cerrar) {
 
-        modal.classList.add("hidden");
-
-    });
-
-    modal.addEventListener("click",(e)=>{
-
-        if(e.target===modal){
+        cerrar.addEventListener("click", () => {
 
             modal.classList.add("hidden");
 
-        }
+        });
 
-    });
+    }
+
+    if (modal) {
+
+        modal.addEventListener("click", (e) => {
+
+            if (e.target === modal) {
+
+                modal.classList.add("hidden");
+
+            }
+
+        });
+
+    }
 
 }
-
 /*=========================================
         ABRIR MODAL
 =========================================*/
@@ -531,69 +655,75 @@ function iniciarPaso7(){
     const telefono = document.getElementById("telefono");
     const correo = document.getElementById("correo");
 
+    const botonPaso7 = document.getElementById("nextStep7");
+
+    function actualizarDatosCliente(){
+
+        turno.cliente.nombre =
+            nombre.value.trim();
+
+        turno.cliente.apellido =
+            apellido.value.trim();
+
+        turno.cliente.telefono =
+            telefono.value.trim();
+
+        turno.cliente.correo =
+            correo.value.trim();
+
+        actualizarResumen();
+
+        const completo =
+            turno.cliente.nombre !== "" &&
+            turno.cliente.apellido !== "" &&
+            turno.cliente.telefono !== "" &&
+            turno.cliente.correo !== "";
+
+        if(botonPaso7){
+
+            botonPaso7.disabled = !completo;
+
+        }
+
+    }
+
     const campos = [
-
         nombre,
-
         apellido,
-
         telefono,
-
         correo
-
     ];
 
-    campos.forEach(campo=>{
+    campos.forEach(campo => {
 
-        campo.addEventListener("input",()=>{
+        if(campo){
 
-            turno.cliente.nombre = nombre.value.trim();
+            campo.addEventListener(
+                "input",
+                actualizarDatosCliente
+            );
 
-            turno.cliente.apellido = apellido.value.trim();
+        }
 
-            turno.cliente.telefono = telefono.value.trim();
+    });
 
-            turno.cliente.correo = correo.value.trim();
+    // Comprobar inmediatamente los datos
+    // que Firebase ya cargó
+    actualizarDatosCliente();
 
-            actualizarResumen();
+    if(botonPaso7){
 
-           const botonPaso7 = document.getElementById("nextStep7");
+        botonPaso7.addEventListener("click", () => {
 
-if(
+            actualizarDatosCliente();
 
-    turno.cliente.nombre !== "" &&
-    turno.cliente.apellido !== "" &&
-    turno.cliente.telefono !== "" &&
-    turno.cliente.correo !== ""
-
-){
-
-    botonPaso7.disabled = false;
-
-}else{
-
-    botonPaso7.disabled = true;
-
-}
+            mostrarPaso(8);
 
         });
 
-    });
+    }
 
 }
-
-const nextStep7 = document.getElementById("nextStep7");
-
-if (nextStep7) {
-
-    nextStep7.addEventListener("click", () => {
-
-        mostrarPaso(8);
-
-    });
-
-}
-
 /*=========================================
         PASO 8
         OBSERVACIONES
@@ -803,29 +933,72 @@ const confirmar = document.getElementById("confirmTurn");
 
 if(confirmar){
 
-    confirmar.addEventListener("click",()=>{
+    confirmar.addEventListener("click", async () => {
 
-        actualizarResumen();
+        try {
 
-        const codigo = generarCodigoReserva();
+            confirmar.disabled = true;
 
-        document.getElementById("reservationCode").textContent = codigo;
+            confirmar.textContent = "GUARDANDO...";
 
-        document.getElementById("successSucursal").textContent =
-        turno.sucursal;
+            actualizarResumen();
 
-        document.getElementById("successFecha").textContent =
-        turno.fecha;
+            const codigo = generarCodigoReserva();
 
-        document.getElementById("successHorario").textContent =
-        turno.horario;
+            console.log("💾 Guardando turno:", turno);
 
-        document.getElementById("successBarbero").textContent =
-        turno.barbero;
+            const turnoId = await crearTurno(
+                turno,
+                codigo
+            );
 
-        document
-            .getElementById("successModal")
-            .classList.remove("hidden");
+            console.log(
+                "✅ Turno guardado en Firebase:",
+                turnoId
+            );
+
+            document.getElementById(
+                "reservationCode"
+            ).textContent = codigo;
+
+            document.getElementById(
+                "successSucursal"
+            ).textContent = turno.sucursal;
+
+            document.getElementById(
+                "successFecha"
+            ).textContent = turno.fecha;
+
+            document.getElementById(
+                "successHorario"
+            ).textContent = turno.horario;
+
+            document.getElementById(
+                "successBarbero"
+            ).textContent = turno.barbero;
+
+            document
+                .getElementById("successModal")
+                .classList.remove("hidden");
+
+        } catch (error) {
+
+            console.error(
+                "❌ Error guardando turno:",
+                error
+            );
+
+            alert(
+                "No se pudo guardar el turno. Revisá la conexión e intentá nuevamente."
+            );
+
+        } finally {
+
+            confirmar.disabled = false;
+
+            confirmar.textContent = "CONFIRMAR TURNO";
+
+        }
 
     });
 
@@ -839,18 +1012,14 @@ const cerrarModal = document.getElementById("closeSuccess");
 
 if(cerrarModal){
 
-    cerrarModal.addEventListener("click",()=>{
+    cerrarModal.addEventListener("click", () => {
 
-        document
-            .getElementById("successModal")
-            .classList.add("hidden");
-
-        reiniciarFormulario();
+        window.location.href =
+            "../cliente/dashboard/dashboard.html";
 
     });
 
 }
-
 /*=========================================
         REINICIAR FORMULARIO
 =========================================*/
@@ -927,8 +1096,18 @@ function reiniciarFormulario(){
 
 }
 
+
+
 /*=========================================
         DEBUG
 =========================================*/
 
+
+
 window.turno = turno;
+
+if (document.querySelector(".option-card")) {
+
+    iniciarReserva();
+
+}

@@ -1,6 +1,10 @@
-
 import dashboardHTML from "./dashboard.html?raw";
-import { navegar } from "../../router/router.js";
+
+import { navegar } from "../../../router/router.js";
+
+import { obtenerUsuarioActual } from "../../../services/auth.service.js";
+
+import { obtenerPerfilUsuario } from "../../../services/usuario.service.js";
 
 
 /*======================================================
@@ -37,6 +41,7 @@ function iniciarDashboardOriginal() {
 
     cargarSucursales();
 
+    cargarPerfilReal();
 
     console.log("✔ Beast Managers iniciado.");
 
@@ -1260,7 +1265,7 @@ const Utils = {
 
 };
 
-console.log("✔ Utilidades cargadas.");
+console.log("🔥🔥🔥 ESTE ES EL DASHBOARD.JS NUEVO 🔥🔥🔥");
 
 
 export function iniciarDashboard() {
@@ -1268,6 +1273,8 @@ export function iniciarDashboard() {
     document.getElementById("app").innerHTML = dashboardHTML;
 
     iniciarDashboardOriginal();
+
+    cargarPerfilReal();
 
     const btnReservar = document.getElementById("btnReservar");
 
@@ -1284,3 +1291,50 @@ export function iniciarDashboard() {
     }
 
 }
+
+async function cargarPerfilReal() {
+
+    console.log("🔥 cargarPerfilReal() se está ejecutando");
+
+    try {
+
+        const usuario = await obtenerUsuarioActual();
+
+
+        if (!usuario) {
+
+            console.log("No hay usuario conectado.");
+
+            return;
+
+        }
+
+
+        console.log("Usuario actual:", usuario.uid);
+
+
+        const perfil =
+            await obtenerPerfilUsuario(usuario.uid);
+
+
+        console.log("Perfil real:", perfil);
+
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando perfil:",
+            error
+        );
+
+    }
+
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    iniciarDashboardOriginal();
+
+    cargarPerfilReal();
+
+});

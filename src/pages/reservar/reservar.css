@@ -70,29 +70,21 @@ body{
 ==================================*/
 
 .background{
-
     position:fixed;
-
     inset:0;
-
     z-index:-2;
 
+    pointer-events:none;
+
     background:
-
     linear-gradient(
-
         rgba(0,0,0,.84),
-
         rgba(0,0,0,.93)
-
     ),
-
     url("../../assets/img/backgrounds/barberia.jpg");
 
     background-size:cover;
-
     background-position:center;
-
 }
 
 .background::before{

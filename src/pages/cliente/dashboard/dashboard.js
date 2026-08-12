@@ -1,6 +1,13 @@
+
 /*======================================================
                 PARTE 1 - INICIALIZACIÓN
 ======================================================*/
+
+import { obtenerUsuarioActual } from "../../../services/auth.service.js";
+
+import { obtenerPerfilUsuario } from "../../../services/usuario.service.js";
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -12,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 INICIAR DASHBOARD
 ======================================================*/
 
-function iniciarDashboard(){
+export function iniciarDashboard(){
 
     iniciarLoader();
 
@@ -36,6 +43,7 @@ function iniciarDashboard(){
 
     cargarSucursales();
 
+    cargarPerfilReal();
 
     console.log("✔ Beast Managers iniciado.");
 
@@ -535,64 +543,6 @@ function iniciarLoader(){
 
 }
 
-function iniciarAnimaciones(){
-
-    const secciones = document.querySelectorAll(
-
-        ".welcome," +
-        ".next-appointment," +
-        ".quick-actions," +
-        ".promotions," +
-        ".favorite-barbers," +
-        ".history," +
-        ".membership," +
-        ".products," +
-        ".branches," +
-        ".contact-section"
-
-    );
-
-    secciones.forEach((seccion,index)=>{
-
-        seccion.animate(
-
-            [
-
-                {
-
-                    opacity:0,
-
-                    transform:"translateY(35px)"
-
-                },
-
-                {
-
-                    opacity:1,
-
-                    transform:"translateY(0)"
-
-                }
-
-            ],
-
-            {
-
-                duration:600,
-
-                delay:index*120,
-
-                easing:"ease-out",
-
-                fill:"forwards"
-
-            }
-
-        );
-
-    });
-
-}
 
 /*======================================================
             PARTE 7 - EVENTOS DEL DASHBOARD
@@ -602,11 +552,12 @@ function iniciarAnimaciones(){
             INICIAR EVENTOS
 ======================================================*/
 
+
 function iniciarEventos(){
 
     iniciarBotones();
 
-}
+}   
 
 /*======================================================
             BOTONES
@@ -1180,6 +1131,99 @@ function cargarSucursales(){
 
 
 /*======================================================
+            PERFIL REAL DESDE FIREBASE
+======================================================*/
+
+async function cargarPerfilReal(){
+
+    try {
+
+        console.log("🔥 Cargando perfil real...");
+
+
+        // Obtener usuario autenticado
+
+        const usuario = await obtenerUsuarioActual();
+
+
+        if(!usuario){
+
+            console.log("No hay usuario autenticado.");
+
+            return;
+
+        }
+
+
+        console.log("Usuario autenticado:", usuario.uid);
+
+
+        // Obtener perfil de Firestore
+
+        const perfil = await obtenerPerfilUsuario(usuario.uid);
+
+
+        if(!perfil){
+
+            console.log("No se encontró el perfil en Firestore.");
+
+            return;
+
+        }
+
+
+        console.log("Perfil real:", perfil);
+
+
+        // Nombre
+
+        const nombre = document.getElementById("nombreCliente");
+
+        if(nombre){
+
+            nombre.textContent = perfil.nombre;
+
+        }
+
+
+        // Sucursal
+
+        const empresa = document.getElementById("empresaCliente");
+
+        if(empresa){
+
+            empresa.textContent = "The Beast Barbershop";
+
+        }
+
+
+        // Ciudad
+
+        const ciudad = document.getElementById("ciudadCliente");
+
+        if(ciudad){
+
+            ciudad.textContent = "Remedios de Escalada";
+
+        }
+
+
+        console.log("✅ Perfil cargado en Dashboard.");
+
+    }
+
+    catch(error){
+
+        console.error(
+            "❌ Error cargando perfil:",
+            error
+        );
+
+    }
+
+}
+
+/*======================================================
             PARTE 12 - FUNCIONES GENERALES
 ======================================================*/
 
@@ -1306,3 +1350,42 @@ const Utils = {
 };
 
 console.log("✔ Utilidades cargadas.");
+
+async function protegerPagina() {
+
+    try {
+
+        const usuario = await obtenerUsuarioActual();
+
+        if (!usuario) {
+
+            console.log(
+                "⚠️ Usuario no autenticado. Redirigiendo al login..."
+            );
+
+            window.location.href =
+                "/src/pages/login/login.html";
+
+            return false;
+        }
+
+        console.log(
+            "✅ Usuario autenticado:",
+            usuario.uid
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "❌ Error verificando autenticación:",
+            error
+        );
+
+        window.location.href =
+            "/src/pages/login/login.html";
+
+        return false;
+    }
+}
