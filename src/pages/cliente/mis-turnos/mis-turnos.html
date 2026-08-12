@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Mis Turnos | Beast Managers</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link
+        rel="stylesheet"
+        href="./mis-turnos.css">
+
+</head>
+
+<body>
+
+    <div class="background"></div>
+
+    <main class="page">
+
+        <!-- HEADER -->
+
+        <header class="top-header">
+
+            <div class="brand">
+
+                <img
+                    src="../../../assets/img/logos/logo.jpg (2).png"
+                    alt="Beast Managers">
+
+                <div>
+
+                    <h2>Beast Managers</h2>
+
+                    <p>Tu sistema de gestión</p>
+
+                </div>
+
+            </div>
+
+            <div class="header-actions">
+
+                <button>
+                    <i class="fa-regular fa-bell"></i>
+                </button>
+
+                <button>
+                    <i class="fa-regular fa-user"></i>
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- TITULO -->
+
+        <section class="page-title">
+
+            <div class="title-icon">
+
+                <i class="fa-regular fa-calendar"></i>
+
+            </div>
+
+            <div>
+
+                <h1>
+                    Mis <span>Turnos</span>
+                </h1>
+
+                <p>
+                    Acá podés ver todos tus turnos programados.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- TABS -->
+
+        <section class="tabs">
+
+            <button
+                id="tabProximos"
+                class="tab active">
+
+                <i class="fa-regular fa-calendar"></i>
+
+                Próximos
+
+            </button>
+
+            <button
+                id="tabHistorial"
+                class="tab">
+
+                <i class="fa-solid fa-clock-rotate-left"></i>
+
+                Historial
+
+            </button>
+
+            <button
+                id="btnFiltrar"
+                class="filter-btn">
+
+                <i class="fa-solid fa-filter"></i>
+
+                Filtrar
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+            </button>
+
+        </section>
+
+
+        <!-- TITULO LISTA -->
+
+        <section class="list-header">
+
+            <h2 id="tituloLista">
+                Próximos Turnos
+            </h2>
+
+            <span id="contadorTurnos">
+                0 turnos
+            </span>
+
+        </section>
+
+
+        <!-- TURNOS -->
+
+        <section
+            id="listaTurnos"
+            class="turnos-list">
+
+        </section>
+
+
+        <!-- SIN TURNOS -->
+
+        <section
+            id="sinTurnos"
+            class="empty-state hidden">
+
+            <div>
+
+                <i class="fa-regular fa-calendar-xmark"></i>
+
+            </div>
+
+            <h3>No tenés turnos</h3>
+
+            <p>
+                Cuando reserves un turno,
+                aparecerá acá.
+            </p>
+
+            <a href="../../reservar/reservar.html">
+                RESERVAR TURNO
+            </a>
+
+        </section>
+
+
+        <!-- AVISO -->
+
+        <section class="help-card">
+
+            <div class="help-icon">
+
+                <i class="fa-regular fa-calendar-check"></i>
+
+            </div>
+
+            <div>
+
+                <h3>
+                    ¿Necesitás cambiar o cancelar un turno?
+                </h3>
+
+                <p>
+                    Podés reprogramar o cancelar tu turno
+                    hasta 2 horas antes.
+                </p>
+
+            </div>
+
+            <i class="fa-solid fa-chevron-right"></i>
+
+        </section>
+
+
+        <!-- MENU -->
+
+        <nav class="bottom-navigation">
+
+            <a
+                href="../dashboard/dashboard.html"
+                class="nav-item">
+
+                <i class="fa-solid fa-house"></i>
+
+                <span>Inicio</span>
+
+            </a>
+
+            <a
+                href="./mis-turnos.html"
+                class="nav-item active">
+
+                <i class="fa-regular fa-calendar"></i>
+
+                <span>Turnos</span>
+
+            </a>
+
+            <a
+                href="../../reservar/reservar.html"
+                class="nav-item reserve-button">
+
+                <div class="reserve-circle">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                </div>
+
+                <span>Reservar</span>
+
+            </a>
+
+            <a
+                href="../beneficios/beneficios.html"
+                class="nav-item">
+
+                <i class="fa-solid fa-gift"></i>
+
+                <span>Beneficios</span>
+
+            </a>
+
+            <a
+                href="../perfil/perfil.html"
+                class="nav-item">
+
+                <i class="fa-regular fa-user"></i>
+
+                <span>Perfil</span>
+
+            </a>
+
+        </nav>
+
+    </main>
+
+
+    <!-- MODAL DETALLES -->
+
+    <div
+        id="modalDetalles"
+        class="modal hidden">
+
+        <div class="modal-card">
+
+            <button
+                id="cerrarModal"
+                class="modal-close">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+            <h2>Detalle del turno</h2>
+
+            <div id="detalleContenido"></div>
+
+        </div>
+
+    </div>
+
+
+    <script
+        type="module"
+        src="mis-turnos.js">
+    </script>
+
+</body>
+
+</html>

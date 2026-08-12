@@ -7,6 +7,9 @@ import { obtenerUsuarioActual } from "../../../services/auth.service.js";
 
 import { obtenerPerfilUsuario } from "../../../services/usuario.service.js";
 
+import {
+    obtenerTurnosCliente
+} from "../../../services/turnos.services.js";
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -216,41 +219,73 @@ function cargarCiudad(){
             PARTE 3 - PRÓXIMO TURNO
 ======================================================*/
 
-/*
-    Más adelante esta información vendrá desde Firebase.
-*/
-
-const proximoTurno = {
-
-    existe: true,
-
-    fecha: "Martes 05 Agosto",
-
-    hora: "18:30 hs",
-
-    barbero: "Dylan",
-
-    servicio: "Corte + Barba",
-
-    sucursal: "Marco Avellaneda 1012",
-
-    estado: "Confirmado"
-
-};
 
 /*======================================================
             CARGAR PRÓXIMO TURNO
 ======================================================*/
 
-function cargarProximoTurno(){
+async function cargarProximoTurno(){
 
-    if(proximoTurno.existe){
+    try {
 
-        mostrarTurno();
+        const usuario =
+            await obtenerUsuarioActual();
 
-    }
+        if(!usuario){
 
-    else{
+            mostrarSinTurno();
+
+            return;
+
+        }
+
+        const turnos =
+            await obtenerTurnosCliente(
+                usuario.uid
+            );
+
+        console.log(
+            "📅 Turnos del cliente:",
+            turnos
+        );
+
+        // No mostrar cancelados
+        const turnosActivos =
+            turnos.filter(turno =>
+                turno.estado !== "cancelado"
+            );
+
+        if(turnosActivos.length === 0){
+
+            mostrarSinTurno();
+
+            return;
+
+        }
+
+        // Por ahora mostramos el último turno creado
+        const proximo =
+            turnosActivos
+                .sort((a,b) => {
+
+                    const fechaA =
+                        a.fechaCreacion?.toMillis?.() || 0;
+
+                    const fechaB =
+                        b.fechaCreacion?.toMillis?.() || 0;
+
+                    return fechaB - fechaA;
+
+                })[0];
+
+        mostrarTurno(proximo);
+
+    } catch(error) {
+
+        console.error(
+            "❌ Error cargando próximo turno:",
+            error
+        );
 
         mostrarSinTurno();
 
@@ -262,21 +297,43 @@ function cargarProximoTurno(){
             MOSTRAR TURNO
 ======================================================*/
 
-function mostrarTurno(){
+function mostrarTurno(turno){
 
-    actualizarTexto("turnoFecha",proximoTurno.fecha);
+    actualizarTexto(
+        "turnoFecha",
+        turno.fecha || "-"
+    );
 
-    actualizarTexto("turnoHora",proximoTurno.hora);
+    actualizarTexto(
+        "turnoHora",
+        turno.horario
+            ? `${turno.horario} hs`
+            : "-"
+    );
 
-    actualizarTexto("turnoBarbero",proximoTurno.barbero);
+    actualizarTexto(
+        "turnoBarbero",
+        turno.barbero || "-"
+    );
 
-    actualizarTexto("turnoServicio",proximoTurno.servicio);
+    actualizarTexto(
+        "turnoServicio",
+        turno.servicio || "-"
+    );
 
-    actualizarTexto("turnoSucursal",proximoTurno.sucursal);
+    actualizarTexto(
+        "turnoSucursal",
+        turno.sucursal || "-"
+    );
 
-    actualizarTexto("estadoTurno",proximoTurno.estado);
+    actualizarTexto(
+        "estadoTurno",
+        turno.estado || "Pendiente"
+    );
 
-    actualizarEstadoTurno();
+    actualizarEstadoTurno(
+        turno.estado || "Pendiente"
+    );
 
 }
 
@@ -331,50 +388,68 @@ function actualizarTexto(id,texto){
 /*======================================================
             ACTUALIZAR ESTADO
 ======================================================*/
+function actualizarEstadoTurno(estadoTurno){
 
-function actualizarEstadoTurno(){
-
-    const estado = document.getElementById("estadoTurno");
+    const estado =
+        document.getElementById("estadoTurno");
 
     if(!estado) return;
 
     estado.className = "status";
 
-    switch(proximoTurno.estado){
+    switch(estadoTurno.toLowerCase()){
 
-        case "Confirmado":
+        case "confirmado":
 
             estado.classList.add("active");
 
+            estado.textContent =
+                "Confirmado";
+
             break;
 
-        case "Pendiente":
+        case "pendiente":
 
             estado.classList.add("pending");
 
+            estado.textContent =
+                "Pendiente";
+
             break;
 
-        case "En Curso":
+        case "en curso":
 
             estado.classList.add("progress");
 
+            estado.textContent =
+                "En Curso";
+
             break;
 
-        case "Finalizado":
+        case "finalizado":
 
             estado.classList.add("finished");
 
+            estado.textContent =
+                "Finalizado";
+
             break;
 
-        case "Cancelado":
+        case "cancelado":
 
             estado.classList.add("cancelled");
+
+            estado.textContent =
+                "Cancelado";
 
             break;
 
         default:
 
-            estado.classList.add("active");
+            estado.classList.add("pending");
+
+            estado.textContent =
+                "Pendiente";
 
     }
 

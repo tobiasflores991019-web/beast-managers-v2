@@ -1,6 +1,9 @@
 import {
     collection,
     addDoc,
+    getDocs,
+    query,
+    where,
     serverTimestamp
 } from "firebase/firestore";
 
@@ -22,19 +25,12 @@ export async function crearTurno(turno, codigoReserva) {
         },
 
         sucursal: turno.sucursal,
-
         servicio: turno.servicio,
-
         precio: turno.precio,
-
         fecha: turno.fecha,
-
         horario: turno.horario,
-
         barbero: turno.barbero,
-
         pago: turno.pago,
-
         observaciones: turno.observaciones,
 
         codigoReserva: codigoReserva,
@@ -51,5 +47,34 @@ export async function crearTurno(turno, codigoReserva) {
     );
 
     return resultado.id;
+}
 
+
+// ======================================================
+// OBTENER TURNOS DEL CLIENTE
+// ======================================================
+
+export async function obtenerTurnosCliente(clienteId) {
+
+    const turnosRef = collection(db, "turnos");
+
+    const consulta = query(
+        turnosRef,
+        where("clienteId", "==", clienteId)
+    );
+
+    const snapshot = await getDocs(consulta);
+
+    const turnos = [];
+
+    snapshot.forEach(documento => {
+
+        turnos.push({
+            id: documento.id,
+            ...documento.data()
+        });
+
+    });
+
+    return turnos;
 }
