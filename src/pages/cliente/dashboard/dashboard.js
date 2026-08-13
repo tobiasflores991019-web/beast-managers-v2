@@ -953,43 +953,27 @@ function actualizarIndicadores(){
 const productos = [
 
     {
-
         nombre:"Cera Matte",
-
         precio:"$4.500",
-
         imagen:"../../assets/img/productos/cera-matte.png"
-
     },
 
     {
-
         nombre:"Shampoo",
-
         precio:"$6.000",
-
         imagen:"../../assets/img/productos/shampoo.png"
-
     },
 
     {
-
         nombre:"Peine Premium",
-
         precio:"$3.000",
-
         imagen:"../../assets/img/productos/peine.png"
-
     },
 
     {
-
         nombre:"Loción",
-
         precio:"$7.000",
-
         imagen:"../../assets/img/productos/locion.png"
-
     }
 
 ];
