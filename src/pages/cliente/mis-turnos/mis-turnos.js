@@ -2,8 +2,11 @@ import {
     obtenerUsuarioActual
 } from "../../../services/auth.service.js";
 
+
+
 import {
-    obtenerTurnosCliente
+    obtenerTurnosCliente,
+    cancelarTurno
 } from "../../../services/turnos.services.js";
 
 
@@ -120,22 +123,27 @@ async function cargarTurnos(){
 // ORDENAR
 // ======================================================
 
-function ordenarTurnos(){
+function ordenarTurnos() {
 
-    turnos.sort((a,b) => {
+    turnos.sort((a, b) => {
 
         const fechaA =
-            a.fechaCreacion?.toMillis?.() || 0;
+            a.fechaHora?.toMillis?.() ||
+            new Date(
+                `${a.fechaISO}T${a.horario || "00:00"}`
+            ).getTime();
 
         const fechaB =
-            b.fechaCreacion?.toMillis?.() || 0;
+            b.fechaHora?.toMillis?.() ||
+            new Date(
+                `${b.fechaISO}T${b.horario || "00:00"}`
+            ).getTime();
 
-        return fechaB - fechaA;
+        return fechaA - fechaB;
 
     });
 
 }
-
 
 // ======================================================
 // RENDER
@@ -220,7 +228,10 @@ function crearTarjetaTurno(turno){
         `turno-card ${estado}`;
 
     const fecha =
-        prepararFecha(turno.fecha);
+    prepararFecha(
+        turno.fechaISO,
+        turno.fecha
+    );
 
     card.innerHTML = `
 
@@ -298,33 +309,489 @@ function crearTarjetaTurno(turno){
     `;
 
 
-    const btnDetalles =
-        card.querySelector(".btn-detalles");
-
-    btnDetalles.addEventListener(
-        "click",
-        () => {
-
-            mostrarDetalles(turno);
-
-        }
-    );
-
-
     const btnMenu =
-        card.querySelector(".btn-menu");
+    card.querySelector(".btn-menu");
 
-    btnMenu.addEventListener(
-        "click",
-        () => {
+btnMenu.addEventListener(
+    "click",
+    (event) => {
 
-            mostrarDetalles(turno);
+        event.stopPropagation();
 
-        }
-    );
+        mostrarMenuGestion(
+            turno,
+            btnMenu
+        );
+
+    }
+);
+
+
+    
 
 
     return card;
+
+}
+
+// ======================================================
+// MENU GESTIONAR TURNO
+// ======================================================
+
+function mostrarMenuGestion(turno, boton) {
+
+    // Cerrar cualquier menú anterior
+
+    const menuAnterior =
+        document.querySelector(".gestion-menu");
+
+    if (menuAnterior) {
+        menuAnterior.remove();
+    }
+
+
+    // Crear menú
+
+    const menu =
+        document.createElement("div");
+
+    menu.className =
+        "gestion-menu";
+
+
+    // Estado actual
+
+    const estado =
+        String(
+            turno.estado || "pendiente"
+        ).toLowerCase();
+
+
+    // Acciones disponibles
+
+    let acciones = `
+        <button
+            class="gestion-item"
+            data-accion="detalles">
+
+            <i class="fa-regular fa-eye"></i>
+
+            <span>Ver detalles</span>
+
+        </button>
+    `;
+
+
+    // Solo permitir modificar
+    // turnos pendientes o confirmados
+
+    if (
+        estado === "pendiente" ||
+        estado === "confirmado"
+    ) {
+
+        acciones += `
+
+            <button
+                class="gestion-item"
+                data-accion="reprogramar">
+
+                <i class="fa-solid fa-calendar-days"></i>
+
+                <span>Reprogramar</span>
+
+            </button>
+
+
+            <button
+                class="gestion-item cancelar"
+                data-accion="cancelar">
+
+                <i class="fa-solid fa-xmark"></i>
+
+                <span>Cancelar turno</span>
+
+            </button>
+
+        `;
+
+    }
+
+
+    menu.innerHTML = acciones;
+
+
+    document.body.appendChild(menu);
+
+
+    // Posición del menú
+
+    const rect =
+        boton.getBoundingClientRect();
+
+    const ancho =
+        menu.offsetWidth;
+
+    let left =
+        rect.right - ancho;
+
+    let top =
+        rect.bottom + 8;
+
+
+    // Evitar que salga de la pantalla
+
+    if (
+        left < 10
+    ) {
+        left = 10;
+    }
+
+    if (
+        left + ancho >
+        window.innerWidth - 10
+    ) {
+        left =
+            window.innerWidth -
+            ancho -
+            10;
+    }
+
+
+    if (
+        top + menu.offsetHeight >
+        window.innerHeight - 10
+    ) {
+
+        top =
+            rect.top -
+            menu.offsetHeight -
+            8;
+
+    }
+
+
+    menu.style.left =
+        `${left}px`;
+
+    menu.style.top =
+        `${top}px`;
+
+
+    // Acciones
+
+    menu
+        .querySelectorAll(".gestion-item")
+        .forEach(item => {
+
+            item.addEventListener(
+                "click",
+                () => {
+
+                    const accion =
+                        item.dataset.accion;
+
+
+                    menu.remove();
+
+
+                    if (
+                        accion ===
+                        "detalles"
+                    ) {
+
+                        mostrarDetalles(
+                            turno
+                        );
+
+                    }
+
+
+                    if (
+                        accion ===
+                        "reprogramar"
+                    ) {
+
+                        console.log(
+                            "🔄 Reprogramar turno:",
+                            turno.id
+                        );
+
+                        alert(
+                            "La reprogramación la vamos a conectar en el próximo paso."
+                        );
+
+                    }
+
+
+                   if (
+                    accion ===
+                          "cancelar"
+                    ) {
+
+                     mostrarConfirmacionCancelacion(
+                           turno
+                 );
+
+                 }
+
+                }
+            );
+
+        });
+
+
+    // Cerrar al hacer click afuera
+
+    setTimeout(() => {
+
+        document.addEventListener(
+            "click",
+            cerrarMenuGestion,
+            {
+                once: true
+            }
+        );
+
+    }, 0);
+
+
+    function cerrarMenuGestion(event) {
+
+        if (
+            !menu.contains(event.target) &&
+            event.target !== boton
+        ) {
+
+            menu.remove();
+
+        }
+
+    }
+
+}
+
+// ======================================================
+// CONFIRMAR CANCELACION
+// ======================================================
+
+function mostrarConfirmacionCancelacion(turno) {
+
+    const modal =
+        document.createElement("div");
+
+    modal.className =
+        "modal modal-cancelacion";
+
+
+    modal.innerHTML = `
+
+        <div class="modal-card cancelacion-card">
+
+            <button
+                class="modal-close"
+                id="cerrarCancelacion">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+
+            <div class="cancelacion-icon">
+
+                <i class="fa-solid fa-calendar-xmark"></i>
+
+            </div>
+
+
+            <h2>
+                ¿Cancelar turno?
+            </h2>
+
+
+            <p class="cancelacion-texto">
+
+                Estás por cancelar tu turno.
+                Esta acción cambiará el estado
+                de la reserva a cancelado.
+
+            </p>
+
+
+            <div class="cancelacion-info">
+
+                <strong>
+                    ${turno.servicio || "Servicio"}
+                </strong>
+
+                <span>
+                    ${turno.fecha || "-"}
+                </span>
+
+                <span>
+                    ${turno.horario || "--:--"} hs
+                </span>
+
+                <span>
+                    ${turno.barbero || "Sin asignar"}
+                </span>
+
+            </div>
+
+
+            <div class="cancelacion-actions">
+
+                <button
+                    class="btn-volver"
+                    id="btnVolverCancelacion">
+
+                    VOLVER
+
+                </button>
+
+
+                <button
+                    class="btn-confirmar-cancelacion"
+                    id="btnConfirmarCancelacion">
+
+                    CANCELAR TURNO
+
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(
+        modal
+    );
+
+
+    // CERRAR
+
+    const cerrar =
+        () => {
+
+            modal.remove();
+
+        };
+
+
+    document
+        .getElementById(
+            "cerrarCancelacion"
+        )
+        .addEventListener(
+            "click",
+            cerrar
+        );
+
+
+    document
+        .getElementById(
+            "btnVolverCancelacion"
+        )
+        .addEventListener(
+            "click",
+            cerrar
+        );
+
+
+    // CONFIRMAR
+
+    document
+        .getElementById(
+            "btnConfirmarCancelacion"
+        )
+        .addEventListener(
+            "click",
+            async () => {
+
+                const boton =
+                    document.getElementById(
+                        "btnConfirmarCancelacion"
+                    );
+
+
+                boton.disabled = true;
+
+                boton.textContent =
+                    "CANCELANDO...";
+
+
+                try {
+
+                    await cancelarTurno(
+                        turno.id
+                    );
+
+
+                    console.log(
+                        "✅ Turno cancelado:",
+                        turno.id
+                    );
+
+
+                    modal.remove();
+
+
+                    // Actualizar objeto local
+
+                    turno.estado =
+                        "cancelado";
+
+
+                    // Volver a renderizar
+
+                    renderizar();
+
+
+                } catch(error) {
+
+                    console.error(
+                        "❌ Error cancelando turno:",
+                        error
+                    );
+
+
+                    boton.disabled =
+                        false;
+
+                    boton.textContent =
+                        "CANCELAR TURNO";
+
+
+                    alert(
+                        "No pudimos cancelar el turno. Intentá nuevamente."
+                    );
+
+                }
+
+            }
+        );
+
+
+    // Cerrar haciendo click
+    // fuera de la tarjeta
+
+    modal.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                modal
+            ) {
+
+                cerrar();
+
+            }
+
+        }
+    );
 
 }
 
@@ -333,89 +800,150 @@ function crearTarjetaTurno(turno){
 // FECHA
 // ======================================================
 
-function prepararFecha(fecha){
+function prepararFecha(fechaISO, fechaTexto) {
 
-    const ahora = new Date();
+    // NUEVO FORMATO
+    // Ejemplo: 2026-08-14
 
-    let date = null;
+    if (fechaISO) {
 
+        const partes =
+            fechaISO.split("-");
 
-    if(fecha === "Hoy"){
+        if (partes.length === 3) {
 
-        date = new Date();
+            const fecha =
+                new Date(
+                    Number(partes[0]),
+                    Number(partes[1]) - 1,
+                    Number(partes[2])
+                );
 
-    }
+            return {
 
-    else if(fecha === "Mañana"){
+                diaSemana:
+                    fecha
+                        .toLocaleDateString(
+                            "es-AR",
+                            {
+                                weekday: "short"
+                            }
+                        )
+                        .replace(".", "")
+                        .toUpperCase(),
 
-        date = new Date();
+                dia:
+                    fecha.getDate(),
 
-        date.setDate(
-            date.getDate() + 1
-        );
+                mes:
+                    fecha
+                        .toLocaleDateString(
+                            "es-AR",
+                            {
+                                month: "short"
+                            }
+                        )
+                        .replace(".", "")
+                        .toUpperCase()
 
-    }
-
-    else {
-
-        const match =
-            String(fecha).match(
-                /(\d{1,2})\/(\d{1,2})/
-            );
-
-        if(match){
-
-            date = new Date(
-                ahora.getFullYear(),
-                Number(match[2]) - 1,
-                Number(match[1])
-            );
+            };
 
         }
 
     }
 
 
-    if(!date){
+    // FORMATO ANTIGUO
+    // Ejemplo: "Viernes, 14 de agosto"
 
-        return {
+    if (fechaTexto) {
 
-            diaSemana: "",
-            dia: "--",
-            mes: ""
+        const match =
+            String(fechaTexto).match(
+                /(\d{1,2})\s+de\s+([a-záéíóú]+)/i
+            );
 
-        };
+        if (match) {
+
+            const dia =
+                Number(match[1]);
+
+            const meses = {
+                enero: 0,
+                febrero: 1,
+                marzo: 2,
+                abril: 3,
+                mayo: 4,
+                junio: 5,
+                julio: 6,
+                agosto: 7,
+                septiembre: 8,
+                octubre: 9,
+                noviembre: 10,
+                diciembre: 11
+            };
+
+            const mes =
+                meses[
+                    match[2].toLowerCase()
+                ];
+
+            if (mes !== undefined) {
+
+                const fecha =
+                    new Date(
+                        new Date().getFullYear(),
+                        mes,
+                        dia
+                    );
+
+                return {
+
+                    diaSemana:
+                        fecha
+                            .toLocaleDateString(
+                                "es-AR",
+                                {
+                                    weekday: "short"
+                                }
+                            )
+                            .replace(".", "")
+                            .toUpperCase(),
+
+                    dia:
+                        dia,
+
+                    mes:
+                        fecha
+                            .toLocaleDateString(
+                                "es-AR",
+                                {
+                                    month: "short"
+                                }
+                            )
+                            .replace(".", "")
+                            .toUpperCase()
+
+                };
+
+            }
+
+        }
 
     }
 
 
+    // SI NO HAY FECHA
+
     return {
 
-        diaSemana:
-            date
-                .toLocaleDateString(
-                    "es-AR",
-                    { weekday: "short" }
-                )
-                .replace(".", "")
-                .toUpperCase(),
-
-        dia:
-            date.getDate(),
-
-        mes:
-            date
-                .toLocaleDateString(
-                    "es-AR",
-                    { month: "short" }
-                )
-                .replace(".", "")
-                .toUpperCase()
+        diaSemana: "",
+        dia: "--",
+        mes: ""
 
     };
 
 }
-
 
 // ======================================================
 // ESTADO
@@ -536,6 +1064,13 @@ function mostrarDetalles(turno){
                 ${formatearEstado(turno.estado)}
             </strong>
         </div>
+
+        <div class="detalle-row">
+    <span>Observaciones</span>
+    <strong>
+        ${turno.observaciones || "Sin observaciones"}
+    </strong>
+    </div>
 
     `;
 

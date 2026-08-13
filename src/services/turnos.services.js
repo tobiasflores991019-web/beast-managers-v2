@@ -5,7 +5,9 @@ import {
     query,
     where,
     serverTimestamp,
-    Timestamp
+    Timestamp,
+    doc,
+    updateDoc
 } from "firebase/firestore";
 
 import { db } from "../firebase/firebase-firestore.js";
@@ -90,4 +92,28 @@ export async function obtenerTurnosCliente(clienteId) {
     });
 
     return turnos;
+}
+
+// ======================================================
+// CANCELAR TURNO
+// ======================================================
+
+export async function cancelarTurno(turnoId) {
+
+    if (!turnoId) {
+        throw new Error("No se recibió el ID del turno.");
+    }
+
+    const turnoRef =
+        doc(db, "turnos", turnoId);
+
+    await updateDoc(
+        turnoRef,
+        {
+            estado: "cancelado",
+            fechaCancelacion: serverTimestamp()
+        }
+    );
+
+    return true;
 }
