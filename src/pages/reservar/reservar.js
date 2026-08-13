@@ -597,133 +597,52 @@ function crearFechaHora(
         PASO 4
         HORARIO
 =========================================*/
+/*=========================================
+        PASO 4
+        HORARIO
+=========================================*/
 
-function obtenerFechaReal(card){
+function iniciarPaso4(){
 
-    const valor = card.dataset.date;
+    const horarios =
+        document.querySelectorAll(".hours button");
 
-    const hoy = new Date();
+    horarios.forEach(boton => {
 
-    hoy.setHours(0, 0, 0, 0);
+        boton.addEventListener("click", () => {
 
-    let fecha;
-
-    if(valor === "Hoy"){
-
-        fecha = new Date(hoy);
-
-    }
-
-    else if(valor === "Mañana"){
-
-        fecha = new Date(hoy);
-
-        fecha.setDate(
-            fecha.getDate() + 1
-        );
-
-    }
-
-    else {
-
-        const match =
-            valor.match(
-                /(\d{1,2})\/(\d{1,2})/
+            seleccionar(
+                ".hours button",
+                boton
             );
 
-        if(!match){
+            turno.horario =
+                boton.dataset.hour;
 
-            return null;
+            turno.fechaHora =
+                crearFechaHora(
+                    turno.fechaISO,
+                    turno.horario
+                );
 
-        }
+            console.log("🕐 Horario seleccionado:", {
+                horario: turno.horario,
+                fechaHora: turno.fechaHora
+            });
 
-        const dia =
-            Number(match[1]);
+            actualizarResumen();
 
-        const mes =
-            Number(match[2]) - 1;
+            mostrarPaso(5);
 
-        fecha =
-            new Date(
-                hoy.getFullYear(),
-                mes,
-                dia
-            );
+        });
 
-        /*
-        Si la fecha ya pasó este año,
-        la interpretamos para el próximo año.
-        */
-
-        if(fecha < hoy){
-
-            fecha.setFullYear(
-                fecha.getFullYear() + 1
-            );
-
-        }
-
-    }
-
-    const año =
-        fecha.getFullYear();
-
-    const mes =
-        String(
-            fecha.getMonth() + 1
-        ).padStart(2, "0");
-
-    const dia =
-        String(
-            fecha.getDate()
-        ).padStart(2, "0");
-
-    const fechaISO =
-        `${año}-${mes}-${dia}`;
-
-    const fechaTexto =
-        fecha.toLocaleDateString(
-            "es-AR",
-            {
-                weekday: "long",
-                day: "numeric",
-                month: "long"
-            }
-        );
-
-    return {
-
-        fecha,
-
-        fechaISO,
-
-        fechaTexto
-
-    };
+    });
 
 }
 
 
-function crearFechaHora(
-    fechaISO,
-    horario
-){
 
-    if(!fechaISO || !horario){
-        return null;
-    }
 
-    const [hora, minutos] =
-        horario.split(":");
-
-    const fecha =
-        new Date(
-            `${fechaISO}T${hora}:${minutos}:00`
-        );
-
-    return fecha;
-
-}
 
 /*=========================================
         PASO 5

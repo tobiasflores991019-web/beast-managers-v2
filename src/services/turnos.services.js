@@ -4,7 +4,8 @@ import {
     getDocs,
     query,
     where,
-    serverTimestamp
+    serverTimestamp,
+    Timestamp
 } from "firebase/firestore";
 
 import { db } from "../firebase/firebase-firestore.js";
@@ -27,8 +28,20 @@ export async function crearTurno(turno, codigoReserva) {
         sucursal: turno.sucursal,
         servicio: turno.servicio,
         precio: turno.precio,
+        
         fecha: turno.fecha,
+
+        fechaISO: turno.fechaISO,
+
         horario: turno.horario,
+
+        fechaHora:
+         turno.fechaHora
+        ? Timestamp.fromDate(
+            turno.fechaHora
+        )
+        : null,
+
         barbero: turno.barbero,
         pago: turno.pago,
         observaciones: turno.observaciones,
