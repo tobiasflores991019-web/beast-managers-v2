@@ -20,7 +20,9 @@ const turno = {
     servicio: "",
     precio: 0,
     fecha: "",
-    horario: "",
+   fechaISO: "",
+   horario: "",
+   fechaHora: null,
     barbero: "",
     pago: "",
 
@@ -418,19 +420,41 @@ function iniciarPaso3(){
 
     const dias = document.querySelectorAll(".day-card");
 
-    dias.forEach(card=>{
+    dias.forEach(card => {
 
-        card.addEventListener("click",()=>{
+        card.addEventListener("click", () => {
 
             if(card.classList.contains("calendar")){
-
                 return;
+            }
+
+            seleccionar(".day-card", card);
+
+            const fecha = obtenerFechaReal(card);
+
+            if(!fecha){
+                console.error("❌ No se pudo obtener la fecha");
+                return;
+            }
+
+            turno.fecha = fecha.fechaTexto;
+            turno.fechaISO = fecha.fechaISO;
+
+            // Si ya eligió horario antes, reconstruimos fechaHora
+            if(turno.horario){
+
+                turno.fechaHora =
+                    crearFechaHora(
+                        turno.fechaISO,
+                        turno.horario
+                    );
 
             }
 
-            seleccionar(".day-card",card);
-
-            turno.fecha = card.dataset.date;
+            console.log("📅 Fecha seleccionada:", {
+                texto: turno.fecha,
+                iso: turno.fechaISO
+            });
 
             actualizarResumen();
 
@@ -442,30 +466,262 @@ function iniciarPaso3(){
 
 }
 
+function obtenerFechaReal(card){
+
+    const valor = card.dataset.date;
+
+    const hoy = new Date();
+
+    hoy.setHours(0, 0, 0, 0);
+
+    let fecha;
+
+    if(valor === "Hoy"){
+
+        fecha = new Date(hoy);
+
+    }
+
+    else if(valor === "Mañana"){
+
+        fecha = new Date(hoy);
+
+        fecha.setDate(
+            fecha.getDate() + 1
+        );
+
+    }
+
+    else {
+
+        const match =
+            valor.match(
+                /(\d{1,2})\/(\d{1,2})/
+            );
+
+        if(!match){
+
+            return null;
+
+        }
+
+        const dia =
+            Number(match[1]);
+
+        const mes =
+            Number(match[2]) - 1;
+
+        fecha =
+            new Date(
+                hoy.getFullYear(),
+                mes,
+                dia
+            );
+
+        /*
+        Si la fecha ya pasó este año,
+        la interpretamos para el próximo año.
+        */
+
+        if(fecha < hoy){
+
+            fecha.setFullYear(
+                fecha.getFullYear() + 1
+            );
+
+        }
+
+    }
+
+    const año =
+        fecha.getFullYear();
+
+    const mes =
+        String(
+            fecha.getMonth() + 1
+        ).padStart(2, "0");
+
+    const dia =
+        String(
+            fecha.getDate()
+        ).padStart(2, "0");
+
+    const fechaISO =
+        `${año}-${mes}-${dia}`;
+
+    const fechaTexto =
+        fecha.toLocaleDateString(
+            "es-AR",
+            {
+                weekday: "long",
+                day: "numeric",
+                month: "long"
+            }
+        );
+
+    return {
+
+        fecha,
+
+        fechaISO,
+
+        fechaTexto
+
+    };
+
+}
+
+
+function crearFechaHora(
+    fechaISO,
+    horario
+){
+
+    if(!fechaISO || !horario){
+        return null;
+    }
+
+    const [hora, minutos] =
+        horario.split(":");
+
+    const fecha =
+        new Date(
+            `${fechaISO}T${hora}:${minutos}:00`
+        );
+
+    return fecha;
+
+}
+
 /*=========================================
         PASO 4
         HORARIO
 =========================================*/
 
-function iniciarPaso4(){
+function obtenerFechaReal(card){
 
-    const horarios = document.querySelectorAll(".hours button");
+    const valor = card.dataset.date;
 
-    horarios.forEach(btn=>{
+    const hoy = new Date();
 
-        btn.addEventListener("click",()=>{
+    hoy.setHours(0, 0, 0, 0);
 
-            seleccionar(".hours button",btn);
+    let fecha;
 
-            turno.horario = btn.dataset.hour;
+    if(valor === "Hoy"){
 
-            actualizarResumen();
+        fecha = new Date(hoy);
 
-            mostrarPaso(5);
+    }
 
-        });
+    else if(valor === "Mañana"){
 
-    });
+        fecha = new Date(hoy);
+
+        fecha.setDate(
+            fecha.getDate() + 1
+        );
+
+    }
+
+    else {
+
+        const match =
+            valor.match(
+                /(\d{1,2})\/(\d{1,2})/
+            );
+
+        if(!match){
+
+            return null;
+
+        }
+
+        const dia =
+            Number(match[1]);
+
+        const mes =
+            Number(match[2]) - 1;
+
+        fecha =
+            new Date(
+                hoy.getFullYear(),
+                mes,
+                dia
+            );
+
+        /*
+        Si la fecha ya pasó este año,
+        la interpretamos para el próximo año.
+        */
+
+        if(fecha < hoy){
+
+            fecha.setFullYear(
+                fecha.getFullYear() + 1
+            );
+
+        }
+
+    }
+
+    const año =
+        fecha.getFullYear();
+
+    const mes =
+        String(
+            fecha.getMonth() + 1
+        ).padStart(2, "0");
+
+    const dia =
+        String(
+            fecha.getDate()
+        ).padStart(2, "0");
+
+    const fechaISO =
+        `${año}-${mes}-${dia}`;
+
+    const fechaTexto =
+        fecha.toLocaleDateString(
+            "es-AR",
+            {
+                weekday: "long",
+                day: "numeric",
+                month: "long"
+            }
+        );
+
+    return {
+
+        fecha,
+
+        fechaISO,
+
+        fechaTexto
+
+    };
+
+}
+
+
+function crearFechaHora(
+    fechaISO,
+    horario
+){
+
+    if(!fechaISO || !horario){
+        return null;
+    }
+
+    const [hora, minutos] =
+        horario.split(":");
+
+    const fecha =
+        new Date(
+            `${fechaISO}T${hora}:${minutos}:00`
+        );
+
+    return fecha;
 
 }
 
