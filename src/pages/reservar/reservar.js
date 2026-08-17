@@ -1195,12 +1195,23 @@ if(confirmar){
 
 const cerrarModal = document.getElementById("closeSuccess");
 
-if(cerrarModal){
+if (cerrarModal) {
 
     cerrarModal.addEventListener("click", () => {
 
-        window.location.href =
-            "../cliente/dashboard/dashboard.html";
+        if (usuarioActual) {
+
+            // Usuario registrado
+            window.location.href =
+                "../cliente/dashboard/dashboard.html";
+
+        } else {
+
+            // Cliente sin usuario
+            window.location.href =
+                "../../index.html";
+
+        }
 
     });
 
