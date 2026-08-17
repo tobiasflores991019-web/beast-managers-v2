@@ -62,13 +62,26 @@ async function cargarUsuarioReserva() {
 
         usuarioActual = await obtenerUsuarioActual();
 
+        // ==========================================
+        // CLIENTE SIN CUENTA
+        // ==========================================
+
         if (!usuarioActual) {
 
-            console.warn("No hay ningún usuario autenticado.");
+            console.log("👤 Reserva como cliente invitado.");
+
+            // No tiene clienteId porque no tiene cuenta
+            turno.clienteId = "";
+
+            // Los datos se completarán manualmente
+            // en el PASO 7
 
             return;
-
         }
+
+        // ==========================================
+        // CLIENTE REGISTRADO
+        // ==========================================
 
         console.log(
             "Usuario autenticado:",
@@ -87,7 +100,6 @@ async function cargarUsuarioReserva() {
             );
 
             return;
-
         }
 
         console.log(
@@ -151,8 +163,6 @@ async function cargarUsuarioReserva() {
     }
 
 }
-
-
 
 /*=========================================
             BARBEROS
