@@ -12,9 +12,15 @@ import {
 
 import { db } from "../firebase/firebase-firestore.js";
 
+
+// ======================================================
+// CREAR TURNO
+// ======================================================
+
 export async function crearTurno(turno, codigoReserva) {
 
-    const turnosRef = collection(db, "turnos");
+    const turnosRef =
+        collection(db, "turnos");
 
     const documento = {
 
@@ -30,7 +36,7 @@ export async function crearTurno(turno, codigoReserva) {
         sucursal: turno.sucursal,
         servicio: turno.servicio,
         precio: turno.precio,
-        
+
         fecha: turno.fecha,
 
         fechaISO: turno.fechaISO,
@@ -38,31 +44,36 @@ export async function crearTurno(turno, codigoReserva) {
         horario: turno.horario,
 
         fechaHora:
-         turno.fechaHora
-        ? Timestamp.fromDate(
             turno.fechaHora
-        )
-        : null,
+            ? Timestamp.fromDate(
+                turno.fechaHora
+            )
+            : null,
 
         barbero: turno.barbero,
+
         pago: turno.pago,
+
         observaciones: turno.observaciones,
 
         codigoReserva: codigoReserva,
 
         estado: "pendiente",
 
-        fechaCreacion: serverTimestamp()
+        fechaCreacion:
+            serverTimestamp()
 
     };
 
-    const resultado = await addDoc(
-        turnosRef,
-        documento
-    );
+    const resultado =
+        await addDoc(
+            turnosRef,
+            documento
+        );
 
     return resultado.id;
 }
+
 
 
 // ======================================================
@@ -90,6 +101,56 @@ export async function obtenerTurnosCliente(clienteId) {
         });
 
     });
+
+    return turnos;
+}
+
+// ======================================================
+// OBTENER TURNOS DE UNA FECHA Y SUCURSAL
+// ======================================================
+
+export async function obtenerTurnosDisponibles(
+    fechaISO,
+    sucursal
+) {
+
+    const turnosRef =
+        collection(db, "turnos");
+
+    const consulta =
+        query(
+            turnosRef,
+            where("fechaISO", "==", fechaISO)
+        );
+
+    const snapshot =
+        await getDocs(consulta);
+
+    const turnos = [];
+
+    snapshot.forEach(documento => {
+
+        const datos =
+            documento.data();
+
+        if(
+            datos.sucursal === sucursal &&
+            datos.estado !== "cancelado"
+        ){
+
+            turnos.push({
+                id: documento.id,
+                ...datos
+            });
+
+        }
+
+    });
+
+    console.log(
+        "📋 Turnos existentes:",
+        turnos
+    );
 
     return turnos;
 }

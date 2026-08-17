@@ -2,13 +2,31 @@
 
 import { obtenerUsuarioActual } from "../../services/auth.service.js";
 import { obtenerPerfilUsuario } from "../../services/usuario.service.js";
-import { crearTurno } from "../../services/turnos.services.js";
+
+import {
+    crearTurno,
+    obtenerTurnosDisponibles
+} from "../../services/turnos.services.js";
 
 
 let usuarioActual = null;
 let perfilUsuario = null;
 
 const TOTAL_PASOS = 9;
+
+const SERVICIOS_COLOR = [
+    "Aplicación de Color",
+    "Global",
+    "Claritos / Mechas"
+];
+
+function esServicioColor() {
+
+    return SERVICIOS_COLOR.includes(
+        turno.servicio
+    );
+
+}
 
 let pasoActual = 1;
 
@@ -170,109 +188,258 @@ async function cargarUsuarioReserva() {
 
 const barberos = {
 
-    ori:{
+    ori: {
 
-        nombre:"Ori",
+        nombre: "Ori",
 
-        foto:"../../assets/img/barberos/ori.jpg",
+        foto: "../../assets/img/barberos/ori.jpg",
 
-        rating:"4.9",
+        rating: "4.9",
 
-        estrellas:"★★★★★",
+        estrellas: "★★★★★",
 
-        experiencia:"7 años",
+        experiencia: "7 años",
 
-        descripcion:"Especialista en Fade, Taper y Barba.",
+        descripcion: "Especialista en Fade, Taper y Barba.",
 
-        especialidades:[
-
+        especialidades: [
             "Fade",
-
             "Taper",
-
             "Barba",
-
             "Cortes Clásicos"
+        ],
 
-        ]
+        horarios: {
 
-    },
+            "Marco Avellaneda": {
 
-    benja:{
+                lunes: ["12:00", "20:00"],
+                martes: ["10:00", "16:00"],
+                miercoles: null,
+                jueves: ["10:00", "20:00"],
+                viernes: ["10:00", "20:00"],
+                sabado: null
 
-        nombre:"Benja",
+            },
 
-        foto:"../../assets/img/barberos/benja.jpg",
+            "Santiago Plaul": {
 
-        rating:"4.8",
+                lunes: null,
+                martes: null,
+                miercoles: ["15:00", "20:00"],
+                jueves: null,
+                viernes: null,
+                sabado: ["10:00", "20:00"]
 
-        estrellas:"★★★★★",
+            }
 
-        experiencia:"5 años",
-
-        descripcion:"Especialista en cortes modernos.",
-
-        especialidades:[
-
-            "Fade",
-
-            "Barba",
-
-            "Mullet"
-
-        ]
-
-    },
-
-    dylan:{
-
-        nombre:"Dylan",
-
-        foto:"../../assets/img/barberos/dylan.jpg",
-
-        rating:"4.9",
-
-        estrellas:"★★★★★",
-
-        experiencia:"6 años",
-
-        descripcion:"Especialista en color y diseños.",
-
-        especialidades:[
-
-            "Color",
-
-            "Diseños",
-
-            "Fade"
-
-        ]
+        }
 
     },
 
-    tobi:{
 
-        nombre:"Tobi",
+    benja: {
 
-        foto:"../../assets/img/barberos/tobi.jpg",
+        nombre: "Benja",
 
-        rating:"5.0",
+        foto: "../../assets/img/barberos/benja.jpg",
 
-        estrellas:"★★★★★",
+        rating: "4.8",
 
-        experiencia:"10 años",
+        estrellas: "★★★★★",
 
-        descripcion:"Fundador de The Beast Barbershop.",
+        experiencia: "2 años",
 
-        especialidades:[
+        descripcion:
+            "Especialista en Fade de cualquier tipo, busco brindar el mejor servicio posible y atención a los clientes.",
 
-            "Fade",
+        especialidades: [
+            "Cualquier tipo de Fade",
+            "Corte clásico",
+            "Corte básico",
+            "Corte con tijera"
+        ],
 
-            "Color",
+        horarios: {
 
+            "Marco Avellaneda": {
+
+                lunes: null,
+                martes: ["15:00", "20:00"],
+                miercoles: ["15:00", "20:00"],
+                jueves: null,
+                viernes: ["15:00", "20:00"],
+                sabado: ["10:00", "20:00"]
+
+            },
+
+            "Santiago Plaul": {
+
+                lunes: null,
+                martes: null,
+                miercoles: null,
+                jueves: null,
+                viernes: null,
+                sabado: null
+
+            }
+
+        }
+
+    },
+
+
+    dylan: {
+
+        nombre: "Dylan",
+
+        foto: "../../assets/img/barberos/dylan.jpg",
+
+        rating: "4.9",
+
+        estrellas: "★★★★★",
+
+        experiencia: "4 años",
+
+        descripcion:
+            "Buena atención, buena calidad de trabajo y podemos aparte de hacer un buen corte tener una buena charla.",
+
+        especialidades: [
+            "Cualquier tipo de Fade",
+            "Corte clásico",
+            "Freestyle",
+            "Barbas",
+            "Corte a tijera",
+            "Manejo de navaja"
+        ],
+
+        horarios: {
+
+            "Marco Avellaneda": {
+
+                lunes: null,
+                martes: null,
+                miercoles: ["15:00", "20:00"],
+                jueves: ["17:00", "20:00"],
+                viernes: ["17:00", "20:00"],
+                sabado: ["10:00", "20:00"]
+
+            },
+
+            "Santiago Plaul": {
+
+                lunes: null,
+                martes: null,
+                miercoles: null,
+                jueves: null,
+                viernes: null,
+                sabado: null
+
+            }
+
+        }
+
+    },
+
+
+    tobi: {
+
+        nombre: "Tobi",
+
+        foto: "../../assets/img/barberos/tobi.jpg",
+
+        rating: "5.0",
+
+        estrellas: "★★★★★",
+
+        experiencia: "2 años",
+
+        descripcion:
+            "Buena atención, especialista en charla.",
+
+        especialidades: [
+            "Cualquier tipo de Fade",
+            "Corte clásico",
+            "Especialista en color",
             "Asesoramiento"
+        ],
 
-        ]
+        horarios: {
+
+            "Marco Avellaneda": {
+
+                lunes: null,
+                martes: null,
+                miercoles: null,
+                jueves: ["11:00", "17:00"],
+                viernes: ["11:00", "17:00"],
+                sabado: null
+
+            },
+
+            "Santiago Plaul": {
+
+                lunes: ["12:00", "20:00"],
+                martes: ["10:00", "15:00"],
+                miercoles: ["10:00", "15:00"],
+                jueves: null,
+                viernes: null,
+                sabado: null
+
+            }
+
+        },
+
+    },
+
+
+    ivan: {
+
+        nombre: "Ivan",
+
+        foto: "../../assets/img/barberos/ivan.jpg",
+
+        rating: "5.0",
+
+        estrellas: "★★★★★",
+
+        experiencia: "",
+
+        descripcion:
+            "Barbero especializado en cortes modernos y clásicos.",
+
+        especialidades: [
+            "Fade",
+            "Taper",
+            "Cortes Clásicos",
+            "Barba"
+        ],
+
+        horarios: {
+
+            "Marco Avellaneda": {
+
+                lunes: ["12:00", "20:00"],
+                martes: ["16:00", "20:00"],
+                miercoles: ["10:00", "16:00"],
+                jueves: null,
+                viernes: null,
+                sabado: ["10:00", "20:00"]
+
+            },
+
+            "Santiago Plaul": {
+
+                lunes: null,
+                martes: null,
+                miercoles: null,
+                jueves: ["10:00", "20:00"],
+                viernes: ["10:00", "20:00"],
+                sabado: null
+
+            }
+
+        }
 
     }
 
@@ -399,17 +566,48 @@ function iniciarPaso1(){
 
 function iniciarPaso2(){
 
-    const servicios = document.querySelectorAll(".service-card");
+    const servicios =
+        document.querySelectorAll(".service-card");
 
-    servicios.forEach(card=>{
+    servicios.forEach(card => {
 
-        card.addEventListener("click",()=>{
+        card.addEventListener("click", () => {
 
-            seleccionar(".service-card",card);
+            seleccionar(
+                ".service-card",
+                card
+            );
 
-            turno.servicio = card.dataset.service;
+            turno.servicio =
+                card.dataset.service;
 
-            turno.precio = Number(card.dataset.price);
+            turno.precio =
+                Number(card.dataset.price);
+
+            // =====================================
+            // SERVICIO DE COLOR
+            // =====================================
+
+            if (esServicioColor()) {
+
+                turno.barbero =
+                    "Barbero disponible";
+
+                console.log(
+                    "🎨 Servicio de color seleccionado"
+                );
+
+                console.log(
+                    "💈 Barbero:",
+                    turno.barbero
+                );
+
+            } else {
+
+                // Servicio normal
+                turno.barbero = "";
+
+            }
 
             actualizarResumen();
 
@@ -420,7 +618,6 @@ function iniciarPaso2(){
     });
 
 }
-
 /*=========================================
         PASO 3
         FECHA
@@ -603,65 +800,27 @@ function crearFechaHora(
 
 }
 
+
+
 /*=========================================
         PASO 4
-        HORARIO
+        BARBEROS
 =========================================*/
+
 /*=========================================
         PASO 4
-        HORARIO
+        BARBEROS
+=========================================*/
+
+/*=========================================
+        PASO 4
+        BARBEROS
 =========================================*/
 
 function iniciarPaso4(){
 
-    const horarios =
-        document.querySelectorAll(".hours button");
-
-    horarios.forEach(boton => {
-
-        boton.addEventListener("click", () => {
-
-            seleccionar(
-                ".hours button",
-                boton
-            );
-
-            turno.horario =
-                boton.dataset.hour;
-
-            turno.fechaHora =
-                crearFechaHora(
-                    turno.fechaISO,
-                    turno.horario
-                );
-
-            console.log("🕐 Horario seleccionado:", {
-                horario: turno.horario,
-                fechaHora: turno.fechaHora
-            });
-
-            actualizarResumen();
-
-            mostrarPaso(5);
-
-        });
-
-    });
-
-}
-
-
-
-
-
-/*=========================================
-        PASO 5
-        BARBEROS
-=========================================*/
-function iniciarPaso5(){
-
-    const tarjetas =
-        document.querySelectorAll(".barber-card");
+    const contenedor =
+        document.querySelector(".barbers");
 
     const modal =
         document.getElementById("barberModal");
@@ -669,44 +828,711 @@ function iniciarPaso5(){
     const cerrar =
         document.querySelector(".close-modal");
 
+
+    if(!contenedor){
+
+        console.error(
+            "❌ No existe .barbers"
+        );
+
+        return;
+    }
+
+
+    /*=========================================
+            SERVICIO DE COLOR
+    =========================================*/
+
+    if(esServicioColor()){
+
+        console.log(
+            "🎨 Servicio de color - barbero disponible"
+        );
+
+        turno.barbero =
+            "Barbero disponible";
+
+
+        contenedor.innerHTML = `
+
+            <div class="barber-available">
+
+                <div class="barber-available-icon">
+                    💈
+                </div>
+
+                <h3>
+                    Barbero disponible
+                </h3>
+
+                <p>
+                    Este servicio será realizado
+                    por un profesional disponible
+                    en la sucursal.
+                </p>
+
+            </div>
+
+        `;
+
+
+        actualizarResumen();
+
+        return;
+
+    }
+
+
+    /*=========================================
+            COMPROBAR FECHA
+    =========================================*/
+
+    if(!turno.fechaISO){
+
+        return;
+
+    }
+
+
+    /*=========================================
+            OBTENER DÍA
+    =========================================*/
+
+    const fecha =
+        new Date(
+            turno.fechaISO + "T00:00:00"
+        );
+
+
+    const diasSemana = [
+
+        "domingo",
+        "lunes",
+        "martes",
+        "miercoles",
+        "jueves",
+        "viernes",
+        "sabado"
+
+    ];
+
+
+    const dia =
+        diasSemana[
+            fecha.getDay()
+        ];
+
+
+    console.log(
+        "📅 Día para mostrar barberos:",
+        dia
+    );
+
+
+    console.log(
+        "🏪 Sucursal:",
+        turno.sucursal
+    );
+
+
+    /*=========================================
+            RECORRER TARJETAS
+    =========================================*/
+
+    const tarjetas =
+        contenedor.querySelectorAll(
+            ".barber-card"
+        );
+
+
     tarjetas.forEach(card => {
 
-        card.addEventListener("click", () => {
+        const idBarbero =
+            card.dataset.barber;
 
-            const idBarbero = card.dataset.barber;
+
+        const barbero =
+            barberos[idBarbero];
+
+
+        if(!barbero){
+
+            console.error(
+                "❌ No existe el barbero:",
+                idBarbero
+            );
+
+            return;
+
+        }
+
+
+        /*=====================================
+                BUSCAR HORARIO
+        =====================================*/
+
+        const horariosSucursal =
+            barbero.horarios?.[
+                turno.sucursal
+            ];
+
+
+        const horarioDia =
+            horariosSucursal?.[
+                dia
+            ];
+
+
+        /*=====================================
+                ELEMENTO ESTADO
+        =====================================*/
+
+        const estado =
+            card.querySelector("small");
+
+
+        /*=====================================
+                NO TRABAJA
+        =====================================*/
+
+        if(!horarioDia){
+
+            console.log(
+                "🔴 No trabaja:",
+                barbero.nombre
+            );
+
+
+            card.classList.add(
+                "barber-unavailable"
+            );
+
+
+            if(estado){
+
+                estado.textContent =
+                    "No trabaja este día";
+
+            }
+
+
+            // Evitamos que pueda seleccionarlo
+            card.style.pointerEvents =
+                "none";
+
+
+            card.style.opacity =
+                "0.55";
+
+
+            return;
+
+        }
+
+
+        /*=====================================
+                DISPONIBLE
+        =====================================*/
+
+        console.log(
+            "🟢 Disponible:",
+            barbero.nombre,
+            horarioDia
+        );
+
+
+        card.classList.remove(
+            "barber-unavailable"
+        );
+
+
+        card.style.pointerEvents =
+            "auto";
+
+
+        card.style.opacity =
+            "1";
+
+
+        if(estado){
+
+            estado.textContent =
+                "Disponible";
+
+        }
+
+
+        /*=====================================
+                CLICK EN BARBERO
+        =====================================*/
+
+        card.onclick = () => {
 
             console.log(
                 "💈 BARBERO SELECCIONADO PARA VER:",
                 idBarbero
             );
 
-            abrirModalBarbero(idBarbero);
 
-        });
+            abrirModalBarbero(
+                idBarbero
+            );
+
+        };
 
     });
 
-    if (cerrar) {
 
-        cerrar.addEventListener("click", () => {
+    /*=========================================
+            CERRAR MODAL
+    =========================================*/
 
-            modal.classList.add("hidden");
+    if(cerrar){
 
-        });
+        cerrar.onclick = () => {
+
+            modal.classList.add(
+                "hidden"
+            );
+
+        };
 
     }
 
-    if (modal) {
 
-        modal.addEventListener("click", (e) => {
+    if(modal){
 
-            if (e.target === modal) {
+        modal.onclick = (e) => {
 
-                modal.classList.add("hidden");
+            if(e.target === modal){
+
+                modal.classList.add(
+                    "hidden"
+                );
 
             }
 
-        });
+        };
+
+    }
+
+}
+
+/*=========================================
+        PASO 5
+        HORARIOS
+=========================================*/
+
+/*=========================================
+        PASO 5
+        HORARIOS
+=========================================*/
+
+/*=========================================
+        PASO 5
+        HORARIOS
+=========================================*/
+
+function iniciarPaso5(){
+
+    const contenedor =
+        document.querySelector(".hours");
+
+    if(!contenedor){
+
+        console.error(
+            "❌ No existe .hours"
+        );
+
+        return;
+    }
+
+
+    // Limpiar horarios anteriores
+    contenedor.innerHTML = "";
+
+
+    /*=========================================
+            SERVICIOS DE COLOR
+    =========================================*/
+
+    if(esServicioColor()){
+
+        console.log(
+            "🎨 Servicio de color - horarios 10 a 16"
+        );
+
+        generarHorarios(
+            contenedor,
+            "10:00",
+            "16:00"
+        );
+
+        return;
+    }
+
+
+    /*=========================================
+            SERVICIO NORMAL
+    =========================================*/
+
+    if(!turno.fechaISO){
+
+        return;
+    }
+
+
+    if(!turno.barbero){
+
+        return;
+    }
+
+
+    /*=========================================
+            BUSCAR BARBERO
+    =========================================*/
+
+    const idBarbero =
+        Object.keys(barberos).find(
+            id =>
+                barberos[id].nombre ===
+                turno.barbero
+        );
+
+
+    if(!idBarbero){
+
+        console.error(
+            "❌ No se encontró el barbero:",
+            turno.barbero
+        );
+
+        return;
+    }
+
+
+    const barbero =
+        barberos[idBarbero];
+
+
+    /*=========================================
+            OBTENER DÍA
+    =========================================*/
+
+    const fecha =
+        new Date(
+            turno.fechaISO + "T00:00:00"
+        );
+
+
+    const diasSemana = [
+
+        "domingo",
+        "lunes",
+        "martes",
+        "miercoles",
+        "jueves",
+        "viernes",
+        "sabado"
+
+    ];
+
+
+    const dia =
+        diasSemana[
+            fecha.getDay()
+        ];
+
+
+    console.log(
+        "📅 Día seleccionado:",
+        dia
+    );
+
+
+    /*=========================================
+            HORARIO DEL BARBERO
+    =========================================*/
+
+    const horariosSucursal =
+        barbero.horarios?.[
+            turno.sucursal
+        ];
+
+
+    if(!horariosSucursal){
+
+        console.error(
+            "❌ No hay horarios para esta sucursal"
+        );
+
+        return;
+    }
+
+
+    const horarioDia =
+        horariosSucursal[dia];
+
+
+    if(!horarioDia){
+
+        console.error(
+            "❌ El barbero no trabaja este día"
+        );
+
+        return;
+    }
+
+
+    const horaInicio =
+        horarioDia[0];
+
+    const horaFin =
+        horarioDia[1];
+
+
+    console.log(
+        "🕐 Horario del barbero:",
+        horaInicio,
+        horaFin
+    );
+
+
+    /*=========================================
+            GENERAR HORARIOS
+            TURNOS DE 1 HORA
+    =========================================*/
+
+    generarHorarios(
+        contenedor,
+        horaInicio,
+        horaFin
+    );
+
+}
+
+/*=========================================
+        GENERAR HORARIOS
+=========================================*/
+
+async function generarHorarios(
+    contenedor,
+    horaInicio,
+    horaFin
+){
+
+    if(!horaInicio || !horaFin){
+
+        console.error(
+            "❌ Horario inválido:",
+            horaInicio,
+            horaFin
+        );
+
+        return;
+    }
+
+
+    const [horaInicial] =
+        horaInicio
+            .split(":")
+            .map(Number);
+
+
+    const [horaFinal] =
+        horaFin
+            .split(":")
+            .map(Number);
+
+
+    contenedor.innerHTML = "";
+
+
+    /*=========================================
+        OBTENER TURNOS YA RESERVADOS
+    =========================================*/
+
+    let turnosOcupados = [];
+
+    try {
+
+        turnosOcupados =
+            await obtenerTurnosDisponibles(
+                turno.fechaISO,
+                turno.sucursal
+            );
+
+        console.log(
+            "📋 Turnos encontrados:",
+            turnosOcupados
+        );
+
+    } catch(error){
+
+        console.error(
+            "❌ Error obteniendo turnos:",
+            error
+        );
+
+        contenedor.innerHTML = `
+            <p>
+                No se pudieron cargar
+                los horarios disponibles.
+            </p>
+        `;
+
+        return;
+    }
+
+
+    /*=========================================
+        CREAR HORARIOS DE 1 HORA
+    =========================================*/
+
+    for(
+        let hora = horaInicial;
+        hora < horaFinal;
+        hora++
+    ){
+
+        const horario =
+            `${String(hora).padStart(2,"0")}:00`;
+
+
+        const boton =
+            document.createElement(
+                "button"
+            );
+
+
+        boton.type = "button";
+
+
+        boton.dataset.hour =
+            horario;
+
+
+        /*=========================================
+            COMPROBAR SI ESTÁ OCUPADO
+        =========================================*/
+
+        const ocupado =
+            turnosOcupados.some(turnoExistente => {
+
+                // El horario debe coincidir
+                if(
+                    turnoExistente.horario !==
+                    horario
+                ){
+
+                    return false;
+                }
+
+
+                // =================================
+                // SERVICIO DE COLOR
+                // =================================
+
+                if(esServicioColor()){
+
+                    return (
+                        turnoExistente.barbero ===
+                        "Barbero disponible"
+                    );
+
+                }
+
+
+                // =================================
+                // SERVICIO NORMAL
+                // =================================
+
+                return (
+                    turnoExistente.barbero ===
+                    turno.barbero
+                );
+
+            });
+
+
+        /*=========================================
+            HORARIO OCUPADO
+        =========================================*/
+
+        if(ocupado){
+
+            boton.classList.add(
+                "occupied"
+            );
+
+            boton.textContent =
+                `${horario} - OCUPADO`;
+
+            boton.disabled = true;
+
+            boton.title =
+                "Este horario ya está reservado.";
+
+        }
+
+
+        /*=========================================
+            HORARIO DISPONIBLE
+        =========================================*/
+
+        else{
+
+            boton.textContent =
+                horario;
+
+
+            boton.addEventListener(
+                "click",
+                () => {
+
+                    seleccionar(
+                        ".hours button",
+                        boton
+                    );
+
+
+                    turno.horario =
+                        boton.dataset.hour;
+
+
+                    turno.fechaHora =
+                        crearFechaHora(
+                            turno.fechaISO,
+                            turno.horario
+                        );
+
+
+                    console.log(
+                        "🕐 Horario seleccionado:",
+                        {
+                            horario:
+                                turno.horario,
+
+                            fechaHora:
+                                turno.fechaHora
+                        }
+                    );
+
+
+                    actualizarResumen();
+
+
+                    mostrarPaso(6);
+
+                }
+            );
+
+        }
+
+
+        contenedor.appendChild(
+            boton
+        );
 
     }
 
@@ -789,18 +1615,16 @@ function elegirBarbero(id){
 
     }
 
-    turno.barbero = barberos[id].nombre;
+   turno.barbero = barberos[id].nombre;
 
-    actualizarResumen();
+actualizarResumen();
 
-    document.getElementById("barberModal")
+document.getElementById("barberModal")
+.classList.add("hidden");
 
-    .classList.add("hidden");
-
-    mostrarPaso(6);
+mostrarPaso(5);
 
 }
-
 /*=========================================
         PASO 6
         MEDIO DE PAGO
@@ -947,28 +1771,36 @@ function mostrarPaso(numero){
     pasoActual = numero;
 
     document.querySelectorAll(".step")
-
-    .forEach(step=>{
-
+    .forEach(step => {
         step.classList.add("hidden");
-
     });
 
     const paso = document.getElementById(
-
-        "step"+numero
-
+        "step" + numero
     );
 
     if(paso){
-
         paso.classList.remove("hidden");
-
     }
 
-    actualizarProgreso();
+    // =========================================
+    // ACTUALIZAR PASO 5 SEGÚN EL SERVICIO
+    // =========================================
+
+if(numero === 4){
+
+    iniciarPaso4();
 
 }
+
+if(numero === 5){
+
+    iniciarPaso5();
+
+}
+
+}
+ 
 
 /*=========================================
         BARRA DE PROGRESO
