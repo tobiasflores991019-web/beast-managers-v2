@@ -2508,3 +2508,390 @@ body{
     font-weight:800;
 
 }
+
+/* =========================================
+   PROMOCIONES DEL DÍA
+========================================= */
+
+.promociones-dia {
+    margin-bottom: 28px;
+}
+
+
+.promociones-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 14px;
+}
+
+
+.promociones-header > span {
+    font-size: 24px;
+}
+
+
+.promociones-header h3 {
+    margin: 0;
+
+    color: #d4af37;
+
+    font-size: 18px;
+}
+
+
+.promociones-header p {
+    margin: 3px 0 0;
+
+    color: #999;
+
+    font-size: 13px;
+}
+
+
+/* =========================================
+   TARJETA PROMOCIÓN
+========================================= */
+
+.promo-card {
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 17px 18px;
+
+    margin-bottom: 10px;
+
+    border: 1px solid rgba(
+        212,
+        175,
+        55,
+        0.55
+    );
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(212,175,55,0.12),
+            rgba(255,255,255,0.025)
+        );
+
+    cursor: pointer;
+
+    transition:
+        0.2s ease;
+
+}
+
+
+.promo-card:hover {
+
+    transform: translateY(-2px);
+
+    border-color: #d4af37;
+
+    box-shadow:
+        0 5px 20px
+        rgba(212,175,55,0.12);
+
+}
+
+
+.promo-card.selected {
+
+    border-color: #d4af37;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(212,175,55,0.22),
+            rgba(212,175,55,0.06)
+        );
+
+    box-shadow:
+        0 0 0 1px #d4af37;
+}
+
+
+/* =========================================
+   ETIQUETA
+========================================= */
+
+.promo-badge {
+
+    position: absolute;
+
+    top: -9px;
+    left: 15px;
+
+    padding: 3px 9px;
+
+    border-radius: 20px;
+
+    background: #d4af37;
+
+    color: #111;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+}
+
+
+.promo-info h3 {
+
+    margin: 0 0 4px;
+
+    color: #fff;
+
+    font-size: 15px;
+
+}
+
+
+.promo-info small {
+
+    color: #aaa;
+
+    font-size: 12px;
+
+}
+
+
+.promo-card > strong {
+
+    color: #d4af37;
+
+    font-size: 17px;
+
+    white-space: nowrap;
+
+}
+
+
+/* =========================================
+   SERVICIOS NORMALES
+========================================= */
+
+.servicios-header {
+
+    margin: 25px 0 12px;
+
+}
+
+
+.servicios-header h3 {
+
+    margin: 0;
+
+    color: #fff;
+
+    font-size: 18px;
+
+}
+
+
+.servicios-header p {
+
+    margin: 4px 0 0;
+
+    color: #888;
+
+    font-size: 13px;
+
+}
+
+
+.sin-promociones {
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    background: #181818;
+
+    color: #888;
+
+    text-align: center;
+
+    font-size: 13px;
+
+}
+
+/*=========================================
+        PROMOCIONES
+=========================================*/
+
+.promociones-title {
+
+    margin-bottom: 15px;
+
+}
+
+.promociones-title h3 {
+
+    color: #d4af37;
+    font-size: 20px;
+    margin-bottom: 4px;
+
+}
+
+.promociones-title p {
+
+    color: #999;
+    font-size: 13px;
+
+}
+
+
+.promo-card {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 18px;
+
+    margin-bottom: 12px;
+
+    border-radius: 15px;
+
+    border: 1px solid #8f7620;
+
+    background:
+        linear-gradient(
+            135deg,
+            #211d0e,
+            #171717
+        );
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+}
+
+
+.promo-card:hover {
+
+    transform: translateY(-2px);
+
+    border-color: #d4af37;
+
+}
+
+
+.promo-card.selected {
+
+    border-color: #d4af37;
+
+    box-shadow:
+        0 0 15px
+        rgba(212,175,55,0.25);
+
+}
+
+
+.promo-card h3 {
+
+    margin: 5px 0;
+
+    color: white;
+
+}
+
+
+.promo-card small {
+
+    color: #aaa;
+
+}
+
+
+.promo-card strong {
+
+    color: #d4af37;
+
+    font-size: 18px;
+
+}
+
+
+.promo-badge {
+
+    display: inline-block;
+
+    padding: 3px 8px;
+
+    border-radius: 5px;
+
+    background: #d4af37;
+
+    color: #111;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+}
+
+
+.services-title {
+
+    margin-top: 25px;
+    margin-bottom: 12px;
+
+}
+
+
+.services-title h3 {
+
+    color: white;
+
+    margin-bottom: 4px;
+
+}
+
+
+.services-title p {
+
+    color: #888;
+
+    font-size: 13px;
+
+}
+
+.day-card.disabled{
+
+    opacity: 0.45;
+
+    cursor: not-allowed;
+
+    border-color:
+        rgba(255,255,255,.05);
+
+    background:
+        #111;
+
+    transform: none !important;
+
+}
+
+.day-card.disabled:hover{
+
+    transform: none;
+
+    border-color:
+        rgba(255,255,255,.05);
+
+}

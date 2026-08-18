@@ -37,6 +37,8 @@ export async function crearTurno(turno, codigoReserva) {
         servicio: turno.servicio,
         precio: turno.precio,
 
+        promocion: turno.promocion || null,
+
         fecha: turno.fecha,
 
         fechaISO: turno.fechaISO,

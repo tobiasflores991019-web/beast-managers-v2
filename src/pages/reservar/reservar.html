@@ -214,224 +214,261 @@
 
           
 
-            <!--======================================
+  <!--======================================
             PASO 2
-            =======================================-->
-
-            <section class="step hidden"
-                id="step2">
-
-                <div class="step-title">
-
-                    <div class="number">
-
-                        2
-
-                    </div>
-
-                    <div>
-
-                        <h2>
-
-                            ¿Qué día preferís?
-
-                        </h2>
-
-                        <p>
-
-                            Elegí una fecha disponible.
-
-                        </p>
-
-                    </div>
-
-                </div>
-
-                <div class="days">
-
-                    <button class="day-card"
-                        data-date="Hoy">
-
-                        <strong>Hoy</strong>
-
-                        <small>Disponible</small>
-
-                    </button>
-
-                    <button class="day-card"
-                        data-date="Mañana">
-
-                        <strong>Mañana</strong>
-
-                        <small>Disponible</small>
-
-                    </button>
-
-                    <button class="day-card"
-                        data-date="Viernes 1/8">
-
-                        <strong>Viernes</strong>
-
-                        <small>01/08</small>
-
-                    </button>
-
-                    <button class="day-card"
-                        data-date="Sábado 2/8">
-
-                        <strong>Sábado</strong>
-
-                        <small>02/08</small>
-
-                    </button>
-
-                    <button class="day-card calendar">
-
-                        <i class="fa-regular fa-calendar"></i>
-
-                        Elegir otra fecha
-
-                    </button>
-
-                </div>
-
-            </section>
-
-            <!--======================================
-        PASO 3
 =======================================-->
 
-<section class="step hidden"
-    id="step3">
+<section class="step hidden" id="step2">
 
     <div class="step-title">
 
         <div class="number">
-
-            3
-
+            2
         </div>
 
         <div>
 
             <h2>
-
-                Elegí un servicio
-
+                ¿Qué día preferís?
             </h2>
 
             <p>
-
-                Seleccioná el servicio que querés realizar.
-
+                Elegí una fecha disponible.
             </p>
 
         </div>
 
     </div>
 
+
+    <div class="days" id="daysContainer">
+
+        <!--
+            Las fechas se generan automáticamente
+            desde JavaScript.
+        -->
+
+    </div>
+
+
+    <!-- CALENDARIO -->
+
+    <input
+        type="date"
+        id="fechaCalendario"
+        class="fecha-calendario"
+    >
+
+</section>
+           
+  <!--======================================
+        PASO 3
+        PROMOCIONES + SERVICIOS
+=======================================-->
+
+<section class="step hidden" id="step3">
+
+    <div class="step-title">
+
+        <div class="number">
+            3
+        </div>
+
+        <div>
+
+            <h2>
+                Elegí tu servicio
+            </h2>
+
+            <p>
+                Aprovechá nuestras promociones o elegí un servicio.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!--==================================
+            PROMOCIONES
+    ===================================-->
+
+    <div id="promocionesContainer">
+
+        <!-- Las promociones se generan automáticamente -->
+
+    </div>
+
+
+    <!--==================================
+            OTROS SERVICIOS
+    ===================================-->
+
+    <div class="services-title">
+
+        <h3>
+            Otros servicios
+        </h3>
+
+        <p>
+            Elegí un servicio de nuestra lista.
+        </p>
+
+    </div>
+
+
     <div class="services">
 
-        <div class="service-card"
+
+        <div
+            class="service-card"
             data-service="Corte"
-            data-price="14000">
+            data-price="14000"
+        >
 
             <div>
 
-                <h3>Corte</h3>
+                <h3>
+                    Corte
+                </h3>
 
-                <small>35 minutos</small>
+                <small>
+                    35 minutos
+                </small>
 
             </div>
 
-            <strong>$14.000</strong>
+            <strong>
+                $14.000
+            </strong>
 
         </div>
 
 
-        <div class="service-card"
+        <div
+            class="service-card"
             data-service="Corte + Barba"
-            data-price="18000">
+            data-price="18000"
+        >
 
             <div>
 
-                <h3>Corte + Barba</h3>
+                <h3>
+                    Corte + Barba
+                </h3>
 
-                <small>60 minutos</small>
+                <small>
+                    60 minutos
+                </small>
 
             </div>
 
-            <strong>$18.000</strong>
+            <strong>
+                $18.000
+            </strong>
 
         </div>
 
 
-        <div class="service-card"
+        <div
+            class="service-card"
             data-service="Barba"
-            data-price="8000">
+            data-price="8000"
+        >
 
             <div>
 
-                <h3>Barba</h3>
+                <h3>
+                    Barba
+                </h3>
 
-                <small>20 minutos</small>
+                <small>
+                    20 minutos
+                </small>
 
             </div>
 
-            <strong>$8.000</strong>
+            <strong>
+                $8.000
+            </strong>
 
         </div>
 
 
-        <div class="service-card"
+        <div
+            class="service-card"
             data-service="Aplicación de Color"
-            data-price="20000">
+            data-price="20000"
+        >
 
             <div>
 
-                <h3>Aplicación de Color</h3>
+                <h3>
+                    Aplicación de Color
+                </h3>
 
-                <small>60 minutos</small>
+                <small>
+                    60 minutos
+                </small>
 
             </div>
 
-            <strong>$20.000</strong>
+            <strong>
+                $20.000
+            </strong>
 
         </div>
 
 
-        <div class="service-card"
+        <div
+            class="service-card"
             data-service="Global"
-            data-price="50000">
+            data-price="50000"
+        >
 
             <div>
 
-                <h3>Global</h3>
+                <h3>
+                    Global
+                </h3>
 
-                <small>150 minutos</small>
+                <small>
+                    150 minutos
+                </small>
 
             </div>
 
-            <strong>$50.000</strong>
+            <strong>
+                $50.000
+            </strong>
 
         </div>
 
 
-        <div class="service-card"
+        <div
+            class="service-card"
             data-service="Claritos / Mechas"
-            data-price="40000">
+            data-price="40000"
+        >
 
             <div>
 
-                <h3>Claritos / Mechas</h3>
+                <h3>
+                    Claritos / Mechas
+                </h3>
 
-                <small>120 minutos</small>
+                <small>
+                    120 minutos
+                </small>
 
             </div>
 
-            <strong>$40.000</strong>
+            <strong>
+                $40.000
+            </strong>
 
         </div>
+
 
     </div>
 

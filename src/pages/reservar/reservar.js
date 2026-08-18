@@ -14,6 +14,7 @@ import {
 
 let usuarioActual = null;
 let perfilUsuario = null;
+let promocionesDisponibles = [];
 
 const TOTAL_PASOS = 9;
 
@@ -40,6 +41,7 @@ const turno = {
     sucursal: "",
     servicio: "",
     precio: 0,
+    promocion: null,
     fecha: "",
    fechaISO: "",
    horario: "",
@@ -61,6 +63,22 @@ const turno = {
 export async function iniciarReserva() {
 
     console.log("🔥 iniciarReserva()");
+
+    // ==========================================
+    // CARGAR PROMOCIONES DESDE FIREBASE
+    // ==========================================
+
+    promocionesDisponibles =
+        await obtenerPromociones();
+
+    console.log(
+        "🎁 Promociones disponibles:",
+        promocionesDisponibles
+    );
+
+    // ==========================================
+    // INICIAR PASOS
+    // ==========================================
 
     iniciarPaso1();
     iniciarPaso2();
@@ -563,185 +581,467 @@ function iniciarPaso1(){
 }
 
 /*=========================================
-        PASO 3
-        SERVICIO
-=========================================*/
-
-function iniciarPaso3(){
-
-    const servicios =
-        document.querySelectorAll(".service-card");
-
-    servicios.forEach(card => {
-
-        card.addEventListener("click", () => {
-
-            seleccionar(
-                ".service-card",
-                card
-            );
-
-            turno.servicio =
-                card.dataset.service;
-
-            turno.precio =
-                Number(card.dataset.price);
-
-            // =====================================
-            // SERVICIO DE COLOR
-            // =====================================
-
-            if (esServicioColor()) {
-
-                turno.barbero =
-                    "Barbero disponible";
-
-                console.log(
-                    "🎨 Servicio de color seleccionado"
-                );
-
-                console.log(
-                    "💈 Barbero:",
-                    turno.barbero
-                );
-
-            } else {
-
-                // Servicio normal
-                turno.barbero = "";
-
-            }
-
-            actualizarResumen();
-
-            mostrarPaso(4);
-
-        });
-
-    });
-
-}
-/*=========================================
         PASO 2
         FECHA
 =========================================*/
 
 function iniciarPaso2(){
 
-    const dias = document.querySelectorAll(".day-card");
+/*=========================================
+        GENERAR DÍAS DISPONIBLES
+=========================================*/
 
-    dias.forEach(card => {
+function generarDiasDisponibles(container){
 
-        card.addEventListener("click", () => {
+    container.innerHTML = "";
 
-            if(card.classList.contains("calendar")){
-                return;
-            }
 
-            seleccionar(".day-card", card);
+    const hoy =
+        obtenerFechaLocal();
 
-            const fecha = obtenerFechaReal(card);
 
-            if(!fecha){
-                console.error("❌ No se pudo obtener la fecha");
-                return;
-            }
+    for(let i = 0; i < 4; i++){
 
-            turno.fecha = fecha.fechaTexto;
-            turno.fechaISO = fecha.fechaISO;
+        const fecha =
+            new Date(hoy);
 
-            // Si ya eligió horario antes, reconstruimos fechaHora
-            if(turno.horario){
-
-                turno.fechaHora =
-                    crearFechaHora(
-                        turno.fechaISO,
-                        turno.horario
-                    );
-
-            }
-
-            console.log("📅 Fecha seleccionada:", {
-                texto: turno.fecha,
-                iso: turno.fechaISO
-            });
-
-            actualizarResumen();
-
-            mostrarPaso(3);
-
-        });
-
-    });
-
-}
-
-function obtenerFechaReal(card){
-
-    const valor = card.dataset.date;
-
-    const hoy = new Date();
-
-    hoy.setHours(0, 0, 0, 0);
-
-    let fecha;
-
-    if(valor === "Hoy"){
-
-        fecha = new Date(hoy);
-
-    }
-
-    else if(valor === "Mañana"){
-
-        fecha = new Date(hoy);
 
         fecha.setDate(
-            fecha.getDate() + 1
+            hoy.getDate() + i
+        );
+
+
+        const esDomingo =
+            fecha.getDay() === 0;
+
+
+        const card =
+            document.createElement("button");
+
+
+        card.type = "button";
+
+        card.className =
+            "day-card";
+
+
+        card.dataset.date =
+            convertirFechaISO(fecha);
+
+
+        // =====================================
+        // TITULO
+        // =====================================
+
+        let titulo;
+
+
+        if(esDomingo){
+
+            titulo = "Domingo";
+
+        }
+
+        else if(i === 0){
+
+            titulo = "Hoy";
+
+        }
+
+        else if(i === 1){
+
+            titulo = "Mañana";
+
+        }
+
+        else{
+
+            titulo =
+                fecha.toLocaleDateString(
+                    "es-AR",
+                    {
+                        weekday: "long"
+                    }
+                );
+
+
+            titulo =
+                titulo.charAt(0).toUpperCase()
+                +
+                titulo.slice(1);
+
+        }
+
+
+        // =====================================
+        // FECHA MOSTRADA
+        // =====================================
+
+        const fechaTexto =
+            fecha.toLocaleDateString(
+                "es-AR",
+                {
+                    day: "2-digit",
+                    month: "2-digit"
+                }
+            );
+
+
+        card.innerHTML = `
+
+            <strong>
+                ${titulo}
+            </strong>
+
+            <small>
+                ${
+                    esDomingo
+                        ? "Cerrado"
+                        : i < 2
+                            ? "Disponible"
+                            : fechaTexto
+                }
+            </small>
+
+        `;
+
+
+        // =====================================
+        // DOMINGO BLOQUEADO
+        // =====================================
+
+        if(esDomingo){
+
+            card.disabled = true;
+
+            card.classList.add(
+                "disabled"
+            );
+
+        }
+
+
+        // =====================================
+        // CLICK
+        // =====================================
+
+        card.addEventListener(
+            "click",
+            () => {
+
+                if(esDomingo){
+
+                    return;
+
+                }
+
+
+                seleccionar(
+                    ".day-card",
+                    card
+                );
+
+
+                turno.fechaISO =
+                    card.dataset.date;
+
+
+                const fechaSeleccionada =
+                    crearFechaDesdeISO(
+                        turno.fechaISO
+                    );
+
+
+                turno.fecha =
+                    fechaSeleccionada
+                        .toLocaleDateString(
+                            "es-AR",
+                            {
+                                weekday: "long",
+                                day: "numeric",
+                                month: "long"
+                            }
+                        );
+
+
+                if(turno.horario){
+
+                    turno.fechaHora =
+                        crearFechaHora(
+                            turno.fechaISO,
+                            turno.horario
+                        );
+
+                }
+
+
+                console.log(
+                    "📅 Fecha seleccionada:",
+                    {
+                        texto: turno.fecha,
+                        iso: turno.fechaISO
+                    }
+                );
+
+
+                actualizarResumen();
+
+                mostrarPromociones();
+
+                mostrarPaso(3);
+
+            }
+        );
+
+
+        container.appendChild(
+            card
         );
 
     }
 
-    else {
 
-        const match =
-            valor.match(
-                /(\d{1,2})\/(\d{1,2})/
-            );
+    // =====================================
+    // BOTÓN CALENDARIO
+    // =====================================
 
-        if(!match){
+    const botonCalendario =
+        document.createElement("button");
 
-            return null;
 
-        }
+    botonCalendario.type =
+        "button";
 
-        const dia =
-            Number(match[1]);
+    botonCalendario.className =
+        "day-card calendar";
 
-        const mes =
-            Number(match[2]) - 1;
 
-        fecha =
-            new Date(
-                hoy.getFullYear(),
-                mes,
-                dia
-            );
+    botonCalendario.innerHTML = `
 
-        /*
-        Si la fecha ya pasó este año,
-        la interpretamos para el próximo año.
-        */
+        <i class="fa-regular fa-calendar"></i>
 
-        if(fecha < hoy){
+        Elegir otra fecha
 
-            fecha.setFullYear(
-                fecha.getFullYear() + 1
-            );
+    `;
 
-        }
+
+    container.appendChild(
+        botonCalendario
+    );
+
+}
+    const container =
+        document.getElementById("daysContainer");
+
+    const calendario =
+        document.getElementById("fechaCalendario");
+
+
+    if(!container){
+
+        console.error(
+            "❌ No existe #daysContainer"
+        );
+
+        return;
+    }
+
+
+    if(!calendario){
+
+        console.error(
+            "❌ No existe #fechaCalendario"
+        );
+
+        return;
+    }
+
+
+    // =====================================
+    // GENERAR FECHAS
+    // =====================================
+
+    generarDiasDisponibles(container);
+
+
+    // =====================================
+    // CONFIGURAR CALENDARIO
+    // =====================================
+
+    const hoy =
+        obtenerFechaLocal();
+
+
+    const fechaMin =
+        convertirFechaISO(hoy);
+
+
+    const fechaMax =
+        new Date(hoy);
+
+    fechaMax.setDate(
+        fechaMax.getDate() + 14
+    );
+
+
+    calendario.min =
+        fechaMin;
+
+    calendario.max =
+        convertirFechaISO(fechaMax);
+
+
+    // =====================================
+    // ABRIR CALENDARIO
+    // =====================================
+
+    const botonCalendario =
+        container.querySelector(".calendar");
+
+
+    if(botonCalendario){
+
+        botonCalendario.addEventListener(
+            "click",
+            () => {
+
+                calendario.showPicker();
+
+            }
+        );
 
     }
+
+
+    // =====================================
+    // FECHA ELEGIDA DESDE CALENDARIO
+    // =====================================
+
+    calendario.addEventListener(
+    "change",
+    () => {
+
+        if(!calendario.value){
+
+            return;
+
+        }
+
+
+        const fecha =
+            crearFechaDesdeISO(
+                calendario.value
+            );
+
+
+        if(!fecha){
+
+            console.error(
+                "❌ Fecha de calendario inválida"
+            );
+
+            calendario.value = "";
+
+            return;
+
+        }
+
+
+        // =====================================
+        // DOMINGO = CERRADO
+        // =====================================
+
+        if(
+            fecha.getDay() === 0
+        ){
+
+            console.log(
+                "🚫 Domingo cerrado"
+            );
+
+            calendario.value = "";
+
+            return;
+
+        }
+
+
+        // =====================================
+        // GUARDAR FECHA
+        // =====================================
+
+        turno.fechaISO =
+            calendario.value;
+
+
+        turno.fecha =
+            fecha.toLocaleDateString(
+                "es-AR",
+                {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long"
+                }
+            );
+
+
+        // =====================================
+        // RECONSTRUIR FECHA + HORARIO
+        // =====================================
+
+        if(turno.horario){
+
+            turno.fechaHora =
+                crearFechaHora(
+                    turno.fechaISO,
+                    turno.horario
+                );
+
+        }
+
+
+        console.log(
+            "📅 Fecha elegida desde calendario:",
+            {
+                texto: turno.fecha,
+                iso: turno.fechaISO
+            }
+        );
+
+
+        actualizarResumen();
+
+        mostrarPromociones();
+
+        mostrarPaso(3);
+
+    }
+);
+
+}
+
+/*=========================================
+        FECHAS
+=========================================*/
+
+function obtenerFechaLocal(){
+
+    const fecha =
+        new Date();
+
+    fecha.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
+    return fecha;
+
+}
+
+
+function convertirFechaISO(fecha){
 
     const año =
         fecha.getFullYear();
@@ -756,64 +1056,480 @@ function obtenerFechaReal(card){
             fecha.getDate()
         ).padStart(2, "0");
 
-    const fechaISO =
-        `${año}-${mes}-${dia}`;
 
-    const fechaTexto =
-        fecha.toLocaleDateString(
-            "es-AR",
-            {
-                weekday: "long",
-                day: "numeric",
-                month: "long"
-            }
-        );
-
-    return {
-
-        fecha,
-
-        fechaISO,
-
-        fechaTexto
-
-    };
+    return `${año}-${mes}-${dia}`;
 
 }
 
+
+function crearFechaDesdeISO(fechaISO){
+
+    if(!fechaISO){
+
+        return null;
+
+    }
+
+
+    const [
+        año,
+        mes,
+        dia
+    ] =
+        fechaISO
+            .split("-")
+            .map(Number);
+
+
+    const fecha =
+        new Date(
+            año,
+            mes - 1,
+            dia
+        );
+
+
+    fecha.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
+
+    return fecha;
+
+}
+
+/*=========================================
+        CREAR FECHA + HORA
+=========================================*/
 
 function crearFechaHora(
     fechaISO,
     horario
 ){
 
-    if(!fechaISO || !horario){
+    if(
+        !fechaISO ||
+        !horario
+    ){
+
         return null;
+
     }
 
-    const [hora, minutos] =
+
+    const [
+        hora,
+        minutos
+    ] =
         horario.split(":");
+
 
     const fecha =
         new Date(
             `${fechaISO}T${hora}:${minutos}:00`
         );
 
+
     return fecha;
 
 }
 
+/*=========================================
+        PASO 3
+        PROMOCIONES + SERVICIOS
+=========================================*/
+
+function iniciarPaso3(){
+
+    console.log("🔥 INICIANDO PASO 3");
+
+    const servicios =
+        document.querySelectorAll(".service-card");
+
+    servicios.forEach(card => {
+
+        card.addEventListener("click", () => {
+
+            seleccionar(
+                ".service-card",
+                card
+            );
+
+            // Si eligió un servicio normal,
+            // quitamos cualquier promoción anterior
+
+            document
+                .querySelectorAll(".promo-card")
+                .forEach(item => {
+
+                    item.classList.remove("selected");
+
+                });
+
+            turno.servicio =
+                card.dataset.service;
+
+            turno.precio =
+                Number(card.dataset.price);
+
+            turno.promocion = "";
+
+            // =====================================
+            // SERVICIO DE COLOR
+            // =====================================
+
+            if (esServicioColor()) {
+
+                turno.barbero =
+                    "Barbero disponible";
+
+                console.log(
+                    "🎨 Servicio de color seleccionado"
+                );
+
+            } else {
+
+                turno.barbero = "";
+
+            }
+
+            actualizarResumen();
+
+            mostrarPaso(4);
+
+        });
+
+    });
+
+}
 
 
 /*=========================================
-        PASO 4
-        BARBEROS
+        MOSTRAR PROMOCIONES
 =========================================*/
 
+function mostrarPromociones(){
+
+    console.log("🎁 Mostrando promociones");
+
+    const container =
+        document.querySelector(
+            "#promocionesContainer"
+        );
+
+    if(!container){
+
+        console.error(
+            "❌ No existe #promocionesContainer"
+        );
+
+        return;
+    }
+
+    container.innerHTML = "";
+
+
+    // =====================================
+    // SI NO HAY FECHA
+    // =====================================
+
+    if(!turno.fechaISO){
+
+        console.warn(
+            "⚠️ No hay fecha seleccionada"
+        );
+
+        return;
+    }
+
+
+    // =====================================
+    // OBTENER DÍA DE LA SEMANA
+    // =====================================
+
+    const fecha =
+        new Date(
+            `${turno.fechaISO}T00:00:00`
+        );
+
+
+    const diasSemana = [
+
+        "domingo",
+        "lunes",
+        "martes",
+        "miercoles",
+        "jueves",
+        "viernes",
+        "sabado"
+
+    ];
+
+
+    const diaSemana =
+        diasSemana[
+            fecha.getDay()
+        ];
+
+
+    console.log(
+        "📅 Día para promociones:",
+        diaSemana
+    );
+
+
+    // =====================================
+    // FILTRAR PROMOCIONES
+    // =====================================
+
+    const promocionesDelDia =
+        promocionesDisponibles.filter(
+            promo => {
+
+                if(promo.activo === false){
+
+                    return false;
+
+                }
+
+                if(!promo.dias){
+
+                    return false;
+
+                }
+
+                return promo.dias.includes(
+                    diaSemana
+                );
+
+            }
+        );
+
+
+    console.log(
+        "🎁 Promociones del día:",
+        promocionesDelDia
+    );
+
+
+    // =====================================
+    // SI NO HAY PROMOS
+    // =====================================
+
+    if(
+        promocionesDelDia.length === 0
+    ){
+
+        return;
+
+    }
+
+
+    // =====================================
+    // TÍTULO
+    // =====================================
+
+    const titulo =
+        document.createElement("div");
+
+    titulo.className =
+        "promociones-title";
+
+    titulo.innerHTML = `
+
+        <h3>
+            🔥 Promociones del día
+        </h3>
+
+        <p>
+            Aprovechá estos precios especiales.
+        </p>
+
+    `;
+
+    container.appendChild(titulo);
+
+
+    // =====================================
+    // CREAR TARJETAS
+    // =====================================
+
+    promocionesDelDia.forEach(
+        promo => {
+
+            const card =
+                document.createElement("div");
+
+
+            card.className =
+                "promo-card";
+
+
+            card.dataset.tipo =
+                promo.tipo;
+
+
+            card.dataset.nombre =
+                promo.nombre;
+
+
+            card.dataset.precio =
+                promo.precio;
+
+
+            card.innerHTML = `
+
+                <div class="promo-info">
+
+                    <span class="promo-badge">
+                        PROMO
+                    </span>
+
+                    <h3>
+                        ${promo.nombre}
+                    </h3>
+
+                    <small>
+                        ${obtenerDescripcionPromo(promo)}
+                    </small>
+
+                </div>
+
+                <strong>
+                    $${Number(
+                        promo.precio
+                    ).toLocaleString("es-AR")}
+                </strong>
+
+            `;
+
+
+            // =================================
+            // CLICK PROMOCIÓN
+            // =================================
+
+            card.addEventListener(
+                "click",
+                () => {
+
+                    // Quitar selección
+                    // de otras promociones
+
+                    document
+                        .querySelectorAll(
+                            ".promo-card"
+                        )
+                        .forEach(item => {
+
+                            item.classList.remove(
+                                "selected"
+                            );
+
+                        });
+
+
+                    // Quitar selección
+                    // de servicios normales
+
+                    document
+                        .querySelectorAll(
+                            ".service-card"
+                        )
+                        .forEach(item => {
+
+                            item.classList.remove(
+                                "selected"
+                            );
+
+                        });
+
+
+                    card.classList.add(
+                        "selected"
+                    );
+
+
+                    turno.servicio =
+                        promo.nombre;
+
+
+                    turno.precio =
+                        Number(
+                            promo.precio
+                        );
+
+
+                    turno.promocion =
+                        promo.tipo;
+
+
+                    turno.barbero = "";
+
+
+                    console.log(
+                        "🎁 Promoción seleccionada:",
+                        promo
+                    );
+
+
+                    actualizarResumen();
+
+                    mostrarPaso(4);
+
+                }
+            );
+
+
+            container.appendChild(card);
+
+        }
+    );
+
+}
+
+
 /*=========================================
-        PASO 4
-        BARBEROS
+        DESCRIPCIÓN PROMOCIÓN
 =========================================*/
+
+function obtenerDescripcionPromo(promo){
+
+    switch(promo.tipo){
+
+        case "jubilados":
+
+            return "Corte para jubilados";
+
+        case "corte_lunes":
+
+            return "Corte • 35 minutos";
+
+        case "corte_barba_lunes":
+
+            return "Corte + Barba • 60 minutos";
+
+        case "dos_personas":
+
+            return "2 personas juntas";
+
+        case "padre_hijo":
+
+            return "2 cortes • Padre e hijo";
+
+        case "membresia":
+
+            return "4 cortes durante el mes";
+
+        default:
+
+            return "Promoción especial";
+
+    }
+
+}
 
 /*=========================================
         PASO 4
@@ -2067,6 +2783,7 @@ function reiniciarFormulario(){
     turno.servicio = "";
     turno.precio = 0;
     turno.fecha = "";
+    turno.promocion = null;
     turno.horario = "";
     turno.barbero = "";
     turno.pago = "";
