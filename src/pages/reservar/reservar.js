@@ -8,6 +8,9 @@ import {
     obtenerTurnosDisponibles
 } from "../../services/turnos.services.js";
 
+import {
+    obtenerPromociones
+} from "../../services/promociones.service.js";
 
 let usuarioActual = null;
 let perfilUsuario = null;
@@ -560,11 +563,11 @@ function iniciarPaso1(){
 }
 
 /*=========================================
-        PASO 2
+        PASO 3
         SERVICIO
 =========================================*/
 
-function iniciarPaso2(){
+function iniciarPaso3(){
 
     const servicios =
         document.querySelectorAll(".service-card");
@@ -611,7 +614,7 @@ function iniciarPaso2(){
 
             actualizarResumen();
 
-            mostrarPaso(3);
+            mostrarPaso(4);
 
         });
 
@@ -619,11 +622,11 @@ function iniciarPaso2(){
 
 }
 /*=========================================
-        PASO 3
+        PASO 2
         FECHA
 =========================================*/
 
-function iniciarPaso3(){
+function iniciarPaso2(){
 
     const dias = document.querySelectorAll(".day-card");
 
@@ -665,7 +668,7 @@ function iniciarPaso3(){
 
             actualizarResumen();
 
-            mostrarPaso(4);
+            mostrarPaso(3);
 
         });
 
