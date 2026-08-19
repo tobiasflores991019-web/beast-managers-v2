@@ -213,20 +213,22 @@ const barberos = {
 
         nombre: "Ori",
 
-        foto: "../../assets/img/barberos/ori.jpg",
+        foto: "../../assets/img/barbers/barberoori.png",
 
-        rating: "4.9",
+        rating: "4.0",
 
         estrellas: "★★★★★",
 
-        experiencia: "7 años",
+        experiencia: "2 años",
 
-        descripcion: "Especialista en Fade, Taper y Barba.",
+        descripcion: "Siempre brindar un servicio bueno y comodo para los clientes, hablar de lo que sea y ser un amigo mas en el servicio del corte",
 
         especialidades: [
-            "Fade",
+            "Cualquier tipo de Fade",
             "Taper",
             "Barba",
+            "Manejo de tijeras",
+
             "Cortes Clásicos"
         ],
 
@@ -263,9 +265,9 @@ const barberos = {
 
         nombre: "Benja",
 
-        foto: "../../assets/img/barberos/benja.jpg",
+        foto: "../../assets/img/barbers/barberobenja.png",
 
-        rating: "4.8",
+        rating: "4.0",
 
         estrellas: "★★★★★",
 
@@ -314,9 +316,9 @@ const barberos = {
 
         nombre: "Dylan",
 
-        foto: "../../assets/img/barberos/dylan.jpg",
+        foto: "../../assets/img/barbers/barberodylan.png",
 
-        rating: "4.9",
+        rating: "4.0",
 
         estrellas: "★★★★★",
 
@@ -331,6 +333,7 @@ const barberos = {
             "Freestyle",
             "Barbas",
             "Corte a tijera",
+            "Colorimetria",
             "Manejo de navaja"
         ],
 
@@ -367,9 +370,9 @@ const barberos = {
 
         nombre: "Tobi",
 
-        foto: "../../assets/img/barberos/tobi.jpg",
+        foto: "../../assets/img/barbers/barberotobi.png",
 
-        rating: "5.0",
+        rating: "4.0",
 
         estrellas: "★★★★★",
 
@@ -418,20 +421,20 @@ const barberos = {
 
         nombre: "Ivan",
 
-        foto: "../../assets/img/barberos/ivan.jpg",
+        foto: "../../assets/img/barbers/barberoivan.png",
 
-        rating: "5.0",
+        rating: "4.0",
 
         estrellas: "★★★★★",
 
-        experiencia: "",
+        experiencia: "3 años",
 
         descripcion:
-            "Barbero especializado en cortes modernos y clásicos.",
+            "Venis como estas, salis como un rey, tu barbero de confianza esta en escalada",
 
         especialidades: [
-            "Fade",
-            "Taper",
+            "Cualquier tipo de Fade",
+            "Cortes con tijeras",
             "Cortes Clásicos",
             "Barba"
         ],
