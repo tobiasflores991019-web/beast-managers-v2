@@ -14,6 +14,11 @@
     <link rel="stylesheet"
           href="./reservar.css">
 
+          <link
+           rel="stylesheet"
+           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
+
 </head>
 
 <body>
@@ -37,12 +42,15 @@
 
             <header class="header">
 
-                <a href="../../index.html"
-                    class="back">
+                <button
+            > <a href="/"
+    class="back">
 
-                    <i class="fa-solid fa-arrow-left"></i>
+    <i class="fa-solid fa-arrow-left"></i>
 
-                </a>
+</a>
+
+                 </button>
 
                 <div class="header-text">
 
@@ -629,7 +637,7 @@
 
                         <span>
 
-                            4.8 (94)
+                            4.0 (94)
 
                         </span>
 
@@ -699,7 +707,7 @@
 
                         <span>
 
-                            5.0 (211)
+                            4.0 (211)
 
                         </span>
 
@@ -848,95 +856,409 @@
 
             </div>
 
-            <!--======================================
-            PASO 6
-            =======================================-->
+        <!--======================================
+        PASO 6
+        MEDIOS DE PAGO
+=======================================-->
 
-            <section class="step hidden"
-                id="step6">
+<section class="step hidden" id="step6">
 
-                <div class="step-title">
+    <div class="step-title">
 
-                    <div class="number">
+        <div class="number">
+            6
+        </div>
 
-                        6
+        <div>
 
-                    </div>
+            <h2>
+                ¿Cómo vas a pagar?
+            </h2>
 
-                    <div>
+            <p>
+                Elegí un medio de pago.
+            </p>
 
-                        <h2>
+        </div>
 
-                            ¿Cómo vas a pagar?
+    </div>
 
-                        </h2>
 
-                        <p>
+    <!-- ==================================
+            OPCIONES DE PAGO
+    =================================== -->
 
-                            Elegí un medio de pago.
+    <div class="payment-grid">
 
-                        </p>
+
+        <!-- ==============================
+                EFECTIVO
+        =============================== -->
+
+        <button
+            type="button"
+            class="payment-card"
+            data-payment="efectivo">
+
+            <i class="fa-solid fa-money-bill-wave"></i>
+
+            <span>
+                Efectivo
+            </span>
+
+        </button>
+
+
+        <!-- ==============================
+                TRANSFERENCIA
+        =============================== -->
+
+        <button
+            type="button"
+            class="payment-card"
+            data-payment="transferencia">
+
+            <i class="fa-solid fa-building-columns"></i>
+
+            <span>
+                Transferencia
+            </span>
+
+        </button>
+
+
+        <!-- ==============================
+                PAGO CON QR
+        =============================== -->
+
+        <button
+            type="button"
+            class="payment-card"
+            data-payment="qr">
+
+            <i class="fa-solid fa-qrcode"></i>
+
+            <span>
+                Pago con QR
+            </span>
+
+        </button>
+
+
+        <!-- ==============================
+                CRÉDITO
+        =============================== -->
+
+        <button
+            type="button"
+            class="payment-card payment-disabled"
+            data-payment="credito"
+            disabled>
+
+            <i class="fa-solid fa-credit-card"></i>
+
+            <span>
+                Crédito
+            </span>
+
+            <small>
+                Próximamente
+            </small>
+
+        </button>
+
+    </div>
+
+
+    <!-- ==================================
+            CONTENEDOR INFORMACIÓN PAGO
+    =================================== -->
+
+    <div
+        id="payment-details"
+        class="payment-details hidden">
+
+
+        <!-- ==================================
+                EFECTIVO
+        =================================== -->
+
+        <div
+            id="payment-efectivo"
+            class="payment-info hidden">
+
+            <div class="payment-info-icon">
+
+                <i class="fa-solid fa-money-bill-wave"></i>
+
+            </div>
+
+            <h3>
+                Pago en efectivo
+            </h3>
+
+            <p>
+                Vas a abonar el importe de tu turno
+                directamente en el local.
+            </p>
+
+            <div class="payment-notice">
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                <span>
+                    Recordá llevar el importe correspondiente
+                    el día de tu turno.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================
+                TRANSFERENCIA
+        =================================== -->
+
+        <div
+            id="payment-transferencia"
+            class="payment-info hidden">
+
+            <div class="payment-info-icon">
+
+                <i class="fa-solid fa-building-columns"></i>
+
+            </div>
+
+            <h3>
+                Transferencia bancaria
+            </h3>
+
+            <p>
+                Podés realizar la transferencia desde tu casa
+                o abonarla en el local.
+            </p>
+
+
+            <!-- DATOS BANCARIOS -->
+
+            <div class="payment-data">
+
+                <div class="payment-data-row">
+
+                    <span>
+                        Banco
+                    </span>
+
+                    <strong>
+                        Brubank
+                    </strong>
+
+                </div>
+
+
+                <div class="payment-data-row">
+
+                    <span>
+                        Alias
+                    </span>
+
+                    <div class="alias-container">
+
+                        <strong id="payment-alias">
+                            thebeast01
+                        </strong>
+
+                        <button
+                            type="button"
+                            id="copy-alias"
+                            class="copy-alias">
+
+                            <i class="fa-regular fa-copy"></i>
+
+                            Copiar
+
+                        </button>
 
                     </div>
 
                 </div>
 
-                <div class="payment-grid">
 
-                    <button
-                        class="payment-card"
-                        data-payment="Efectivo">
+                <div class="payment-data-row">
 
-                        <i class="fa-solid fa-money-bill-wave"></i>
+                    <span>
+                        Titular
+                    </span>
 
-                        <span>Efectivo</span>
-
-                    </button>
-
-                    <button
-                        class="payment-card"
-                        data-payment="Transferencia">
-
-                        <i class="fa-solid fa-building-columns"></i>
-
-                        <span>Transferencia</span>
-
-                    </button>
-
-                    <button
-                        class="payment-card"
-                        data-payment="Mercado Pago">
-
-                        <i class="fa-solid fa-handshake"></i>
-
-                        <span>Mercado Pago</span>
-
-                    </button>
-
-                    <button
-                        class="payment-card"
-                        data-payment="Débito">
-
-                        <i class="fa-regular fa-credit-card"></i>
-
-                        <span>Débito</span>
-
-                    </button>
-
-                    <button
-                        class="payment-card"
-                        data-payment="Crédito">
-
-                        <i class="fa-solid fa-credit-card"></i>
-
-                        <span>Crédito</span>
-
-                    </button>
+                    <strong>
+                        Tobias Agustín Flores
+                    </strong>
 
                 </div>
 
-            </section>
+            </div>
 
+
+            <!-- AVISO -->
+
+            <div class="payment-notice">
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                <span>
+                    Podés realizar la transferencia antes de tu turno
+                    o abonarla directamente en el local.
+                </span>
+
+            </div>
+
+
+            <!-- COMPROBANTE OPCIONAL -->
+
+            <div class="receipt-upload">
+
+                <label
+                    for="receipt-file-transferencia"
+                    class="receipt-upload-label">
+
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                    <strong>
+                        Cargar comprobante
+                    </strong>
+
+                    <span>
+                        Opcional
+                    </span>
+
+                </label>
+
+                <input
+                    type="file"
+                    id="receipt-file-transferencia"
+                    accept="image/*"
+                    hidden>
+
+                <div
+                    id="receipt-preview-transferencia"
+                    class="receipt-preview hidden">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================
+                PAGO CON QR
+        =================================== -->
+
+        <div
+            id="payment-qr"
+            class="payment-info hidden">
+
+            <div class="payment-info-icon">
+
+                <i class="fa-solid fa-qrcode"></i>
+
+            </div>
+
+            <h3>
+                Pago con QR
+            </h3>
+
+            <p>
+                Escaneá el código QR desde tu billetera
+                virtual para realizar el pago.
+            </p>
+
+
+            <!-- QR -->
+
+            <div class="qr-container">
+
+                <img
+                    src="../../assets/img/qr-pago.PNG"
+                    alt="QR para realizar el pago"
+                    id="payment-qr-image">
+
+            </div>
+
+
+            <!-- AVISO -->
+
+            <div class="payment-notice">
+
+                <i class="fa-solid fa-mobile-screen-button"></i>
+
+                <span>
+                    Podés escanear este QR desde cualquier
+                    billetera compatible.
+                </span>
+
+            </div>
+
+
+            <!-- COMPROBANTE OBLIGATORIO -->
+
+            <div class="receipt-upload qr-receipt-upload">
+
+                <label
+                    for="receipt-file-qr"
+                    class="receipt-upload-label">
+
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                    <strong>
+                        Cargar comprobante
+                    </strong>
+
+                    <span>
+                        Obligatorio para continuar
+                    </span>
+
+                </label>
+
+                <input
+                    type="file"
+                    id="receipt-file-qr"
+                    accept="image/*"
+                    hidden>
+
+                <div
+                    id="receipt-preview-qr"
+                    class="receipt-preview hidden">
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ==================================
+            BOTÓN CONTINUAR
+    =================================== -->
+
+    <button
+        type="button"
+        id="payment-continue"
+        class="payment-continue hidden"
+        disabled>
+
+        <span>
+            Continuar
+        </span>
+
+        <i class="fa-solid fa-arrow-right"></i>
+
+    </button>
+
+
+</section>
             
             <!--======================================
             PASO 7

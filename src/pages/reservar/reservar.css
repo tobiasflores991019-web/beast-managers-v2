@@ -1738,6 +1738,702 @@ body{
 }
 
 /*==================================================
+        NUEVO SISTEMA DE MEDIOS DE PAGO
+==================================================*/
+
+.payment-card{
+    position:relative;
+}
+
+
+/*==================================================
+        CRÉDITO - PRÓXIMAMENTE
+==================================================*/
+
+.payment-card.payment-disabled{
+
+    cursor:not-allowed;
+
+    opacity:.55;
+
+    border-color:rgba(255,255,255,.04);
+
+}
+
+.payment-card.payment-disabled:hover{
+
+    transform:none;
+
+    border-color:rgba(255,255,255,.04);
+
+    box-shadow:none;
+
+}
+
+.payment-card.payment-disabled i{
+
+    color:#777;
+
+}
+
+.payment-card.payment-disabled span{
+
+    color:#999;
+
+}
+
+.payment-card.payment-disabled small{
+
+    display:block;
+
+    margin-top:4px;
+
+    color:var(--gold);
+
+    font-size:9px;
+
+    font-weight:600;
+
+    text-transform:uppercase;
+
+    letter-spacing:.5px;
+
+}
+
+
+/*==================================================
+        DETALLE DEL MEDIO DE PAGO
+==================================================*/
+
+.payment-details{
+
+    width:100%;
+
+    margin-top:25px;
+
+    animation:paymentDetailsIn .3s ease;
+
+}
+
+.payment-details.hidden{
+
+    display:none;
+
+}
+
+
+@keyframes paymentDetailsIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(10px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+/*==================================================
+        INFORMACIÓN DEL PAGO
+==================================================*/
+
+.payment-info{
+
+    background:linear-gradient(
+        180deg,
+        #181818,
+        #111111
+    );
+
+    border:1px solid rgba(212,175,55,.20);
+
+    border-radius:22px;
+
+    padding:28px;
+
+    text-align:center;
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,.30);
+
+}
+
+.payment-info.hidden{
+
+    display:none;
+
+}
+
+
+.payment-info-icon{
+
+    width:58px;
+
+    height:58px;
+
+    margin:0 auto 15px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:rgba(212,175,55,.10);
+
+    border:1px solid rgba(212,175,55,.25);
+
+}
+
+.payment-info-icon i{
+
+    color:var(--gold);
+
+    font-size:25px;
+
+}
+
+
+.payment-info h3{
+
+    margin:0 0 10px;
+
+    color:#fff;
+
+    font-size:21px;
+
+    font-weight:700;
+
+}
+
+.payment-info p{
+
+    max-width:620px;
+
+    margin:0 auto 22px;
+
+    color:#aaa;
+
+    font-size:14px;
+
+    line-height:1.6;
+
+}
+
+
+/*==================================================
+        DATOS DE TRANSFERENCIA
+==================================================*/
+
+.payment-data{
+
+    max-width:600px;
+
+    margin:0 auto 20px;
+
+    background:#101010;
+
+    border:1px solid rgba(255,255,255,.06);
+
+    border-radius:16px;
+
+    overflow:hidden;
+
+    text-align:left;
+
+}
+
+.payment-data-row{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:20px;
+
+    padding:16px 20px;
+
+    border-bottom:1px solid rgba(255,255,255,.06);
+
+}
+
+.payment-data-row:last-child{
+
+    border-bottom:none;
+
+}
+
+.payment-data-row > span{
+
+    color:#999;
+
+    font-size:13px;
+
+}
+
+.payment-data-row > strong{
+
+    color:#fff;
+
+    font-size:14px;
+
+}
+
+
+/*==================================================
+        ALIAS + COPIAR
+==================================================*/
+
+.alias-container{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+.alias-container strong{
+
+    color:var(--gold);
+
+    font-size:16px;
+
+    letter-spacing:.4px;
+
+}
+
+
+.copy-alias{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+    padding:7px 11px;
+
+    border:1px solid rgba(212,175,55,.35);
+
+    border-radius:9px;
+
+    background:rgba(212,175,55,.08);
+
+    color:var(--gold);
+
+    font-family:'Poppins',sans-serif;
+
+    font-size:11px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.copy-alias:hover{
+
+    background:rgba(212,175,55,.16);
+
+    border-color:var(--gold);
+
+}
+
+.copy-alias.copied{
+
+    color:#fff;
+
+    background:rgba(255,255,255,.08);
+
+}
+
+
+/*==================================================
+        AVISO
+==================================================*/
+
+.payment-notice{
+
+    max-width:600px;
+
+    margin:18px auto 0;
+
+    padding:14px 16px;
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:10px;
+
+    text-align:left;
+
+    background:rgba(212,175,55,.06);
+
+    border:1px solid rgba(212,175,55,.12);
+
+    border-radius:12px;
+
+}
+
+.payment-notice i{
+
+    color:var(--gold);
+
+    margin-top:2px;
+
+}
+
+.payment-notice span{
+
+    color:#aaa;
+
+    font-size:12px;
+
+    line-height:1.5;
+
+}
+
+
+/*==================================================
+        CARGAR COMPROBANTE
+==================================================*/
+
+.receipt-upload{
+
+    max-width:600px;
+
+    margin:20px auto 0;
+
+}
+
+.receipt-upload label{
+
+    min-height:90px;
+
+    padding:18px;
+
+    border:1px dashed rgba(212,175,55,.35);
+
+    border-radius:15px;
+
+    background:rgba(212,175,55,.04);
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:5px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.receipt-upload label:hover{
+
+    border-color:var(--gold);
+
+    background:rgba(212,175,55,.08);
+
+}
+
+.receipt-upload label i{
+
+    color:var(--gold);
+
+    font-size:22px;
+
+    margin-bottom:4px;
+
+}
+
+.receipt-upload label strong{
+
+    color:#fff;
+
+    font-size:13px;
+
+}
+
+.receipt-upload label span{
+
+    color:#777;
+
+    font-size:11px;
+
+}
+
+.receipt-upload input{
+
+    display:none;
+
+}
+
+
+/*==================================================
+        PREVISUALIZACIÓN COMPROBANTE
+==================================================*/
+
+.receipt-preview{
+
+    margin-top:15px;
+
+    padding:10px;
+
+    background:#0d0d0d;
+
+    border:1px solid rgba(255,255,255,.06);
+
+    border-radius:14px;
+
+}
+
+.receipt-preview.hidden{
+
+    display:none;
+
+}
+
+.receipt-preview img{
+
+    display:block;
+
+    width:100%;
+
+    max-width:260px;
+
+    max-height:300px;
+
+    margin:auto;
+
+    object-fit:contain;
+
+    border-radius:10px;
+
+}
+
+
+/*==================================================
+        QR
+==================================================*/
+
+.qr-container{
+
+    width:250px;
+
+    height:250px;
+
+    margin:10px auto 20px;
+
+    padding:12px;
+
+    background:#fff;
+
+    border-radius:18px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    box-shadow:
+
+        0 10px 30px rgba(0,0,0,.35);
+
+}
+
+.qr-container img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:contain;
+
+    border-radius:8px;
+
+}
+
+
+/*==================================================
+        BOTÓN CONTINUAR
+==================================================*/
+
+.payment-continue{
+
+    width:100%;
+
+    height:58px;
+
+    margin-top:20px;
+
+    border:none;
+
+    border-radius:17px;
+
+    background:linear-gradient(
+        135deg,
+        #B8860B,
+        var(--gold),
+        var(--gold-light)
+    );
+
+    color:#111;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    font-family:'Poppins',sans-serif;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.payment-continue:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(212,175,55,.20);
+
+}
+
+.payment-continue:active{
+
+    transform:translateY(0);
+
+}
+
+.payment-continue.hidden{
+
+    display:none;
+
+}
+
+
+/*==================================================
+        RESPONSIVE
+==================================================*/
+
+@media(max-width:650px){
+
+    .payment-grid{
+
+        grid-template-columns:repeat(2,1fr);
+
+        gap:12px;
+
+    }
+
+    .payment-data-row{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:6px;
+
+    }
+
+    .alias-container{
+
+        width:100%;
+
+        justify-content:space-between;
+
+    }
+
+    .payment-info{
+
+        padding:22px 16px;
+
+    }
+
+}
+
+@media(max-width:420px){
+
+    .payment-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .payment-card{
+
+        height:72px;
+
+        flex-direction:row;
+
+        justify-content:flex-start;
+
+        gap:16px;
+
+        padding:0 20px;
+
+    }
+
+    .payment-card.payment-disabled{
+
+        flex-wrap:wrap;
+
+    }
+
+    .payment-card.payment-disabled small{
+
+        margin-left:auto;
+
+        margin-right:10px;
+
+    }
+
+    .qr-container{
+
+        width:220px;
+
+        height:220px; 
+
+    }
+
+}
+
+/*==================================================
         RESPONSIVE
 ==================================================*/
 
@@ -2893,5 +3589,125 @@ body{
 
     border-color:
         rgba(255,255,255,.05);
+
+}
+
+/*=========================================
+    BOTÓN CONTINUAR DESHABILITADO
+=========================================*/
+
+.payment-continue:disabled{
+
+    opacity: .45;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+    box-shadow: none;
+
+}
+
+
+/*=========================================
+    CARGADOR DE COMPROBANTE
+=========================================*/
+
+.receipt-upload{
+
+    margin-top:20px;
+
+}
+
+
+.receipt-upload-label{
+
+    min-height:100px;
+
+    padding:20px;
+
+    border:1px dashed rgba(212,175,55,.45);
+
+    border-radius:16px;
+
+    background:rgba(212,175,55,.04);
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:8px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+
+.receipt-upload-label:hover{
+
+    border-color:var(--gold);
+
+    background:rgba(212,175,55,.08);
+
+}
+
+
+.receipt-upload-label i{
+
+    font-size:26px;
+
+    color:var(--gold);
+
+}
+
+
+.receipt-upload-label strong{
+
+    color:white;
+
+    font-size:15px;
+
+}
+
+
+.receipt-upload-label span{
+
+    color:#999;
+
+    font-size:12px;
+
+}
+
+
+/*=========================================
+        VISTA PREVIA
+=========================================*/
+
+.receipt-preview{
+
+    margin-top:15px;
+
+    text-align:center;
+
+}
+
+
+.receipt-preview img{
+
+    max-width:100%;
+
+    max-height:250px;
+
+    border-radius:14px;
+
+    border:1px solid rgba(212,175,55,.25);
+
+    object-fit:contain;
 
 }

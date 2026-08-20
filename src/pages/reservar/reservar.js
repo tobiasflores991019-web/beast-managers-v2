@@ -12,6 +12,13 @@ import {
     obtenerPromociones
 } from "../../services/promociones.service.js";
 
+import {
+    subirComprobante
+} from "../../firebase/firebase-storage.js";
+
+
+
+
 let usuarioActual = null;
 let perfilUsuario = null;
 let promocionesDisponibles = [];
@@ -2347,30 +2354,601 @@ document.getElementById("barberModal")
 mostrarPaso(5);
 
 }
+
+
+
 /*=========================================
         PASO 6
         MEDIO DE PAGO
 =========================================*/
 
+let comprobantePagoFile = null;
+
+
 function iniciarPaso6(){
 
-    const pagos = document.querySelectorAll(".payment-card");
+    const pagos =
+        document.querySelectorAll(".payment-card");
 
-    pagos.forEach(card=>{
+    const detalles =
+        document.getElementById("payment-details");
 
-        card.addEventListener("click",()=>{
+    const continuar =
+        document.getElementById("payment-continue");
 
-            seleccionar(".payment-card",card);
+    const alias =
+        document.getElementById("payment-alias");
 
-            turno.pago = card.dataset.payment;
+    const copiarAlias =
+        document.getElementById("copy-alias");
 
-            actualizarResumen();
 
-            mostrarPaso(7);
+    /*=========================================
+            INPUT TRANSFERENCIA
+    =========================================*/
 
-        });
+    const archivoTransferencia =
+        document.getElementById(
+            "receipt-file-transferencia"
+        );
+
+    const previewTransferencia =
+        document.getElementById(
+            "receipt-preview-transferencia"
+        );
+
+
+    /*=========================================
+            INPUT QR
+    =========================================*/
+
+    const archivoQR =
+        document.getElementById(
+            "receipt-file-qr"
+        );
+
+    const previewQR =
+        document.getElementById(
+            "receipt-preview-qr"
+        );
+
+
+    /*=========================================
+            ACTUALIZAR BOTÓN CONTINUAR
+    =========================================*/
+
+    function actualizarEstadoContinuar(){
+
+        if(!continuar){
+
+            return;
+
+        }
+
+
+        /*
+            QR REQUIERE COMPROBANTE
+        */
+
+        if(
+            turno.pago &&
+            turno.pago.metodo === "qr"
+        ){
+
+            continuar.disabled =
+                !comprobantePagoFile;
+
+            return;
+
+        }
+
+
+        /*
+            EFECTIVO Y TRANSFERENCIA
+            NO REQUIEREN COMPROBANTE
+        */
+
+        continuar.disabled = false;
+
+    }
+
+
+    /*=========================================
+            LIMPIAR COMPROBANTE
+    =========================================*/
+
+    function limpiarComprobante(){
+
+        comprobantePagoFile = null;
+
+
+        if(archivoTransferencia){
+
+            archivoTransferencia.value = "";
+
+        }
+
+
+        if(archivoQR){
+
+            archivoQR.value = "";
+
+        }
+
+
+        if(previewTransferencia){
+
+            previewTransferencia.innerHTML = "";
+
+            previewTransferencia.classList.add(
+                "hidden"
+            );
+
+        }
+
+
+        if(previewQR){
+
+            previewQR.innerHTML = "";
+
+            previewQR.classList.add(
+                "hidden"
+            );
+
+        }
+
+    }
+
+
+    /*=========================================
+            SELECCIONAR MEDIO DE PAGO
+    =========================================*/
+
+    pagos.forEach(card => {
+
+        card.addEventListener(
+            "click",
+            () => {
+
+                /* Crédito bloqueado */
+
+                if(card.disabled){
+
+                    return;
+
+                }
+
+
+                const metodo =
+                    card.dataset.payment;
+
+
+                console.log(
+                    "💳 MEDIO DE PAGO:",
+                    metodo
+                );
+
+
+                /*=================================
+                    LIMPIAR COMPROBANTE ANTERIOR
+                =================================*/
+
+                limpiarComprobante();
+
+
+                /*=================================
+                    SELECCIONAR TARJETA
+                =================================*/
+
+                seleccionar(
+                    ".payment-card",
+                    card
+                );
+
+
+                /*=================================
+                    OCULTAR DETALLES
+                =================================*/
+
+                document
+                    .querySelectorAll(".payment-info")
+                    .forEach(info => {
+
+                        info.classList.add(
+                            "hidden"
+                        );
+
+                    });
+
+
+                /*=================================
+                    MOSTRAR CONTENEDOR
+                =================================*/
+
+                if(detalles){
+
+                    detalles.classList.remove(
+                        "hidden"
+                    );
+
+                }
+
+
+                /*=================================
+                    MOSTRAR DETALLE
+                =================================*/
+
+                const detalle =
+                    document.getElementById(
+                        `payment-${metodo}`
+                    );
+
+
+                if(detalle){
+
+                    detalle.classList.remove(
+                        "hidden"
+                    );
+
+                }
+
+
+                /*=================================
+                    MOSTRAR CONTINUAR
+                =================================*/
+
+                if(continuar){
+
+                    continuar.classList.remove(
+                        "hidden"
+                    );
+
+                }
+
+
+                /*=================================
+                    GUARDAR PAGO
+                =================================*/
+
+                turno.pago = {
+
+                    metodo: metodo,
+
+                    estado: "pendiente",
+
+                    comprobanteUrl: "",
+
+                    fechaPago: null
+
+                };
+
+
+                console.log(
+                    "💰 PAGO SELECCIONADO:",
+                    turno.pago
+                );
+
+
+                /*=================================
+                    ESTADO DEL BOTÓN
+                =================================*/
+
+                actualizarEstadoContinuar();
+
+            }
+        );
 
     });
+
+
+    /*=========================================
+            COPIAR ALIAS
+    =========================================*/
+
+    if(copiarAlias){
+
+        copiarAlias.addEventListener(
+            "click",
+            async () => {
+
+                try{
+
+                    await navigator.clipboard.writeText(
+                        alias.textContent.trim()
+                    );
+
+
+                    copiarAlias.innerHTML = `
+                        <i class="fa-solid fa-check"></i>
+                        Copiado
+                    `;
+
+
+                    copiarAlias.classList.add(
+                        "copied"
+                    );
+
+
+                    setTimeout(() => {
+
+                        copiarAlias.innerHTML = `
+                            <i class="fa-regular fa-copy"></i>
+                            Copiar
+                        `;
+
+                        copiarAlias.classList.remove(
+                            "copied"
+                        );
+
+                    },2000);
+
+
+                }catch(error){
+
+                    console.error(
+                        "❌ Error copiando alias:",
+                        error
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /*=========================================
+            PROCESAR COMPROBANTE
+    =========================================*/
+
+    function procesarComprobante(
+        archivo,
+        preview
+    ){
+
+        if(!archivo){
+
+            return;
+
+        }
+
+
+        archivo.addEventListener(
+            "change",
+            () => {
+
+                const file =
+                    archivo.files[0];
+
+
+                /*=============================
+                    NO HAY ARCHIVO
+                =============================*/
+
+                if(!file){
+
+                    comprobantePagoFile =
+                        null;
+
+
+                    if(preview){
+
+                        preview.innerHTML =
+                            "";
+
+                        preview.classList.add(
+                            "hidden"
+                        );
+
+                    }
+
+
+                    actualizarEstadoContinuar();
+
+                    return;
+
+                }
+
+
+                /*=============================
+                    VALIDAR IMAGEN
+                =============================*/
+
+                if(
+                    !file.type.startsWith(
+                        "image/"
+                    )
+                ){
+
+                    alert(
+                        "Por favor seleccioná una imagen."
+                    );
+
+                    archivo.value = "";
+
+                    comprobantePagoFile =
+                        null;
+
+                    actualizarEstadoContinuar();
+
+                    return;
+
+                }
+
+
+                /*=============================
+                    VALIDAR TAMAÑO
+                =============================*/
+
+                const maxSize =
+                    5 * 1024 * 1024;
+
+
+                if(file.size > maxSize){
+
+                    alert(
+                        "La imagen no puede superar los 5 MB."
+                    );
+
+                    archivo.value = "";
+
+                    comprobantePagoFile =
+                        null;
+
+                    actualizarEstadoContinuar();
+
+                    return;
+
+                }
+
+
+                /*=============================
+                    GUARDAR ARCHIVO
+                =============================*/
+
+                comprobantePagoFile =
+                    file;
+
+
+                console.log(
+                    "📸 COMPROBANTE:",
+                    file.name
+                );
+
+
+                /*=============================
+                    PREVIEW
+                =============================*/
+
+                const reader =
+                    new FileReader();
+
+
+                reader.onload =
+                    event => {
+
+                        if(!preview){
+
+                            return;
+
+                        }
+
+
+                        preview.innerHTML = `
+
+                            <img
+                                src="${event.target.result}"
+                                alt="Vista previa del comprobante">
+
+                        `;
+
+
+                        preview.classList.remove(
+                            "hidden"
+                        );
+
+                    };
+
+
+                reader.readAsDataURL(
+                    file
+                );
+
+
+                /*=============================
+                    ACTUALIZAR BOTÓN
+                =============================*/
+
+                actualizarEstadoContinuar();
+
+            }
+        );
+
+    }
+
+
+    /*=========================================
+        ACTIVAR COMPROBANTE TRANSFERENCIA
+    =========================================*/
+
+    procesarComprobante(
+        archivoTransferencia,
+        previewTransferencia
+    );
+
+
+    /*=========================================
+        ACTIVAR COMPROBANTE QR
+    =========================================*/
+
+    procesarComprobante(
+        archivoQR,
+        previewQR
+    );
+
+
+    /*=========================================
+            CONTINUAR
+    =========================================*/
+
+    if(continuar){
+
+        continuar.addEventListener(
+            "click",
+            () => {
+
+                /*=============================
+                    SIN MÉTODO
+                =============================*/
+
+                if(!turno.pago){
+
+                    alert(
+                        "Seleccioná un medio de pago."
+                    );
+
+                    return;
+
+                }
+
+
+                /*=============================
+                    QR REQUIERE COMPROBANTE
+                =============================*/
+
+                if(
+                    turno.pago.metodo === "qr" &&
+                    !comprobantePagoFile
+                ){
+
+                    alert(
+                        "Tenés que cargar el comprobante del pago."
+                    );
+
+                    return;
+
+                }
+
+
+                /*=============================
+                    CONTINUAR
+                =============================*/
+
+                console.log(
+                    "➡️ CONTINUAR CON PAGO:",
+                    turno.pago
+                );
+
+
+                actualizarResumen();
+
+                mostrarPaso(7);
+
+            }
+        );
+
+    }
 
 }
 
@@ -2594,13 +3172,31 @@ function actualizarResumen(){
 
     );
 
-    actualizarCampo(
+    let medioPago = "-";
 
-        "rPago",
+if(turno.pago){
 
-        turno.pago
+    const nombresPago = {
 
-    );
+        efectivo: "Efectivo",
+
+        transferencia: "Transferencia bancaria",
+
+        qr: "Pago con QR"
+
+    };
+
+    medioPago =
+        nombresPago[turno.pago.metodo]
+        || turno.pago.metodo
+        || "-";
+
+}
+
+actualizarCampo(
+    "rPago",
+    medioPago
+);
 
     actualizarCampo(
 
@@ -2638,111 +3234,210 @@ function actualizarResumen(){
 
 }
 
-/*=========================================
-        GENERAR RESERVA
-=========================================*/
-
-function generarCodigoReserva(){
-
-    const ahora = new Date();
-
-    const año = String(ahora.getFullYear()).slice(-2);
-
-    const mes = String(
-        ahora.getMonth()+1
-    ).padStart(2,"0");
-
-    const dia = String(
-        ahora.getDate()
-    ).padStart(2,"0");
-
-    const numero = Math.floor(
-        Math.random()*9000
-    )+1000;
-
-    return `BM-${año}${mes}${dia}-${numero}`;
-
-}
 
 /*=========================================
         CONFIRMAR TURNO
 =========================================*/
 
-const confirmar = document.getElementById("confirmTurn");
+const confirmar =
+    document.getElementById("confirmTurn");
+
 
 if(confirmar){
 
-    confirmar.addEventListener("click", async () => {
+    confirmar.addEventListener(
+        "click",
+        async () => {
 
-        try {
+            try{
 
-            confirmar.disabled = true;
+                confirmar.disabled = true;
 
-            confirmar.textContent = "GUARDANDO...";
 
-            actualizarResumen();
+                /*=================================
+                    TEXTO DEL BOTÓN
+                =================================*/
 
-            const codigo = generarCodigoReserva();
+                if(
+                    comprobantePagoFile &&
+                    turno.pago?.metodo === "qr"
+                ){
 
-            console.log("💾 Guardando turno:", turno);
+                    confirmar.textContent =
+                        "SUBIENDO COMPROBANTE...";
 
-            const turnoId = await crearTurno(
-                turno,
-                codigo
+                }else{
+
+                    confirmar.textContent =
+                        "GUARDANDO...";
+
+                }
+
+
+                /*=================================
+                    ACTUALIZAR RESUMEN
+                =================================*/
+
+                actualizarResumen();
+
+
+                /*=========================================
+        GENERAR CÓDIGO DE RESERVA
+=========================================*/
+
+function generarCodigoReserva(){
+
+    const caracteres =
+        "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+    let codigo = "";
+
+    for(let i = 0; i < 6; i++){
+
+        codigo +=
+            caracteres.charAt(
+                Math.floor(
+                    Math.random() * caracteres.length
+                )
             );
 
-            console.log(
-                "✅ Turno guardado en Firebase:",
-                turnoId
-            );
+    }
 
-            document.getElementById(
-                "reservationCode"
-            ).textContent = codigo;
-
-            document.getElementById(
-                "successSucursal"
-            ).textContent = turno.sucursal;
-
-            document.getElementById(
-                "successFecha"
-            ).textContent = turno.fecha;
-
-            document.getElementById(
-                "successHorario"
-            ).textContent = turno.horario;
-
-            document.getElementById(
-                "successBarbero"
-            ).textContent = turno.barbero;
-
-            document
-                .getElementById("successModal")
-                .classList.remove("hidden");
-
-        } catch (error) {
-
-            console.error(
-                "❌ Error guardando turno:",
-                error
-            );
-
-            alert(
-                "No se pudo guardar el turno. Revisá la conexión e intentá nuevamente."
-            );
-
-        } finally {
-
-            confirmar.disabled = false;
-
-            confirmar.textContent = "CONFIRMAR TURNO";
-
-        }
-
-    });
+    return `BEAST-${codigo}`;
 
 }
 
+                /*=================================
+                    GENERAR CÓDIGO
+                =================================*/
+
+                const codigo =
+                    generarCodigoReserva();
+
+
+                console.log(
+                    "🎫 Código de reserva:",
+                    codigo
+                );
+
+
+                /*=================================
+                    SUBIR COMPROBANTE QR
+                =================================*/
+
+                if(
+                    comprobantePagoFile &&
+                    turno.pago?.metodo === "qr"
+                ){
+
+                    const comprobanteUrl =
+                        await subirComprobante(
+                            comprobantePagoFile,
+                            codigo,
+                            turno.clienteId
+                        );
+
+
+                    turno.pago.comprobanteUrl =
+                        comprobanteUrl;
+
+
+                    console.log(
+                        "✅ Comprobante guardado:",
+                        comprobanteUrl
+                    );
+
+                }
+
+
+                /*=================================
+                    GUARDAR TURNO EN FIREBASE
+                =================================*/
+
+                console.log(
+                    "💾 Guardando turno:",
+                    turno
+                );
+
+
+                const turnoId =
+                    await crearTurno(
+                        turno,
+                        codigo
+                    );
+
+
+                console.log(
+                    "✅ Turno guardado en Firebase:",
+                    turnoId
+                );
+
+
+                /*=================================
+                    MOSTRAR CONFIRMACIÓN
+                =================================*/
+
+                document.getElementById(
+                    "reservationCode"
+                ).textContent = codigo;
+
+
+                document.getElementById(
+                    "successSucursal"
+                ).textContent =
+                    turno.sucursal;
+
+
+                document.getElementById(
+                    "successFecha"
+                ).textContent =
+                    turno.fecha;
+
+
+                document.getElementById(
+                    "successHorario"
+                ).textContent =
+                    turno.horario;
+
+
+                document.getElementById(
+                    "successBarbero"
+                ).textContent =
+                    turno.barbero;
+
+
+                document
+                    .getElementById("successModal")
+                    .classList.remove("hidden");
+
+
+            }catch(error){
+
+                console.error(
+                    "❌ Error guardando turno:",
+                    error
+                );
+
+
+                alert(
+                    "No se pudo guardar el turno. Revisá la conexión e intentá nuevamente."
+                );
+
+
+            }finally{
+
+                confirmar.disabled = false;
+
+                confirmar.textContent =
+                    "CONFIRMAR TURNO";
+
+            }
+
+        }
+    );
+
+}
+    
 /*=========================================
         CERRAR MODAL
 =========================================*/
@@ -2860,5 +3555,36 @@ window.turno = turno;
 if (document.querySelector(".option-card")) {
 
     iniciarReserva();
+
+}
+
+/*=========================================
+        BOTÓN ATRÁS PRINCIPAL
+=========================================*/
+
+const backReservation =
+    document.getElementById("backReservation");
+
+if(backReservation){
+
+    backReservation.addEventListener(
+        "click",
+        () => {
+
+            if(pasoActual > 1){
+
+                mostrarPaso(
+                    pasoActual - 1
+                );
+
+            }else{
+
+                window.location.href =
+                    "../../index.html";
+
+            }
+
+        }
+    );
 
 }
