@@ -13,7 +13,8 @@ import {
 } from "../../services/promociones.service.js";
 
 import {
-    subirComprobante
+    subirComprobante,
+    subirComprobanteTurno
 } from "../../firebase/firebase-storage.js";
 
 
@@ -44,6 +45,8 @@ let pasoActual = 1;
 const turno = {
 
     clienteId: "",
+
+    comprobanteTurnoUrl: "",
 
     sucursal: "",
     servicio: "",
@@ -2959,12 +2962,21 @@ function iniciarPaso6(){
 
 function iniciarPaso7(){
 
-    const nombre = document.getElementById("nombre");
-    const apellido = document.getElementById("apellido");
-    const telefono = document.getElementById("telefono");
-    const correo = document.getElementById("correo");
+    const nombre =
+        document.getElementById("nombre");
 
-    const botonPaso7 = document.getElementById("nextStep7");
+    const apellido =
+        document.getElementById("apellido");
+
+    const telefono =
+        document.getElementById("telefono");
+
+    const correo =
+        document.getElementById("correo");
+
+    const botonPaso7 =
+        document.getElementById("nextStep7");
+
 
     function actualizarDatosCliente(){
 
@@ -2980,21 +2992,39 @@ function iniciarPaso7(){
         turno.cliente.correo =
             correo.value.trim();
 
+
         actualizarResumen();
+
+
+        // =====================================
+        // VALIDAR WHATSAPP
+        // =====================================
+
+        const telefonoValido =
+            turno.cliente.telefono
+                .replace(/\D/g, "")
+                .length >= 10;
+
+
+        // =====================================
+        // DATOS OBLIGATORIOS
+        // =====================================
 
         const completo =
             turno.cliente.nombre !== "" &&
             turno.cliente.apellido !== "" &&
-            turno.cliente.telefono !== "" &&
-            turno.cliente.correo !== "";
+            telefonoValido;
+
 
         if(botonPaso7){
 
-            botonPaso7.disabled = !completo;
+            botonPaso7.disabled =
+                !completo;
 
         }
 
     }
+
 
     const campos = [
         nombre,
@@ -3002,6 +3032,7 @@ function iniciarPaso7(){
         telefono,
         correo
     ];
+
 
     campos.forEach(campo => {
 
@@ -3016,23 +3047,30 @@ function iniciarPaso7(){
 
     });
 
-    // Comprobar inmediatamente los datos
-    // que Firebase ya cargó
+
+    // Comprobar inmediatamente
+    // los datos que Firebase ya cargó
+
     actualizarDatosCliente();
+
 
     if(botonPaso7){
 
-        botonPaso7.addEventListener("click", () => {
+        botonPaso7.addEventListener(
+            "click",
+            () => {
 
-            actualizarDatosCliente();
+                actualizarDatosCliente();
 
-            mostrarPaso(8);
+                mostrarPaso(8);
 
-        });
+            }
+        );
 
     }
 
 }
+
 /*=========================================
         PASO 8
         OBSERVACIONES
@@ -3234,6 +3272,672 @@ actualizarCampo(
 
 }
 
+/*=========================================
+        GENERAR PDF DEL TURNO
+=========================================*/
+
+async function generarComprobanteTurno(codigo){
+
+    console.log(
+        "🧾 Generando comprobante PDF..."
+    );
+
+
+    // =====================================
+    // COMPROBAR jsPDF
+    // =====================================
+
+    if(!window.jspdf){
+
+        throw new Error(
+            "jsPDF no está cargado."
+        );
+
+    }
+
+
+    const { jsPDF } =
+        window.jspdf;
+
+
+    const pdf =
+        new jsPDF({
+            unit: "mm",
+            format: "a4"
+        });
+
+
+    // =====================================
+    // COLORES BEAST
+    // =====================================
+
+    const negro = [
+        10,
+        10,
+        10
+    ];
+
+    const dorado = [
+        212,
+        175,
+        55
+    ];
+
+    const blanco = [
+        255,
+        255,
+        255
+    ];
+
+    const gris = [
+        160,
+        160,
+        160
+    ];
+
+
+    // =====================================
+    // FONDO
+    // =====================================
+
+    pdf.setFillColor(
+        ...negro
+    );
+
+    pdf.rect(
+        0,
+        0,
+        210,
+        297,
+        "F"
+    );
+
+
+    // =====================================
+    // BORDE DORADO
+    // =====================================
+
+    pdf.setDrawColor(
+        ...dorado
+    );
+
+    pdf.setLineWidth(
+        0.6
+    );
+
+    pdf.rect(
+        12,
+        12,
+        186,
+        273
+    );
+
+
+    // =====================================
+    // ENCABEZADO
+    // =====================================
+
+    
+// =====================================
+// ENCABEZADO DE LA BARBERÍA
+// =====================================
+
+pdf.setTextColor(
+    ...dorado
+);
+
+pdf.setFont(
+    "helvetica",
+    "bold"
+);
+
+pdf.setFontSize(
+    25
+);
+
+pdf.text(
+    "BEAST BARBERSHOPS",
+    105,
+    35,
+    {
+        align: "center"
+    }
+);
+
+
+pdf.setTextColor(
+    ...blanco
+);
+
+pdf.setFontSize(
+    13
+);
+
+pdf.text(
+    "COMPROBANTE DE TURNO",
+    105,
+    44,
+    {
+        align: "center"
+    }
+);
+   
+
+    // =====================================
+    // LÍNEA
+    // =====================================
+
+    pdf.setDrawColor(
+        ...dorado
+    );
+
+    pdf.line(
+        30,
+        51,
+        180,
+        51
+    );
+
+
+    // =====================================
+    // CÓDIGO
+    // =====================================
+
+    pdf.setTextColor(
+        ...gris
+    );
+
+    pdf.setFontSize(
+        10
+    );
+
+    pdf.text(
+        "CÓDIGO DE RESERVA",
+        105,
+        62,
+        {
+            align: "center"
+        }
+    );
+
+
+    pdf.setTextColor(
+        ...dorado
+    );
+
+    pdf.setFontSize(
+        19
+    );
+
+    pdf.text(
+        codigo,
+        105,
+        72,
+        {
+            align: "center"
+        }
+    );
+
+
+    // =====================================
+    // DATOS DEL CLIENTE
+    // =====================================
+
+    let y = 90;
+
+
+    function tituloSeccion(texto){
+
+        pdf.setTextColor(
+            ...dorado
+        );
+
+        pdf.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        pdf.setFontSize(
+            11
+        );
+
+        pdf.text(
+            texto,
+            28,
+            y
+        );
+
+        y += 8;
+
+    }
+
+
+    function dato(label, valor){
+
+        pdf.setTextColor(
+            ...gris
+        );
+
+        pdf.setFont(
+            "helvetica",
+            "normal"
+        );
+
+        pdf.setFontSize(
+            10
+        );
+
+        pdf.text(
+            label,
+            30,
+            y
+        );
+
+
+        pdf.setTextColor(
+            ...blanco
+        );
+
+        pdf.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        pdf.text(
+            String(
+                valor || "-"
+            ),
+            90,
+            y
+        );
+
+        y += 7;
+
+    }
+
+
+    tituloSeccion(
+        "CLIENTE"
+    );
+
+
+    dato(
+        "Nombre",
+        `${turno.cliente.nombre} ${turno.cliente.apellido}`
+    );
+
+
+    dato(
+        "WhatsApp",
+        turno.cliente.telefono
+    );
+
+
+    if(turno.cliente.correo){
+
+        dato(
+            "Correo",
+            turno.cliente.correo
+        );
+
+    }
+
+
+    y += 5;
+
+
+    // =====================================
+    // DATOS DEL TURNO
+    // =====================================
+
+    tituloSeccion(
+        "DATOS DEL TURNO"
+    );
+
+
+    dato(
+        "Sucursal",
+        turno.sucursal
+    );
+
+
+    dato(
+        "Servicio",
+        turno.servicio
+    );
+
+
+    dato(
+        "Barbero",
+        turno.barbero
+    );
+
+
+    dato(
+        "Fecha",
+        turno.fecha
+    );
+
+
+    dato(
+        "Horario",
+        turno.horario
+    );
+
+
+    // =====================================
+    // PAGO
+    // =====================================
+
+    y += 5;
+
+
+    tituloSeccion(
+        "PAGO"
+    );
+
+
+    let medioPago = "-";
+
+
+    if(turno.pago){
+
+        const nombresPago = {
+
+            efectivo:
+                "Efectivo",
+
+            transferencia:
+                "Transferencia bancaria",
+
+            qr:
+                "Pago con QR"
+
+        };
+
+
+        medioPago =
+            nombresPago[
+                turno.pago.metodo
+            ]
+            ||
+            turno.pago.metodo
+            ||
+            "-";
+
+    }
+
+
+    dato(
+        "Medio de pago",
+        medioPago
+    );
+
+
+    // =====================================
+    // TOTAL
+    // =====================================
+
+    y += 8;
+
+
+    pdf.setFillColor(
+        25,
+        25,
+        25
+    );
+
+
+    pdf.roundedRect(
+        25,
+        y,
+        160,
+        24,
+        3,
+        3,
+        "F"
+    );
+
+
+    pdf.setTextColor(
+        ...blanco
+    );
+
+    pdf.setFont(
+        "helvetica",
+        "bold"
+    );
+
+    pdf.setFontSize(
+        12
+    );
+
+    pdf.text(
+        "TOTAL",
+        35,
+        y + 15
+    );
+
+
+    pdf.setTextColor(
+        ...dorado
+    );
+
+    pdf.setFontSize(
+        19
+    );
+
+
+    pdf.text(
+        "$" +
+        Number(
+            turno.precio || 0
+        ).toLocaleString(
+            "es-AR"
+        ),
+        175,
+        y + 15,
+        {
+            align: "right"
+        }
+    );
+
+
+    // =====================================
+    // OBSERVACIONES
+    // =====================================
+
+    if(
+        turno.observaciones
+    ){
+
+        y += 35;
+
+
+        tituloSeccion(
+            "OBSERVACIONES"
+        );
+
+
+        pdf.setTextColor(
+            ...blanco
+        );
+
+        pdf.setFont(
+            "helvetica",
+            "normal"
+        );
+
+        pdf.setFontSize(
+            10
+        );
+
+
+        const texto =
+            pdf.splitTextToSize(
+                turno.observaciones,
+                150
+            );
+
+
+        pdf.text(
+            texto,
+            30,
+            y
+        );
+
+    }
+
+// =====================================
+// PIE DEL COMPROBANTE
+// =====================================
+
+pdf.setTextColor(
+    ...gris
+);
+
+pdf.setFontSize(
+    9
+);
+
+pdf.text(
+    "Gracias por elegir Beast Barbershops",
+    105,
+    260,
+    {
+        align: "center"
+    }
+);
+
+
+pdf.setTextColor(
+    ...dorado
+);
+
+pdf.setFont(
+    "helvetica",
+    "bold"
+);
+
+pdf.setFontSize(
+    8
+);
+
+pdf.text(
+    "Beast Managers",
+    105,
+    269,
+    {
+        align: "center"
+    }
+);
+
+
+pdf.setTextColor(
+    ...gris
+);
+
+pdf.setFont(
+    "helvetica",
+    "normal"
+);
+
+pdf.setFontSize(
+    7
+);
+
+pdf.text(
+    "Tu sistema de gestión",
+    105,
+    275,
+    {
+        align: "center"
+    }
+);
+
+    // =====================================
+    // GENERAR BLOB
+    // =====================================
+
+    const blob =
+        pdf.output(
+            "blob"
+        );
+
+
+    console.log(
+        "✅ PDF generado:",
+        blob
+    );
+
+
+    // =====================================
+    // DESCARGA DE PRUEBA
+    // =====================================
+
+    const url =
+        URL.createObjectURL(
+            blob
+        );
+
+
+    const enlace =
+        document.createElement(
+            "a"
+        );
+
+
+    enlace.href =
+        url;
+
+    enlace.download =
+        `Beast-${codigo}.pdf`;
+
+
+    enlace.click();
+
+
+    setTimeout(
+        () => {
+
+            URL.revokeObjectURL(
+                url
+            );
+
+        },
+        1000
+    );
+
+
+    return blob;
+
+}
+
+/*=========================================
+        GENERAR CÓDIGO DE RESERVA
+=========================================*/
+
+function generarCodigoReserva(){
+
+    const caracteres =
+        "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+    let codigo = "";
+
+    for(let i = 0; i < 6; i++){
+
+        codigo +=
+            caracteres.charAt(
+                Math.floor(
+                    Math.random() * caracteres.length
+                )
+            );
+
+    }
+
+    return `BEAST-${codigo}`;
+
+}
 
 /*=========================================
         CONFIRMAR TURNO
@@ -3281,96 +3985,120 @@ if(confirmar){
                 actualizarResumen();
 
 
-                /*=========================================
-        GENERAR CÓDIGO DE RESERVA
-=========================================*/
+               /*=================================
+    GENERAR CÓDIGO
+=================================*/
 
-function generarCodigoReserva(){
+const codigo =
+    generarCodigoReserva();
 
-    const caracteres =
-        "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
-    let codigo = "";
+console.log(
+    "🎫 Código de reserva:",
+    codigo
+);
 
-    for(let i = 0; i < 6; i++){
 
-        codigo +=
-            caracteres.charAt(
-                Math.floor(
-                    Math.random() * caracteres.length
-                )
-            );
+/*=================================
+    SUBIR COMPROBANTE QR
+=================================*/
 
-    }
+if(
+    comprobantePagoFile &&
+    turno.pago?.metodo === "qr"
+){
 
-    return `BEAST-${codigo}`;
+    const comprobanteUrl =
+        await subirComprobante(
+            comprobantePagoFile,
+            codigo,
+            turno.clienteId
+        );
+
+
+    turno.pago.comprobanteUrl =
+        comprobanteUrl;
+
+
+    console.log(
+        "✅ Comprobante de pago guardado:",
+        comprobanteUrl
+    );
 
 }
 
-                /*=================================
-                    GENERAR CÓDIGO
-                =================================*/
 
-                const codigo =
-                    generarCodigoReserva();
+/*=================================
+    GENERAR COMPROBANTE PDF
+=================================*/
 
-
-                console.log(
-                    "🎫 Código de reserva:",
-                    codigo
-                );
+confirmar.textContent =
+    "GENERANDO COMPROBANTE...";
 
 
-                /*=================================
-                    SUBIR COMPROBANTE QR
-                =================================*/
-
-                if(
-                    comprobantePagoFile &&
-                    turno.pago?.metodo === "qr"
-                ){
-
-                    const comprobanteUrl =
-                        await subirComprobante(
-                            comprobantePagoFile,
-                            codigo,
-                            turno.clienteId
-                        );
+const comprobantePDF =
+    await generarComprobanteTurno(
+        codigo
+    );
 
 
-                    turno.pago.comprobanteUrl =
-                        comprobanteUrl;
+console.log(
+    "📄 PDF del turno generado:",
+    comprobantePDF
+);
 
 
-                    console.log(
-                        "✅ Comprobante guardado:",
-                        comprobanteUrl
-                    );
+/*=================================
+    SUBIR COMPROBANTE DEL TURNO
+=================================*/
 
-                }
-
-
-                /*=================================
-                    GUARDAR TURNO EN FIREBASE
-                =================================*/
-
-                console.log(
-                    "💾 Guardando turno:",
-                    turno
-                );
+confirmar.textContent =
+    "SUBIENDO COMPROBANTE...";
 
 
-                const turnoId =
-                    await crearTurno(
-                        turno,
-                        codigo
-                    );
+const comprobanteTurnoUrl =
+    await subirComprobanteTurno(
+        comprobantePDF,
+        codigo,
+        turno.clienteId
+    );
 
 
-                console.log(
-                    "✅ Turno guardado en Firebase:",
-                    turnoId
-                );
+turno.comprobanteTurnoUrl =
+    comprobanteTurnoUrl;
+
+
+console.log(
+    "☁️ Comprobante del turno guardado:",
+    comprobanteTurnoUrl
+);
+
+
+/*=================================
+    GUARDAR TURNO EN FIREBASE
+=================================*/
+
+confirmar.textContent =
+    "GUARDANDO TURNO...";
+
+
+console.log(
+    "💾 Guardando turno:",
+    turno
+);
+
+
+const turnoId =
+    await crearTurno(
+        turno,
+        codigo
+    );
+
+
+console.log(
+    "✅ Turno guardado en Firebase:",
+    turnoId
+);
 
 
                 /*=================================

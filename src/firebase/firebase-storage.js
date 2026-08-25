@@ -19,6 +19,8 @@ export const storage = getStorage(app);
 // SUBIR COMPROBANTE
 // ======================================================
 
+
+
 export async function subirComprobante(
     archivo,
     codigoReserva,
@@ -75,6 +77,57 @@ export async function subirComprobante(
 
     console.log(
         "✅ COMPROBANTE SUBIDO:",
+        url
+    );
+
+    return url;
+}
+
+// ======================================================
+// SUBIR COMPROBANTE DEL TURNO
+// ======================================================
+
+export async function subirComprobanteTurno(
+    archivo,
+    codigoReserva,
+    clienteId
+){
+
+    if(!archivo){
+        throw new Error(
+            "No se recibió el comprobante del turno."
+        );
+    }
+
+    const nombreArchivo =
+        `turno_${codigoReserva}.pdf`;
+
+    const ruta =
+        `turnos/comprobantes/${clienteId || "invitado"}/${codigoReserva}/${nombreArchivo}`;
+
+    const archivoRef =
+        ref(storage, ruta);
+
+    console.log(
+        "☁️ Subiendo comprobante del turno:",
+        ruta
+    );
+
+    await uploadBytes(
+        archivoRef,
+        archivo,
+        {
+            contentType: "application/pdf"
+        }
+    );
+
+    const url =
+        await getDownloadURL(
+            archivoRef
+        );
+
+    console.log(
+        "✅ COMPROBANTE DEL TURNO SUBIDO:",
         url
     );
 
