@@ -3914,6 +3914,61 @@ pdf.text(
 }
 
 /*=========================================
+        WHATSAPP - CLIENTE
+=========================================*/
+
+function enviarWhatsAppCliente(codigo){
+
+    const telefono =
+        turno.cliente.telefono
+            .replace(/\D/g, "");
+
+    if(!telefono){
+
+        alert(
+            "No hay un número de WhatsApp válido."
+        );
+
+        return;
+
+    }
+
+
+    const mensaje = `Hola ${turno.cliente.nombre} 👋
+
+Tu turno en BEAST BARBERSHOPS quedó confirmado.
+
+📍 Sucursal: ${turno.sucursal}
+
+✂️ Servicio: ${turno.servicio}
+
+💈 Barbero: ${turno.barbero}
+
+📅 Fecha: ${turno.fecha}
+
+🕐 Horario: ${turno.horario}
+
+🎫 Código: ${codigo}
+
+💰 Total: $${Number(
+    turno.precio || 0
+).toLocaleString("es-AR")}
+
+¡Te esperamos! 💈🔥`;
+
+
+    const url =
+        `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+/*=========================================
         GENERAR CÓDIGO DE RESERVA
 =========================================*/
 
@@ -3991,6 +4046,9 @@ if(confirmar){
 
 const codigo =
     generarCodigoReserva();
+
+    turno.codigoReserva =
+    codigo;
 
 
 console.log(
@@ -4100,6 +4158,11 @@ console.log(
     turnoId
 );
 
+/*=================================
+    GUARDAR CÓDIGO PARA WHATSAPP
+=================================*/
+
+window.codigoReservaActual = codigo;
 
                 /*=================================
                     MOSTRAR CONFIRMACIÓN
@@ -4165,7 +4228,120 @@ console.log(
     );
 
 }
-    
+
+/*=========================================
+        WHATSAPP - AVISAR A LA BARBERÍA
+=========================================*/
+
+function avisarBarberia(){
+
+    const numeroBarberia =
+        "5491165495730";
+
+
+    const nombreCliente =
+        `${turno.cliente.nombre} ${turno.cliente.apellido}`;
+
+
+    const total =
+        Number(
+            turno.precio || 0
+        ).toLocaleString("es-AR");
+
+
+    const codigo =
+        turno.codigoReserva ||
+        document.getElementById(
+            "reservationCode"
+        )?.textContent ||
+        "-";
+
+
+    const comprobante =
+        turno.comprobanteTurnoUrl ||
+        "";
+
+
+    const mensaje =
+        "*Hola BEAST*\n\n" +
+
+        "Acabo de reservar un turno.\n\n" +
+
+        "*CLIENTE:* " +
+        nombreCliente +
+        "\n" +
+
+        "*SUCURSAL:* " +
+        turno.sucursal +
+        "\n" +
+
+        "*SERVICIO:* " +
+        turno.servicio +
+        "\n" +
+
+        "*BARBERO:* " +
+        turno.barbero +
+        "\n" +
+
+        "*FECHA:* " +
+        turno.fecha +
+        "\n" +
+
+        "*HORARIO:* " +
+        turno.horario +
+        "\n" +
+
+        "*CÓDIGO DE RESERVA:* " +
+        codigo +
+        "\n" +
+
+        "*TOTAL:* $" +
+        total +
+        "\n\n" +
+
+        "*COMPROBANTE DEL TURNO:*\n" +
+        comprobante +
+        "\n\n" +
+
+        "¡Gracias!";
+
+
+    const url =
+        `https://wa.me/${numeroBarberia}?text=${encodeURIComponent(
+            mensaje
+        )}`;
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+/*=========================================
+        BOTÓN AVISAR A LA BARBERÍA
+=========================================*/
+
+const botonAvisarBarberia =
+    document.getElementById(
+        "avisarBarberia"
+    );
+
+
+if(botonAvisarBarberia){
+
+    botonAvisarBarberia.addEventListener(
+        "click",
+        () => {
+
+            avisarBarberia();
+
+        }
+    );
+
+}
+
 /*=========================================
         CERRAR MODAL
 =========================================*/

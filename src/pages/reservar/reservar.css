@@ -3711,3 +3711,104 @@ body{
     object-fit:contain;
 
 }
+
+/*=========================================
+    WHATSAPP - AVISAR A LA BARBERÍA
+=========================================*/
+
+.whatsapp-buttons{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+    width:100%;
+
+    margin-top:20px;
+
+}
+
+
+.whatsapp-button{
+
+    width:100%;
+
+    min-height:50px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:linear-gradient(
+        135deg,
+        #D4AF37,
+        #F4D878
+    );
+
+    color:#111;
+
+    font-family:inherit;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    letter-spacing:.5px;
+
+    cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:9px;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        filter .2s ease;
+
+}
+
+
+.whatsapp-button:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 8px 25px
+        rgba(212,175,55,.25);
+
+    filter:brightness(1.05);
+
+}
+
+
+.whatsapp-button:active{
+
+    transform:scale(.98);
+
+}
+
+
+.whatsapp-button i{
+
+    font-size:20px;
+
+}
+
+
+.whatsapp-button.barberia{
+
+    background:
+        linear-gradient(
+            135deg,
+            #D4AF37,
+            #F4D878
+        );
+
+}
