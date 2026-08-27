@@ -3106,36 +3106,102 @@ function iniciarPaso8(){
 
 function mostrarPaso(numero){
 
+    // =====================================
+    // SEGURIDAD
+    // =====================================
+
+    if(numero < 1){
+
+        numero = 1;
+
+    }
+
+    if(numero > TOTAL_PASOS){
+
+        numero = TOTAL_PASOS;
+
+    }
+
+
+    // =====================================
+    // GUARDAR PASO ACTUAL
+    // =====================================
+
     pasoActual = numero;
+
+
+    // =====================================
+    // OCULTAR TODOS LOS PASOS
+    // =====================================
 
     document.querySelectorAll(".step")
     .forEach(step => {
+
         step.classList.add("hidden");
+
     });
 
-    const paso = document.getElementById(
-        "step" + numero
-    );
+
+    // =====================================
+    // MOSTRAR PASO ACTUAL
+    // =====================================
+
+    const paso =
+        document.getElementById(
+            "step" + numero
+        );
+
 
     if(paso){
+
         paso.classList.remove("hidden");
+
     }
 
-    // =========================================
-    // ACTUALIZAR PASO 5 SEGÚN EL SERVICIO
-    // =========================================
 
-if(numero === 4){
+    // =====================================
+    // ACTUALIZAR BARRA
+    // =====================================
 
-    iniciarPaso4();
+    actualizarProgreso();
 
-}
 
-if(numero === 5){
+    // =====================================
+    // ACTUALIZAR CONTENIDO
+    // =====================================
 
-    iniciarPaso5();
+    if(numero === 3){
 
-}
+        mostrarPromociones();
+
+    }
+
+
+    if(numero === 4){
+
+        iniciarPaso4();
+
+    }
+
+
+    if(numero === 5){
+
+        iniciarPaso5();
+
+    }
+
+
+    if(numero === 9){
+
+        actualizarResumen();
+
+    }
+
+
+    console.log(
+        "📍 Paso actual:",
+        pasoActual
+    );
 
 }
  
@@ -3147,23 +3213,87 @@ if(numero === 5){
 function actualizarProgreso(){
 
     const porcentaje =
+        ((pasoActual - 1) / (TOTAL_PASOS - 1)) * 100;
 
-    (pasoActual / TOTAL_PASOS) * 100;
 
-    document.getElementById(
+    const progressFill =
+        document.getElementById(
+            "progressFill"
+        );
 
-        "progressFill"
 
-    ).style.width = porcentaje+"%";
+    const stepNumber =
+        document.getElementById(
+            "stepNumber"
+        );
 
-    document.getElementById(
 
-        "stepNumber"
+    const progressText =
+        document.getElementById(
+            "progressText"
+        );
 
-    ).textContent = pasoActual;
+
+    // =====================================
+    // ACTUALIZAR BARRA
+    // =====================================
+
+    if(progressFill){
+
+        progressFill.style.width =
+            porcentaje + "%";
+
+    }
+
+
+    // =====================================
+    // ACTUALIZAR NÚMERO
+    // =====================================
+
+    if(stepNumber){
+
+        stepNumber.textContent =
+            pasoActual;
+
+    }
+
+
+    // =====================================
+    // NOMBRE DEL PASO
+    // =====================================
+
+    const nombresPasos = {
+
+        1: "Elegir sucursal",
+
+        2: "Elegir fecha",
+
+        3: "Elegir servicio",
+
+        4: "Elegir barbero",
+
+        5: "Elegir horario",
+
+        6: "Medio de pago",
+
+        7: "Tus datos",
+
+        8: "Observaciones",
+
+        9: "Confirmar turno"
+
+    };
+
+
+    if(progressText){
+
+        progressText.textContent =
+            nombresPasos[pasoActual]
+            || "";
+
+    }
 
 }
-
 /*=========================================
         RESUMEN
 =========================================*/
